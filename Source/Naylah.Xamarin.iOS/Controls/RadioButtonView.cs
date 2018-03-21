@@ -1,0 +1,85 @@
+﻿using CoreGraphics;
+using Foundation;
+using System;
+using System.Collections.Generic;
+using System.Text;
+using UIKit;
+
+namespace Naylah.Xamarin.iOS.Controls
+{
+    [Register("RadioButtonView")]
+    public class RadioButtonView : UIButton
+    {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="RadioButtonView"/> class.
+        /// </summary>
+        public RadioButtonView()
+        {
+            Initialize();
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="RadioButtonView"/> class.
+        /// </summary>
+        /// <param name="bounds">The bounds.</param>
+        public RadioButtonView(CGRect bounds)
+            : base(bounds)
+        {
+            Initialize();
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether this <see cref="RadioButtonView"/> is checked.
+        /// </summary>
+        /// <value><c>true</c> if checked; otherwise, <c>false</c>.</value>
+        public bool Checked
+        {
+            set { Selected = value; }
+            get { return Selected; }
+        }
+
+        /// <summary>
+        /// Sets the text.
+        /// </summary>
+        /// <value>The text.</value>
+        public string Text
+        {
+            set { SetTitle(value, UIControlState.Normal); }
+        }
+
+        /// <summary>
+        /// Initializes this instance.
+        /// </summary>
+        private void Initialize()
+        {
+            AdjustEdgeInsets();
+            ApplyStyle();
+
+            // set default color, because type is not UIButtonType.System
+            SetTitleColor(UIColor.DarkTextColor, UIControlState.Normal);
+            SetTitleColor(UIColor.DarkTextColor, UIControlState.Selected);
+            TouchUpInside += (sender, args) => Selected = !Selected;
+        }
+
+        /// <summary>
+        /// Adjusts the edge insets.
+        /// </summary>
+        private void AdjustEdgeInsets()
+        {
+            const float inset = 8f;
+
+            HorizontalAlignment = UIControlContentHorizontalAlignment.Left;
+            ImageEdgeInsets = new UIEdgeInsets(0f, inset, 0f, 0f);
+            TitleEdgeInsets = new UIEdgeInsets(0f, inset * 2, 0f, 0f);
+        }
+
+        /// <summary>
+        /// Applies the style.
+        /// </summary>
+        private void ApplyStyle()
+        {
+            SetImage(UIImage.FromBundle("Images/RadioButton/checked.png"), UIControlState.Selected);
+            SetImage(UIImage.FromBundle("Images/RadioButton/unchecked.png"), UIControlState.Normal);
+        }
+    }
+}
