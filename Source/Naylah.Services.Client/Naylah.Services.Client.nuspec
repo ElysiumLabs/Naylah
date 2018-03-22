@@ -5,7 +5,7 @@
     <version>1.0.0.0</version>
     <authors>Naylah, Infinitus</authors>
     <owners>Infinitus Solutions</owners>
-    <iconUrl>https://avatars2.githubusercontent.com/u/11547487?v=3&amp;s=200</iconUrl>
+    <iconUrl>https://github.com/NaylahProject/Naylah/blob/master/Docs/Logo/naylah.new.pre.png?raw=true</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Naylah.Services.Client</description>
     <dependencies>
