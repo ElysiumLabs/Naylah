@@ -2,24 +2,33 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata>
     <id>Naylah.Identity.Client</id>
-    <version>1.0.0.0-alpha</version>
+    <version>1.0.0.0</version>
     <authors>Naylah, Infinitus</authors>
     <owners>Naylah, Infinitus</owners>
     <iconUrl>https://avatars2.githubusercontent.com/u/11547487?v=3&amp;s=200</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Naylah.Identity.Client</description>
     <dependencies>
-      <group targetFramework=".NETStandard1.4">
-        <dependency id="Naylah.Services.Client" />
-        <dependency id="NETStandard.Library" version="1.6.1" exclude="Build,Analyzers" />
-        <dependency id="Newtonsoft.Json" version="9.0.1" exclude="Build,Analyzers" />
-        <dependency id="Microsoft.Azure.Mobile.Client" version ="4.0.0-alpha-001" exclude="Build,Analyzers" />
-        <dependency id="IdentityModel" version="2.8.0" exclude="Build,Analyzers" />
-        <dependency id="System.Security.Claims" version="4.3.0" exclude="Build,Analyzers" />
-      </group>
+      <dependency id="Naylah.Core" />
+      <dependency id="Naylah.Services.Client" />
+      <dependency id="Microsoft.Azure.Mobile.Client" version="4.0.2" exclude="Build,Analyzers" />
+      <dependency id="System.Net.Http" version="4.3.3" exclude="Build,Analyzers" />
+      <dependency id="System.Security.Principal" version="4.3.0" exclude="Build,Analyzers" />
+      <dependency id="IdentityModel" version="3.3.1" exclude="Build,Analyzers" />
     </dependencies>
   </metadata>
   <files>
-    <file src="bin\Release\netstandard1.4\Naylah.Identity.Client.dll" target="lib\netstandard1.4\Naylah.Identity.Client.dll" />
+
+    <!--net452-->
+    <file src="bin\Release\net452\Naylah.Services.Client.dll" target="lib\net452\Naylah.Services.Client.dll" />
+    <file src="bin\Release\net452\Naylah.Services.Client.pdb" target="lib\net452\Naylah.Services.Client.pdb" />
+
+    <!--net461-->
+    <file src="bin\Release\net461\Naylah.Services.Client.dll" target="lib\net461\Naylah.Services.Client.dll" />
+    <file src="bin\Release\net461\Naylah.Services.Client.pdb" target="lib\net461\Naylah.Services.Client.pdb" />
+
+    <!--netstandard2.0-->
+    <file src="bin\Release\netstandard2.0\Naylah.Services.Client.dll" target="lib\netstandard2.0\Naylah.Services.Client.dll" />
+    <file src="bin\Release\netstandard2.0\Naylah.Services.Client.pdb" target="lib\netstandard2.0\Naylah.Services.Client.pdb" />
   </files>
 </package>

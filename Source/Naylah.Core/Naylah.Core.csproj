@@ -9,11 +9,11 @@
 
   <PropertyGroup>
     <TargetFrameworks>netstandard2.0;net451;net452;net461</TargetFrameworks>
-    <AssemblyName>Naylah.Core</AssemblyName>
-    <PackageId>Naylah.Core</PackageId>
   </PropertyGroup>
 
   <PropertyGroup>
+    <AssemblyName>Naylah.Core</AssemblyName>
+    <PackageId>Naylah.Core</PackageId>
     <NuspecFile>$(MSBuildThisFileDirectory)$(MSBuildProjectName).nuspec</NuspecFile>
     <AssemblyVersion>1.1.1.1</AssemblyVersion>
     <FileVersion>1.1.0.0</FileVersion>

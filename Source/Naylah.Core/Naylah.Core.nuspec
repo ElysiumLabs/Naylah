@@ -12,9 +12,20 @@
   </metadata>
 
   <files>
+    <!--net451-->
     <file src="bin\Release\net451\Naylah.Core.dll" target="lib\net451\Naylah.Core.dll" />
+    <file src="bin\Release\net451\Naylah.Core.pdb" target="lib\net451\Naylah.Core.pdb" />
+
+    <!--net452-->
     <file src="bin\Release\net452\Naylah.Core.dll" target="lib\net452\Naylah.Core.dll" />
+    <file src="bin\Release\net452\Naylah.Core.pdb" target="lib\net452\Naylah.Core.pdb" />
+
+    <!--net461-->
     <file src="bin\Release\net461\Naylah.Core.dll" target="lib\net461\Naylah.Core.dll" />
+    <file src="bin\Release\net461\Naylah.Core.pdb" target="lib\net461\Naylah.Core.pdb" />
+
+    <!--netstandard2.0-->
     <file src="bin\Release\netstandard2.0\Naylah.Core.dll" target="lib\netstandard2.0\Naylah.Core.dll" />
+    <file src="bin\Release\netstandard2.0\Naylah.Core.pdb" target="lib\netstandard2.0\Naylah.Core.pdb" />
   </files>
 </package>

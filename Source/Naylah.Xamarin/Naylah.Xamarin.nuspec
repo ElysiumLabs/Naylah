@@ -14,37 +14,42 @@
     <tags>Naylah, Toolkit, Xamarin, C#, Xaml,</tags>
     <dependencies>
 
-      <group targetFramework=".NETPortable0.0-win+net45+wp80+win81+wpa81+MonoAndroid10+MonoTouch10+Xamarin.iOS10">
-        <dependency id="Xamarin.Forms" version="2.3.2.127" />
-        <dependency id="PCLStorage" version="1.0.2" />
-        <dependency id="Plugin.Permissions" version="1.2.1" />
-        <dependency id="Xam.Plugin.Media" version="2.6.1" />
-        <dependency id="Xamarin.FFImageLoading.Forms" version="2.2.5" />
+      <group>
+        <dependency id="Xamarin.Forms" version="2.5.*" />
+        <dependency id="Xamarin.FFImageLoading.Forms" version="2.3.4" />
+        <dependency id="NETStandart.Library" version="2.0.1" />
       </group>
 
-      <group targetFramework="MonoTouch1.0">
-        <dependency id="WebP.Touch" version="1.0.2" />
-        <dependency id="FloatLabeledEntry.iOS" version="1.0.1" />
+      <group targetFramework="MonoAndroid10">
       </group>
 
-      <!--<group targetFramework="Xamarin iOS1.0">
-        <dependency id="WebP.Touch" version="1.0.2" />
-        <dependency id="FloatLabeledEntry.iOS" version="1.0.1" />
-      </group>-->
+      <group targetFramework="Xamarin.iOS10">
+        <dependency id="WebP.Touch" version="1.0.8" />
+        <dependency id="FloatLabeledEntry.iOS" version="1.1.1" />
+      </group>
     </dependencies>
   </metadata>
 
   <files>
 
-    <file src="bin\Release\Naylah.Xamarin.dll" target="lib\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Naylah.Xamarin.dll" />
-    <file src="bin\Release\Naylah.Xamarin.dll" target="lib\Xamarin.iOS10\Naylah.Xamarin.dll" />
-    <file src="bin\Release\Naylah.Xamarin.dll" target="lib\MonoAndroid10\Naylah.Xamarin.dll" />
-    <file src="bin\Release\Naylah.Xamarin.dll" target="lib\UAP10\Naylah.Xamarin.dll" />
+    <!--portable-win+net45+wp80+win81+wpa81+MonoAndroid10+MonoTouch10+Xamarin.iOS10-->
+    <file src="bin\Release\netstandard2.0\Naylah.Xamarin.dll" target="lib\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Naylah.Xamarin.dll" />
+    <file src="bin\Release\netstandard2.0\Naylah.Xamarin.pdb" target="lib\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Naylah.Xamarin.pdb" />
 
-    <file src="..\Naylah.Xamarin.iOS\bin\Release\Naylah.Xamarin.iOS.dll" target="lib\Xamarin.iOS10\Naylah.Xamarin.iOS.dll" />
+    <!--netstandard2.0-->
+    <file src="bin\Release\netstandard2.0\Naylah.Xamarin.dll" target="lib\netstandard2.0\Naylah.Xamarin.dll" />
+    <file src="bin\Release\netstandard2.0\Naylah.Xamarin.pdb" target="lib\netstandard2.0\Naylah.Xamarin.pdb" />
 
+    <!--MonoAndroid10-->
+    <file src="bin\Release\netstandard2.0\Naylah.Xamarin.dll" target="lib\MonoAndroid10\Naylah.Xamarin.dll" />
+    <file src="bin\Release\netstandard2.0\Naylah.Xamarin.pdb" target="lib\MonoAndroid10\Naylah.Xamarin.pdb" />
     <file src="..\Naylah.Xamarin.Android\bin\Release\Naylah.Xamarin.Android.dll" target="lib\MonoAndroid10\Naylah.Xamarin.Android.dll" />
+    <file src="..\Naylah.Xamarin.Android\bin\Release\Naylah.Xamarin.Android.pdb" target="lib\MonoAndroid10\Naylah.Xamarin.Android.pdb" />
 
-    <!--<file src="..\Naylah.Xamarin.UWP\bin\Release\Naylah.Xamarin.UWP.dll" target="lib\UAP10\Naylah.Xamarin.UWP.dll" />-->
+    <!--Xamarin.iOS10-->
+    <file src="bin\Release\netstandard2.0\Naylah.Xamarin.dll" target="lib\Xamarin.iOS10\Naylah.Xamarin.dll" />
+    <file src="bin\Release\netstandard2.0\Naylah.Xamarin.pdb" target="lib\Xamarin.iOS10\Naylah.Xamarin.pdb" />
+    <file src="..\Naylah.Xamarin.iOS\bin\Release\Naylah.Xamarin.iOS.dll" target="lib\Xamarin.iOS10\Naylah.Xamarin.iOS.dll" />
+    <file src="..\Naylah.Xamarin.iOS\bin\Release\Naylah.Xamarin.iOS.pdb" target="lib\Xamarin.iOS10\Naylah.Xamarin.iOS.pdb" />
   </files>
 </package>
