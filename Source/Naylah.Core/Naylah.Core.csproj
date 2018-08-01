@@ -17,5 +17,14 @@
     <NuspecFile>$(MSBuildThisFileDirectory)$(MSBuildProjectName).nuspec</NuspecFile>
     <AssemblyVersion>1.1.1.1</AssemblyVersion>
     <FileVersion>1.1.0.0</FileVersion>
+    <RootNamespace>Naylah</RootNamespace>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="Core\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.CSharp" Version="4.5.0" />
+  </ItemGroup>
 </Project>

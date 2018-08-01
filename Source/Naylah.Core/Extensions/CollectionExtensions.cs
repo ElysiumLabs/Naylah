@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Naylah.Core.Extensions
+namespace Naylah.Extensions
 {
     public static class CollectionExtensions
     {

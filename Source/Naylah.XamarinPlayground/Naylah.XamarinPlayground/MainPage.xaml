@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:Naylah.XamarinPlayground"
+             xmlns:nycontrols="clr-namespace:Naylah.App.UI.Controls;assembly=Naylah.App.Xamarin"
+             x:Class="Naylah.XamarinPlayground.MainPage">
+
+    <StackLayout>
+        <!-- Place new controls here -->
+        <Label Text="Welcome to Xamarin.Forms!"
+           HorizontalOptions="Center"
+           VerticalOptions="CenterAndExpand"
+           TextColor="{DynamicResource PrimaryColor}" />
+        <ContentView
+            HeightRequest="100"
+            WidthRequest="100"
+            BackgroundColor="Red">
+        </ContentView>
+        <nycontrols:ContentButtonView
+            HeightRequest="100"
+            WidthRequest="100"
+            BackgroundColor="Red">
+        </nycontrols:ContentButtonView>
+    </StackLayout>
+</ContentPage>
