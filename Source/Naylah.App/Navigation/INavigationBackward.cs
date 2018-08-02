@@ -6,6 +6,6 @@ namespace Naylah.App.Navigation
     {
         Task<INavigationResult> GoBackAsync(INavigationOptions options = null);
 
-        Task<bool> CanGoBack { get; }
+        bool CanGoBack { get; }
     }
 }

@@ -32,7 +32,7 @@ namespace Naylah.App.Common
             {
                 DestroyChildren(page);
 
-                //InvokeViewAndViewModelAction<IDestructible>(page, v => v.Destroy());
+                InvokeViewAndViewModelAction<IDestructible>(page, v => v.Destroy());
 
                 page.Behaviors?.Clear();
                 page.BindingContext = null;
@@ -250,6 +250,18 @@ namespace Naylah.App.Common
 
             return potentialDescendant.GetTypeInfo().IsSubclassOf(potentialBase)
                    || potentialDescendant == potentialBase;
+        }
+
+        public static bool? HandleGoBackForPage(Page page)
+        {
+            var p = page as IPageBackHandler;
+
+            if (p != null)
+            {
+                return p.HandleBack?.Invoke();
+            }
+
+            return false;
         }
     }
 }
