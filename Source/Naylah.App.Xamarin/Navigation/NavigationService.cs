@@ -183,25 +183,10 @@ namespace Naylah.App.Navigation
         public Task NavigateSetRootAsync(object view, object parameter = null, INavigationOptions options = null)
         {
             throw new NotImplementedException();
+            NavigablePageFacade.ChangeRootAsync
         }
 
         //
-
-        internal async Task NavigatingToAsync(NavigationMode mode, object parameter, object pageContent = null)
-        {
-            var page = pageContent as Page;
-            if (page != null)
-            {
-                var dataContext = ResolveDataContextForPage(page);
-
-                if (dataContext != null)
-                {
-                    await dataContext.OnNavigatingToAsync(parameter, mode);
-                }
-            }
-
-            RaiseNavigatingEvent();
-        }
 
         private static void OnNavigatingTo(Page toPage, object parameters, NavigationMode navigationMode = NavigationMode.New)
         {
