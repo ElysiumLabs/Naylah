@@ -1,7 +1,6 @@
 using Naylah.App;
 using Naylah.XamarinPlayground.UI.Styles;
-using Naylah.XamarinPlayground.Views;
-using Xamarin.Forms;
+using System.Threading.Tasks;
 using Xamarin.Forms.Xaml;
 
 [assembly: XamlCompilation(XamlCompilationOptions.Compile)]
@@ -16,12 +15,14 @@ namespace Naylah.XamarinPlayground
 
             StyleKit = new Style1();
 
-            var v2 = new MasterDetailPage()
-            {
-                Detail = new NavigationPage(new Page1()) { },
-                Master = new ContentPage() { Title = "blablah", BackgroundColor = Color.Green, Icon = "Menu.png" },
-                Title = "qwdqwd"
-            };
+            //SplashPage = () => new SplashPage();
+
+            //var v2 = new MasterDetailPage()
+            //{
+            //    Detail = new NavigationPage(new Page1()) { },
+            //    Master = new ContentPage() { Title = "blablah", BackgroundColor = Color.Green, Icon = "Menu.png" },
+            //    Title = "qwdqwd"
+            //};
 
             //NavigationServiceFactory(v2);
 
@@ -39,7 +40,7 @@ namespace Naylah.XamarinPlayground
             //    }
             //};
 
-            NavigationServiceFactory(new Page1());
+            //NavigationServiceFactory(new Page1());
 
             //var nav1 = FormsNavigationService.Create(((TabbedPage)MainPage).Children[0]);
             //var nav2 = FormsNavigationService.Create(((TabbedPage)MainPage).Children[1]);
@@ -55,19 +56,13 @@ namespace Naylah.XamarinPlayground
             //MainPage.Navigation.PushAsync(new ContentPage() { BackgroundColor = Color.Purple });
         }
 
-        protected override void OnStart()
-        {
-            // Handle when your app starts
-        }
+        //public override object GetIntialViewPage()
+        //{
+        //    return new SplashPage();
+        //}
 
-        protected override void OnSleep()
+        public override async Task LoadAppAsync()
         {
-            // Handle when your app sleeps
-        }
-
-        protected override void OnResume()
-        {
-            // Handle when your app resumes
         }
     }
 }

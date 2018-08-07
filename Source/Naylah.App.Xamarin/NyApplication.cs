@@ -1,4 +1,5 @@
-﻿using Naylah.App.Navigation;
+﻿using Naylah.App.Common;
+using Naylah.App.Navigation;
 using Naylah.App.UI.Style;
 using System;
 using System.Threading.Tasks;
@@ -16,6 +17,8 @@ namespace Naylah.App
             {
                 Resources = new ResourceDictionary();
             }
+
+            NavigationServiceFactory(GetIntialViewPage());
         }
 
         public new static NyApplication Current { get; set; }
@@ -37,8 +40,7 @@ namespace Naylah.App
         public new Page MainPage
         {
             get { return base.MainPage; }
-            /*internal*/
-            set { base.MainPage = value; }
+            internal set { base.MainPage = value; }
         }
 
         public FormsNavigationService NavigationService { get; internal set; }
@@ -82,11 +84,32 @@ namespace Naylah.App
             return true;
         }
 
-        public virtual void NavigationServiceFactory(Page shellPage)
+        public virtual FormsNavigationService NavigationServiceFactory(object shellView)
         {
-            FormsNavigationService.Create(shellPage, this);
+            FormsNavigationService.Create(shellView, this);
+            return NavigationService;
         }
 
         #endregion Navigation
+
+        #region AppLoad
+
+        public virtual object GetIntialViewPage()
+        {
+            return new DefaultSplashPage();
+        }
+
+        protected override async void OnStart()
+        {
+            base.OnStart();
+
+            await LoadAppAsync();
+        }
+
+        public virtual async Task LoadAppAsync()
+        {
+        }
+
+        #endregion AppLoad
     }
 }
