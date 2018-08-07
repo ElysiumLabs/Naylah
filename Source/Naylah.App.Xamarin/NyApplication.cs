@@ -1,4 +1,5 @@
-﻿using Naylah.App.UI.Style;
+﻿using Naylah.App.Navigation;
+using Naylah.App.UI.Style;
 using System;
 using System.Threading.Tasks;
 using Xamarin.Forms;
@@ -36,8 +37,11 @@ namespace Naylah.App
         public new Page MainPage
         {
             get { return base.MainPage; }
-            internal set { base.MainPage = value; }
+            /*internal*/
+            set { base.MainPage = value; }
         }
+
+        public FormsNavigationService NavigationService { get; internal set; }
 
         /// <summary>
         /// This Function is assigned to when the hardware button needs to be handled in code by the
@@ -76,6 +80,11 @@ namespace Naylah.App
             }
 
             return true;
+        }
+
+        public virtual void NavigationServiceFactory(Page shellPage)
+        {
+            FormsNavigationService.Create(shellPage, this);
         }
 
         #endregion Navigation

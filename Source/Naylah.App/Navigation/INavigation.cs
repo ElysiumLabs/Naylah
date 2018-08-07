@@ -6,7 +6,7 @@ namespace Naylah.App.Navigation
 {
     public interface INavigation
     {
-        Task NavigateSetRootAsync(object view, object parameter = null, INavigationOptions options = null);
+        Task<INavigationResult> NavigateSetRootAsync(object view, object parameter = null, INavigationOptions options = null);
 
         Task<INavigationResult> NavigateAsync(object view, object parameter = null, INavigationOptions options = null);
 

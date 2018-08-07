@@ -6,10 +6,10 @@ namespace Naylah.App.Navigation
 {
     public static class NavigablePageFacadeExtensions
     {
-        public static MasterDetailPageFacade AsMasterDetailPage(this INavigablePageFacade navPageFacade)
-        {
-            return navPageFacade as MasterDetailPageFacade;
-        }
+        //public static MasterDetailPageFacade AsMasterDetailPage(this INavigablePageFacade navPageFacade)
+        //{
+        //    return navPageFacade as MasterDetailPageFacade;
+        //}
 
         public static NavigationPageFacade AsNavigationPage(this INavigablePageFacade navPageFacade)
         {
@@ -19,11 +19,12 @@ namespace Naylah.App.Navigation
 
     public interface INavigablePageFacade
     {
-        Page InternalPage { get; }
+        Page ShellPage { get; }
 
         Xamarin.Forms.INavigation InternalNavigationContext { get; }
 
         Page CurrentPage { get; }
+
         Page ModalCurrentPage { get; }
 
         event EventHandler<ExtNavigationEventArgs> Popped;
@@ -31,6 +32,18 @@ namespace Naylah.App.Navigation
         event EventHandler<ExtNavigationEventArgs> PoppedToRoot;
 
         event EventHandler<ExtNavigationEventArgs> Pushed;
+
+        event EventHandler<ExtNavigationEventArgs> PopRequested;
+
+        event EventHandler<ExtNavigationEventArgs> PopToRootRequested;
+
+        event EventHandler<ExtNavigationEventArgs> PushRequested;
+
+        event EventHandler<ExtNavigationEventArgs> InsertPageBeforeRequested;
+
+        event EventHandler<ExtNavigationEventArgs> RemovePageRequested;
+
+        //
 
         event EventHandler<ExtNavigationEventArgs> ModalPopped;
 
@@ -47,10 +60,6 @@ namespace Naylah.App.Navigation
         Task PushModalAsync(Page page, object parameter = null, bool animated = false);
 
         Task<Page> PopModalAsync(bool animated = false);
-
-        Task Refresh(object parameter = null);
-
-        Task RefreshModal(object parameter = null);
     }
 
     public class ExtNavigationEventArgs : NavigationEventArgs

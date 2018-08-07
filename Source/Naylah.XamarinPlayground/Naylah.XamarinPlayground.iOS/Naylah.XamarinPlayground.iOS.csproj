@@ -171,4 +171,13 @@
       <Name>Naylah.XamarinPlayground</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\Menu.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\Menu%402x.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\Menu%403x.png" />
+  </ItemGroup>
 </Project>

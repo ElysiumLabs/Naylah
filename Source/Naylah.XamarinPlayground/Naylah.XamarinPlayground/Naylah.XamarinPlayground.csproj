@@ -12,4 +12,13 @@
     <ProjectReference Include="..\..\Naylah.App.Xamarin\Naylah.App.Xamarin.csproj" />
     <ProjectReference Include="..\..\Naylah.App\Naylah.App.csproj" />
   </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Views\Page1.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\Page2.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+  </ItemGroup>
 </Project>
