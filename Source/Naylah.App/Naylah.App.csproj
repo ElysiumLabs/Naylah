@@ -3,4 +3,8 @@
   <PropertyGroup>
     <TargetFrameworks>netstandard2.0;net451;net452;net461</TargetFrameworks>
   </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|netstandard2.0|AnyCPU'">
+    <NoWarn>1701;1702;1705;1591</NoWarn>
+  </PropertyGroup>
 </Project>

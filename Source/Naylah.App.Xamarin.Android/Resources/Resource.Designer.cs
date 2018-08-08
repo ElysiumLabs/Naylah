@@ -3001,8 +3001,8 @@ namespace Naylah.App.Xamarin.Android
 			// aapt resource value: 0x7f080048
 			public static int list_item = 2131230792;
 			
-			// aapt resource value: 0x7f0800b3
-			public static int masked = 2131230899;
+			// aapt resource value: 0x7f0800b4
+			public static int masked = 2131230900;
 			
 			// aapt resource value: 0x7f0800a1
 			public static int media_actions = 2131230881;
@@ -3250,6 +3250,9 @@ namespace Naylah.App.Xamarin.Android
 			// aapt resource value: 0x7f0800ae
 			public static int text2 = 2131230894;
 			
+			// aapt resource value: 0x7f0800b2
+			public static int textInputLayout = 2131230898;
+			
 			// aapt resource value: 0x7f080052
 			public static int textSpacerNoButtons = 2131230802;
 			
@@ -3301,8 +3304,8 @@ namespace Naylah.App.Xamarin.Android
 			// aapt resource value: 0x7f08000e
 			public static int view_offset_helper = 2131230734;
 			
-			// aapt resource value: 0x7f0800b2
-			public static int visible = 2131230898;
+			// aapt resource value: 0x7f0800b3
+			public static int visible = 2131230899;
 			
 			// aapt resource value: 0x7f080093
 			public static int volume_item_container = 2131230867;
@@ -3591,6 +3594,9 @@ namespace Naylah.App.Xamarin.Android
 			
 			// aapt resource value: 0x7f030041
 			public static int support_simple_spinner_dropdown_item = 2130903105;
+			
+			// aapt resource value: 0x7f030042
+			public static int TextInputLayout = 2130903106;
 			
 			static Layout()
 			{
