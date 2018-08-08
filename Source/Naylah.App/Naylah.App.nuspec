@@ -1,0 +1,46 @@
+﻿<?xml version="1.0"?>
+<package>
+  <metadata>
+    <id>Naylah.App</id>
+    <version>1.0.0</version>
+    <title>Naylah App</title>
+    <authors>BrenoS, VexPro, WebFocco, Infinitus</authors>
+    <owners>BrenoS, VexPro, WebFocco, Infinitus</owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>:P</description>
+    <tags>naylah app</tags>
+    <dependencies>
+      <group>
+      </group>
+      <group targetFramework="MonoAndroid">
+      </group>
+      <group targetFramework="Xamarin.iOS10">
+      </group>
+      <group targetFramework="uap">
+      </group>
+    </dependencies>
+
+    <references>
+      <group>
+        <reference file="Naylah.App.dll" />
+      </group>
+    </references>
+  </metadata>
+  <files>
+    <!--net451-->
+    <file src="bin\Release\net451\Naylah.App.dll" target="lib\net451\Naylah.App.dll" />
+    <file src="bin\Release\net451\Naylah.App.pdb" target="lib\net451\Naylah.App.pdb" />
+
+    <!--net452-->
+    <file src="bin\Release\net452\Naylah.App.dll" target="lib\net452\Naylah.App.dll" />
+    <file src="bin\Release\net452\Naylah.App.pdb" target="lib\net452\Naylah.App.pdb" />
+
+    <!--net461-->
+    <file src="bin\Release\net461\Naylah.App.dll" target="lib\net461\Naylah.App.dll" />
+    <file src="bin\Release\net461\Naylah.App.pdb" target="lib\net461\Naylah.App.pdb" />
+
+    <!--netstandard2.0-->
+    <file src="bin\Release\netstandard2.0\Naylah.App.dll" target="lib\netstandard2.0\Naylah.App.dll" />
+    <file src="bin\Release\netstandard2.0\Naylah.App.pdb" target="lib\netstandard2.0\Naylah.App.pdb" />
+  </files>
+</package>

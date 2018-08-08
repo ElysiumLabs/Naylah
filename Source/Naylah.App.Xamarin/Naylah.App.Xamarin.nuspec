@@ -1,0 +1,63 @@
+﻿<?xml version="1.0"?>
+<package>
+  <metadata>
+    <id>Naylah.App.Xamarin</id>
+    <version>1.0.0</version>
+    <title>Naylah App Xamarin</title>
+    <authors>BrenoS, VexPro, WebFocco, Infinitus</authors>
+    <owners>BrenoS, VexPro, WebFocco, Infinitus</owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>:P</description>
+    <tags>naylah app xamarin forms</tags>
+    <dependencies>
+      <group>
+        <dependency id="Naylah.App" />
+        <dependency id="Xamarin.Forms" version="3.1.0.637273" />
+      </group>
+      <group targetFramework="MonoAndroid">
+        <!--MonoAndroid dependencies go here-->
+      </group>
+      <group targetFramework="Xamarin.iOS10">
+        <!--Xamarin.iOS10 dependencies go here-->
+      </group>
+      <group targetFramework="uap">
+        <!--<dependency id="iTextSharp" version="5.5.9" />-->
+      </group>
+    </dependencies>
+
+    <references>
+      <group>
+        <reference file="Naylah.App.Xamarin.dll" />
+      </group>
+      <group targetFramework="Xamarin.iOS10">
+        <reference file="Naylah.App.Xamarin.dll" />
+        <reference file="Naylah.App.Xamarin.iOS.dll" />
+      </group>
+      <group targetFramework="MonoAndroid10">
+        <reference file="Naylah.App.Xamarin.dll" />
+        <reference file="Naylah.App.Xamarin.Android.dll" />
+      </group>
+    </references>
+  </metadata>
+  <files>
+    <!-- Cross-platform reference assemblies -->
+    <file src="bin\Release\netstandard2.0\Naylah.App.Xamarin.dll" target="lib\netstandard1.4\Naylah.App.Xamarin.dll" />
+    <file src="bin\Release\netstandard2.0\Naylah.App.Xamarin.pdb" target="lib\netstandard1.4\Naylah.App.Xamarin.pdb" />
+
+    <!-- iOS reference assemblies -->
+    <file src="..\Naylah.App.Xamarin.iOS\bin\Release\Naylah.App.Xamarin.iOS.dll" target="lib\Xamarin.iOS10\Naylah.App.Xamarin.iOS.dll" />
+    <file src="..\Naylah.App.Xamarin.iOS\bin\Release\Naylah.App.Xamarin.iOS.pdb" target="lib\Xamarin.iOS10\Naylah.App.Xamarin.iOS.pdb" />
+    <file src="bin\Release\netstandard2.0\Naylah.App.Xamarin.dll" target="lib\Xamarin.iOS10\Naylah.App.Xamarin.dll" />
+    <file src="bin\Release\netstandard2.0\Naylah.App.Xamarin.pdb" target="lib\Xamarin.iOS10\Naylah.App.Xamarin.pdb" />
+
+    <!-- Android reference assemblies -->
+    <file src="..\Naylah.App.Xamarin.Android\bin\Release\Naylah.App.Xamarin.Android.dll" target="lib\MonoAndroid10\Naylah.App.Xamarin.Android.dll" />
+    <file src="..\Naylah.App.Xamarin.Android\bin\Release\Naylah.App.Xamarin.Android.pdb" target="lib\MonoAndroid10\Naylah.App.Xamarin.Android.pdb" />
+    <file src="bin\Release\netstandard2.0\Naylah.App.Xamarin.dll" target="lib\MonoAndroid10\Naylah.App.Xamarin.dll" />
+    <file src="bin\Release\netstandard2.0\Naylah.App.Xamarin.pdb" target="lib\MonoAndroid10\Naylah.App.Xamarin.pdb" />
+
+    <!-- UWP reference assemblies -->
+    <!--<file src="..\Naylah.App.Xamarin.UWP\bin\Release\Naylah.App.Xamarin.dll" target="lib\UAP10\Naylah.App.Xamarin.dll" />
+    <file src="..\Naylah.App.Xamarin.UWP\bin\Release\Naylah.App.Xamarin.xml" target="lib\UAP10\Naylah.App.Xamarin.xml" />-->
+  </files>
+</package>
