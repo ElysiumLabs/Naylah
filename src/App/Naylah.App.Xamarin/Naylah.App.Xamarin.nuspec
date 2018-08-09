@@ -11,6 +11,7 @@
     <tags>naylah app xamarin forms</tags>
     <dependencies>
       <group>
+        <dependency id="Naylah.Core" version="2018.*" />
         <dependency id="Naylah.App" version="2018.*" />
         <dependency id="Xamarin.Forms" version="3.1.0.637273" />
       </group>

@@ -11,6 +11,7 @@
     <tags>naylah app</tags>
     <dependencies>
       <group>
+        <dependency id="Naylah.Core" version="2018.*" />
       </group>
       <group targetFramework="MonoAndroid">
       </group>
