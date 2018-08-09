@@ -49,7 +49,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Source\Core\Naylah.Core\Naylah.Core.csproj">
+    <ProjectReference Include="..\..\src\Core\Naylah.Core\Naylah.Core.csproj">
       <Project>{23BE2F73-DD46-44C9-9DDF-0D5ED0C5C24D}</Project>
       <Name>Naylah.Core</Name>
     </ProjectReference>

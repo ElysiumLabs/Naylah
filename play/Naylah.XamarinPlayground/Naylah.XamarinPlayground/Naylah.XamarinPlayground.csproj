@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
@@ -10,8 +10,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Source\App\Naylah.App.Xamarin\Naylah.App.Xamarin.csproj" />
-    <ProjectReference Include="..\..\..\Source\App\Naylah.App\Naylah.App.csproj" />
+    <ProjectReference Include="..\..\..\src\App\Naylah.App.Xamarin\Naylah.App.Xamarin.csproj" />
+    <ProjectReference Include="..\..\..\src\App\Naylah.App\Naylah.App.csproj" />
   </ItemGroup>
 
   <ItemGroup>
