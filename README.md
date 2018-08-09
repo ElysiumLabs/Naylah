@@ -7,12 +7,19 @@ A better way to build applications with some patterns.
 [![forthebadge](http://forthebadge.com/images/badges/designed-in-ms-paint.svg)](http://forthebadge.com)
 [![forthebadge](http://forthebadge.com/images/badges/fuck-it-ship-it.svg)](http://forthebadge.com)
 
+### Nugets
 
-Naylah.Core ![Visual Studio Team services](https://img.shields.io/vso/build/elysiumlabs/Naylah/4.svg?style=for-the-badge) ![NuGet](https://img.shields.io/nuget/dt/Naylah.Core.svg?style=for-the-badge)
+#### Naylah.Core 
 
-Naylah.App ![Visual Studio Team services](https://img.shields.io/vso/build/elysiumlabs/Naylah/4.svg?style=for-the-badge) ![NuGet](https://img.shields.io/nuget/dt/Naylah.App.svg?style=for-the-badge)
+![Visual Studio Team services](https://img.shields.io/vso/build/elysiumlabs/Naylah/4.svg?style=for-the-badge) ![NuGet](https://img.shields.io/nuget/dt/Naylah.Core.svg?style=for-the-badge)
 
-Naylah.App.Xamarin ![Visual Studio Team services](https://img.shields.io/vso/build/elysiumlabs/Naylah/4.svg?style=for-the-badge) ![NuGet](https://img.shields.io/nuget/dt/Naylah.App.Xamarin.svg?style=for-the-badge)
+#### Naylah.App 
+
+![Visual Studio Team services](https://img.shields.io/vso/build/elysiumlabs/Naylah/4.svg?style=for-the-badge) ![NuGet](https://img.shields.io/nuget/dt/Naylah.App.svg?style=for-the-badge)
+
+#### Naylah.App.Xamarin 
+
+![Visual Studio Team services](https://img.shields.io/vso/build/elysiumlabs/Naylah/4.svg?style=for-the-badge) ![NuGet](https://img.shields.io/nuget/dt/Naylah.App.Xamarin.svg?style=for-the-badge)
 
 
 Join us @ 
