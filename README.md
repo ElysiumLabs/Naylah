@@ -1,54 +1,22 @@
-# Naylah Toolkit for X .net
+# Naylah
 
-<img src="https://raw.githubusercontent.com/NaylahProject/Naylah.Toolkit.UWP/master/NaylahLogo.png" width="48">
-
-[![TFSBuild](https://softincloud.visualstudio.com/_apis/public/build/definitions/5b360ddf-7ff3-4c1d-93f6-2e82ed850c7e/47/badge)](https://softincloud.visualstudio.com/DefaultCollection/Naylah%20Services)
-
-Naylah.Core [![NuGet](https://img.shields.io/nuget/v/Naylah.Core.svg?style=flat-square)](https://www.nuget.org/packages/Naylah.Core/)
-
-Naylah.Xamarin [![NuGet](https://img.shields.io/nuget/v/Naylah.Xamarin.svg?style=flat-square)](https://www.nuget.org/packages/Naylah.Xamarin/)
+A better way to build applications with some patterns.
 
 [![forthebadge](http://forthebadge.com/images/badges/built-with-love.svg)](http://forthebadge.com)
 [![forthebadge](http://forthebadge.com/images/badges/contains-cat-gifs.svg)](http://forthebadge.com)
 [![forthebadge](http://forthebadge.com/images/badges/designed-in-ms-paint.svg)](http://forthebadge.com)
 [![forthebadge](http://forthebadge.com/images/badges/fuck-it-ship-it.svg)](http://forthebadge.com)
 
-Contain useful libraries, controls, helpers, architecture, etc. the intention is to create a community of developers who contribute to standardization of user interfaces, model and data flow.
 
-**You** are welcome to join the Naylah Community or make PRs. (Please do :smile:)
+Naylah.Core ![Visual Studio Team services](https://img.shields.io/vso/build/elysiumlabs/Naylah/4.svg?style=for-the-badge) ![NuGet](https://img.shields.io/nuget/dt/Naylah.Core.svg?style=for-the-badge)
 
-It's just to simple to use.
+Naylah.App ![Visual Studio Team services](https://img.shields.io/vso/build/elysiumlabs/Naylah/4.svg?style=for-the-badge) ![NuGet](https://img.shields.io/nuget/dt/Naylah.App.svg?style=for-the-badge)
 
-Installation
--------------
+Naylah.App.Xamarin ![Visual Studio Team services](https://img.shields.io/vso/build/elysiumlabs/Naylah/4.svg?style=for-the-badge) ![NuGet](https://img.shields.io/nuget/dt/Naylah.App.Xamarin.svg?style=for-the-badge)
 
-Naylah.Xamarin is available as a NuGet package. You can install it using the NuGet Package Console window:
 
-```
-PM> Install-Package Naylah.Xamarin
-```
+Join us @ 
 
-After installation, just replace Xamarin default Application class by bootstrapper and start a NavigationServiceFacotry with a MasterDetail page or a NavigationPage.
-
-```csharp
-public class App : BootStrapper
-{
-  public static App CurrentApp { get; private set; }
-  public App()
-  {
-      CurrentApp = this;
-      NavigationServiceFactory(new NavigationPage(new SplashPage()));
-  }
-}
-```
-
-Usage
-------
-
-NavigationService
-
-```csharp
-NavigationService.NavigateAsync(var new Page, stringparam, true); //
-NavigationService.NavigateModalAsync(var new Page, stringparam, true); //
-...
-```
+<a href="https://discord.gg/6qFrxRQ">
+<img src="https://discordapp.com/assets/fc0b01fe10a0b8c602fb0106d8189d9b.png" width="250">
+</a>

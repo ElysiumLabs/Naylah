@@ -5,7 +5,7 @@ using System.Collections.ObjectModel;
 
 namespace Naylah.Domain
 {
-    public abstract class Entity : IEntity<string>
+    public abstract class Entity : IEntity<string>, INotificable
     {
         public Entity() : this(false)
         {
@@ -23,7 +23,7 @@ namespace Naylah.Domain
 
         public string Id { get; set; }
 
-        public ICollection<Notification> Notifications { get; }
+        public ICollection<Notification> Notifications { get; internal set; }
 
         public DateTimeOffset? CreatedAt { get; set; }
 
@@ -35,7 +35,7 @@ namespace Naylah.Domain
 
         #region IComparable
 
-        int? _requestedHashCode;
+        private int? _requestedHashCode;
 
         public bool IsTransient()
         {
@@ -73,6 +73,7 @@ namespace Naylah.Domain
             else
                 return base.GetHashCode();
         }
+
         public static bool operator ==(Entity left, Entity right)
         {
             if (Object.Equals(left, null))
