@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Naylah.DI.Abstractions;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -12,7 +13,7 @@ namespace Naylah.App.IoC
         /// <summary>
         /// The _resolver
         /// </summary>
-        private readonly IResolver resolver;
+        private readonly IDependencyResolver resolver;
 
         /// <summary>
         /// The _services
@@ -22,16 +23,16 @@ namespace Naylah.App.IoC
         /// <summary>
         /// The _registered services
         /// </summary>
-        private readonly Dictionary<Type, List<Func<IResolver, object>>> registeredServices;
+        private readonly Dictionary<Type, List<Func<IDependencyResolver, object>>> registeredServices;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SimpleContainer"/> class.
         /// </summary>
         public SimpleContainer()
         {
-            this.resolver = new Resolver(this.ResolveAll);
+            this.resolver = new SimpleResolver(this.ResolveAll);
             this.services = new Dictionary<Type, List<object>>();
-            this.registeredServices = new Dictionary<Type, List<Func<IResolver, object>>>();
+            this.registeredServices = new Dictionary<Type, List<Func<IDependencyResolver, object>>>();
         }
 
         #region IDependencyContainer Members
@@ -40,7 +41,7 @@ namespace Naylah.App.IoC
         /// Gets the resolver from the container
         /// </summary>
         /// <returns>An instance of <see cref="IResolver"/></returns>
-        public IResolver GetResolver()
+        public IDependencyResolver GetResolver()
         {
             return this.resolver;
         }
@@ -123,10 +124,10 @@ namespace Naylah.App.IoC
         /// <returns>An instance of <see cref="SimpleContainer"/></returns>
         public IDependencyContainer Register(Type type, Type impl)
         {
-            List<Func<IResolver, object>> list;
+            List<Func<IDependencyResolver, object>> list;
             if (!this.registeredServices.TryGetValue(type, out list))
             {
-                list = new List<Func<IResolver, object>>();
+                list = new List<Func<IDependencyResolver, object>>();
                 this.registeredServices.Add(type, list);
             }
 
@@ -141,13 +142,13 @@ namespace Naylah.App.IoC
         /// <typeparam name="T">Type of instance.</typeparam>
         /// <param name="func">Function which returns an instance of T.</param>
         /// <returns>An instance of <see cref="SimpleContainer"/></returns>
-        public IDependencyContainer Register<T>(Func<IResolver, T> func) where T : class
+        public IDependencyContainer Register<T>(Func<IDependencyResolver, T> func) where T : class
         {
             var type = typeof(T);
-            List<Func<IResolver, object>> list;
+            List<Func<IDependencyResolver, object>> list;
             if (!this.registeredServices.TryGetValue(type, out list))
             {
-                list = new List<Func<IResolver, object>>();
+                list = new List<Func<IDependencyResolver, object>>();
                 this.registeredServices.Add(type, list);
             }
 
@@ -172,7 +173,7 @@ namespace Naylah.App.IoC
                 }
             }
 
-            List<Func<IResolver, object>> getter;
+            List<Func<IDependencyResolver, object>> getter;
             if (this.registeredServices.TryGetValue(type, out getter))
             {
                 foreach (var serviceFunc in getter)
@@ -187,7 +188,7 @@ namespace Naylah.App.IoC
         /// <summary>
         /// Class Resolver.
         /// </summary>
-        private class Resolver : IResolver
+        private class SimpleResolver : IDependencyResolver
         {
             /// <summary>
             /// The _resolve object delegate
@@ -195,10 +196,10 @@ namespace Naylah.App.IoC
             private readonly Func<Type, IEnumerable<object>> resolveObjectDelegate;
 
             /// <summary>
-            /// Initializes a new instance of the <see cref="Resolver"/> class.
+            /// Initializes a new instance of the <see cref="SimpleResolver"/> class.
             /// </summary>
             /// <param name="resolveObjectDelegate">The resolve object delegate.</param>
-            internal Resolver(Func<Type, IEnumerable<object>> resolveObjectDelegate)
+            internal SimpleResolver(Func<Type, IEnumerable<object>> resolveObjectDelegate)
             {
                 this.resolveObjectDelegate = resolveObjectDelegate;
             }
@@ -210,9 +211,9 @@ namespace Naylah.App.IoC
             /// </summary>
             /// <typeparam name="T">Type of instance to get.</typeparam>
             /// <returns>An instance of {T} if successful, otherwise null.</returns>
-            public T Resolve<T>() where T : class
+            public T GetService<T>()
             {
-                return this.ResolveAll<T>().FirstOrDefault() as T;
+                return this.GetServices<T>().FirstOrDefault();
             }
 
             /// <summary>
@@ -220,9 +221,9 @@ namespace Naylah.App.IoC
             /// </summary>
             /// <param name="type">Type of object.</param>
             /// <returns>An instance to type if found as <see cref="object"/>, otherwise null.</returns>
-            public object Resolve(Type type)
+            public object GetService(Type type)
             {
-                return this.ResolveAll(type).FirstOrDefault();
+                return this.GetServices(type).FirstOrDefault();
             }
 
             /// <summary>
@@ -230,7 +231,7 @@ namespace Naylah.App.IoC
             /// </summary>
             /// <typeparam name="T">Type of instance to get.</typeparam>
             /// <returns>All instances of {T} if successful, otherwise null.</returns>
-            public IEnumerable<T> ResolveAll<T>() where T : class
+            public IEnumerable<T> GetServices<T>()
             {
                 return this.resolveObjectDelegate(typeof(T)).Cast<T>();
             }
@@ -240,7 +241,7 @@ namespace Naylah.App.IoC
             /// </summary>
             /// <param name="type">Type of object.</param>
             /// <returns>All instances of type if found as <see cref="object"/>, otherwise null.</returns>
-            public IEnumerable<object> ResolveAll(Type type)
+            public IEnumerable<object> GetServices(Type type)
             {
                 return this.resolveObjectDelegate(type);
             }
@@ -250,20 +251,20 @@ namespace Naylah.App.IoC
             /// </summary>
             /// <param name="type">The type.</param>
             /// <returns><c>true</c> if the specified type is registered; otherwise, <c>false</c>.</returns>
-            public bool IsRegistered(Type type)
-            {
-                return this.Resolve(type) != null;
-            }
+            //public bool IsRegistered(Type type)
+            //{
+            //    return this.Resolve(type) != null;
+            //}
 
-            /// <summary>
-            /// Determines whether this instance is registered.
-            /// </summary>
-            /// <typeparam name="T"></typeparam>
-            /// <returns><c>true</c> if this instance is registered; otherwise, <c>false</c>.</returns>
-            public bool IsRegistered<T>() where T : class
-            {
-                return this.Resolve<T>() != null;
-            }
+            ///// <summary>
+            ///// Determines whether this instance is registered.
+            ///// </summary>
+            ///// <typeparam name="T"></typeparam>
+            ///// <returns><c>true</c> if this instance is registered; otherwise, <c>false</c>.</returns>
+            //public bool IsRegistered<T>() where T : class
+            //{
+            //    return this.Resolve<T>() != null;
+            //}
 
             #endregion IResolver Members
         }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Naylah.DI.Abstractions;
+using System;
 using System.Collections.Generic;
 
 namespace Naylah.App.IoC
@@ -6,12 +7,12 @@ namespace Naylah.App.IoC
     /// <summary>
     /// Wrapper for IResolver instance for quick access.
     /// </summary>
-    public static class Resolver
+    public static class DependencyResolver
     {
         /// <summary>
         /// The <see cref="IResolver"/> instance.
         /// </summary>
-        private static IResolver instance;
+        private static IDependencyResolver instance;
 
         /// <summary>
         /// Gets or sets the instance.
@@ -20,7 +21,7 @@ namespace Naylah.App.IoC
         /// <exception cref="InvalidOperationException">
         /// Instance can only be set once to prevent mix-ups.
         /// </exception>
-        private static IResolver Instance
+        private static IDependencyResolver Instance
         {
             get
             {
@@ -57,7 +58,7 @@ namespace Naylah.App.IoC
         /// <exception cref="InvalidOperationException">
         /// Instance can only be set once to prevent mix-ups.
         /// </exception>
-        public static void SetResolver(IResolver resolver)
+        public static void SetResolver(IDependencyResolver resolver)
         {
             Instance = resolver;
         }
@@ -66,7 +67,7 @@ namespace Naylah.App.IoC
         /// Resets the resolver instance.
         /// </summary>
         /// <param name="newInstance">New resolver instance.</param>
-        public static void ResetResolver(IResolver newInstance = null)
+        public static void ResetResolver(IDependencyResolver newInstance = null)
         {
             instance = newInstance;
         }
@@ -79,7 +80,7 @@ namespace Naylah.App.IoC
         /// <exception cref="InvalidOperationException">IResolver instance has not been set.</exception>
         public static T Resolve<T>() where T : class
         {
-            return Instance.Resolve<T>();
+            return Instance.GetService<T>();
         }
 
         /// <summary>
@@ -90,7 +91,7 @@ namespace Naylah.App.IoC
         /// <exception cref="InvalidOperationException">IResolver instance has not been set.</exception>
         public static object Resolve(Type type)
         {
-            return Instance.Resolve(type);
+            return Instance.GetService(type);
         }
 
         /// <summary>
@@ -101,7 +102,7 @@ namespace Naylah.App.IoC
         /// <exception cref="InvalidOperationException">IResolver instance has not been set.</exception>
         public static IEnumerable<T> ResolveAll<T>() where T : class
         {
-            return Instance.ResolveAll<T>();
+            return Instance.GetServices<T>();
         }
 
         /// <summary>
@@ -112,27 +113,27 @@ namespace Naylah.App.IoC
         /// <exception cref="InvalidOperationException">IResolver instance has not been set.</exception>
         public static IEnumerable<object> ResolveAll(Type type)
         {
-            return Instance.ResolveAll(type);
+            return Instance.GetServices(type);
         }
 
-        /// <summary>
-        /// Determines whether the specified type is registed.
-        /// </summary>
-        /// <param name="type">The type.</param>
-        /// <returns><c>true</c> if the specified type is registed; otherwise, <c>false</c>.</returns>
-        public static bool IsRegistered(Type type)
-        {
-            return Instance.IsRegistered(type);
-        }
+        ///// <summary>
+        ///// Determines whether the specified type is registed.
+        ///// </summary>
+        ///// <param name="type">The type.</param>
+        ///// <returns><c>true</c> if the specified type is registed; otherwise, <c>false</c>.</returns>
+        //public static bool IsRegistered(Type type)
+        //{
+        //    return Instance.IsRegistered(type);
+        //}
 
-        /// <summary>
-        /// Determines whether this instance is registered.
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <returns><c>true</c> if this instance is registered; otherwise, <c>false</c>.</returns>
-        public static bool IsRegistered<T>() where T : class
-        {
-            return Instance.IsRegistered<T>();
-        }
+        ///// <summary>
+        ///// Determines whether this instance is registered.
+        ///// </summary>
+        ///// <typeparam name="T"></typeparam>
+        ///// <returns><c>true</c> if this instance is registered; otherwise, <c>false</c>.</returns>
+        //public static bool IsRegistered<T>() where T : class
+        //{
+        //    return Instance.IsRegistered<T>();
+        //}
     }
 }

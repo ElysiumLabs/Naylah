@@ -1,5 +1,4 @@
 using Naylah.App;
-using Naylah.App.IoC;
 using Naylah.XamarinPlayground.UI.Styles;
 using System.Threading.Tasks;
 using Xamarin.Forms.Xaml;
@@ -16,12 +15,12 @@ namespace Naylah.XamarinPlayground
 
             StyleKit = new Style1();
 
-            var a = new SimpleContainer();
-            a.Register<App>(this);
+            //var a = new SimpleContainer();
+            //a.Register<App>(this);
 
-            Resolver.SetResolver(a.GetResolver());
+            //Naylah.App.IoC.DependencyResolver.SetResolver(a.GetResolver());
 
-            var q = Resolver.Resolve<App>();
+            //var q = Naylah.App.IoC.DependencyResolver.Resolve<App>();
         }
 
         //public override object GetIntialViewPage()

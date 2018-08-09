@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Naylah.DI.Abstractions;
+using System;
 
 namespace Naylah.App.IoC
 {
@@ -12,7 +13,7 @@ namespace Naylah.App.IoC
         /// Gets the resolver from the container
         /// </summary>
         /// <returns>An instance of <see cref="IResolver"/></returns>
-        IResolver GetResolver();
+        IDependencyResolver GetResolver();
 
         /// <summary>
         /// Registers an instance of T to be stored in the container.
@@ -64,6 +65,6 @@ namespace Naylah.App.IoC
         /// <typeparam name="T">Type of instance.</typeparam>
         /// <param name="func">Function which returns an instance of T.</param>
         /// <returns>An instance of <see cref="IDependencyContainer"/></returns>
-        IDependencyContainer Register<T>(Func<IResolver, T> func) where T : class;
+        IDependencyContainer Register<T>(Func<IDependencyResolver, T> func) where T : class;
     }
 }

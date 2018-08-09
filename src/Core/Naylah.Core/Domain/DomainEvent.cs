@@ -1,5 +1,6 @@
 ﻿using Naylah.DI.Abstractions;
 using Naylah.Domain.Abstractions;
+using Naylah.Extensions;
 using System;
 using System.Collections.Generic;
 
@@ -18,10 +19,21 @@ namespace Naylah.Domain
 
         public static void Raise<T>(T domainEvent) where T : IEvent
         {
-            foreach (var handler in GetHandlersFor<T>())
-            {
-                handler.Handle(domainEvent);
-            }
+            var handlers = GetHandlersFor<T>();
+
+            handlers?.ForEach(
+                handler =>
+                {
+                    try
+                    {
+                        handler?.Handle(domainEvent);
+                    }
+                    catch (Exception ex)
+                    {
+                        throw new HandleEventException("Fail to handle event: " + ex.Message, ex);
+                    }
+                }
+                );
         }
 
         public static void Raise<T>(Action<T> messageCtor) where T : IEvent, new()

@@ -1,4 +1,6 @@
 ﻿using Foundation;
+using Naylah.App;
+using Naylah.App.IoC;
 using UIKit;
 
 namespace Naylah.XamarinPlayground.iOS
@@ -16,9 +18,20 @@ namespace Naylah.XamarinPlayground.iOS
         public override bool FinishedLaunching(UIApplication app, NSDictionary options)
         {
             global::Xamarin.Forms.Forms.Init();
-            LoadApplication(new App());
+
+            var b = new NyApplicationBuilder()
+                .UseApplication<App>()
+                .UseDependencyContainer(ConfigureServices)
+                .Build();
+
+            LoadApplication(b);
 
             return base.FinishedLaunching(app, options);
+        }
+
+        private void ConfigureServices(IDependencyContainer obj)
+        {
+            //obj.Register<>
         }
     }
 }
