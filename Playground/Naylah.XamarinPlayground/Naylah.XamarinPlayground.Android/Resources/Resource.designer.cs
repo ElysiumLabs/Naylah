@@ -1070,6 +1070,7 @@ namespace Naylah.XamarinPlayground.Droid
 			global::Naylah.App.Xamarin.Android.Resource.Id.tabMode = global::Naylah.XamarinPlayground.Droid.Resource.Id.tabMode;
 			global::Naylah.App.Xamarin.Android.Resource.Id.text = global::Naylah.XamarinPlayground.Droid.Resource.Id.text;
 			global::Naylah.App.Xamarin.Android.Resource.Id.text2 = global::Naylah.XamarinPlayground.Droid.Resource.Id.text2;
+			global::Naylah.App.Xamarin.Android.Resource.Id.textInputLayout = global::Naylah.XamarinPlayground.Droid.Resource.Id.textInputLayout;
 			global::Naylah.App.Xamarin.Android.Resource.Id.textSpacerNoButtons = global::Naylah.XamarinPlayground.Droid.Resource.Id.textSpacerNoButtons;
 			global::Naylah.App.Xamarin.Android.Resource.Id.textSpacerNoTitle = global::Naylah.XamarinPlayground.Droid.Resource.Id.textSpacerNoTitle;
 			global::Naylah.App.Xamarin.Android.Resource.Id.text_input_password_toggle = global::Naylah.XamarinPlayground.Droid.Resource.Id.text_input_password_toggle;
@@ -1171,6 +1172,7 @@ namespace Naylah.XamarinPlayground.Droid
 			global::Naylah.App.Xamarin.Android.Resource.Layout.select_dialog_multichoice_material = global::Naylah.XamarinPlayground.Droid.Resource.Layout.select_dialog_multichoice_material;
 			global::Naylah.App.Xamarin.Android.Resource.Layout.select_dialog_singlechoice_material = global::Naylah.XamarinPlayground.Droid.Resource.Layout.select_dialog_singlechoice_material;
 			global::Naylah.App.Xamarin.Android.Resource.Layout.support_simple_spinner_dropdown_item = global::Naylah.XamarinPlayground.Droid.Resource.Layout.support_simple_spinner_dropdown_item;
+			global::Naylah.App.Xamarin.Android.Resource.Layout.TextInputLayout = global::Naylah.XamarinPlayground.Droid.Resource.Layout.TextInputLayout;
 			global::Naylah.App.Xamarin.Android.Resource.String.abc_action_bar_home_description = global::Naylah.XamarinPlayground.Droid.Resource.String.abc_action_bar_home_description;
 			global::Naylah.App.Xamarin.Android.Resource.String.abc_action_bar_home_description_format = global::Naylah.XamarinPlayground.Droid.Resource.String.abc_action_bar_home_description_format;
 			global::Naylah.App.Xamarin.Android.Resource.String.abc_action_bar_home_subtitle_description_format = global::Naylah.XamarinPlayground.Droid.Resource.String.abc_action_bar_home_subtitle_description_format;
@@ -5139,8 +5141,8 @@ namespace Naylah.XamarinPlayground.Droid
 			// aapt resource value: 0x7f090048
 			public const int list_item = 2131296328;
 			
-			// aapt resource value: 0x7f0900b5
-			public const int masked = 2131296437;
+			// aapt resource value: 0x7f0900b6
+			public const int masked = 2131296438;
 			
 			// aapt resource value: 0x7f0900a1
 			public const int media_actions = 2131296417;
@@ -5391,6 +5393,9 @@ namespace Naylah.XamarinPlayground.Droid
 			// aapt resource value: 0x7f0900ae
 			public const int text2 = 2131296430;
 			
+			// aapt resource value: 0x7f0900b3
+			public const int textInputLayout = 2131296435;
+			
 			// aapt resource value: 0x7f090052
 			public const int textSpacerNoButtons = 2131296338;
 			
@@ -5418,8 +5423,8 @@ namespace Naylah.XamarinPlayground.Droid
 			// aapt resource value: 0x7f090057
 			public const int title_template = 2131296343;
 			
-			// aapt resource value: 0x7f0900b3
-			public const int toolbar = 2131296435;
+			// aapt resource value: 0x7f0900b4
+			public const int toolbar = 2131296436;
 			
 			// aapt resource value: 0x7f090029
 			public const int top = 2131296297;
@@ -5445,8 +5450,8 @@ namespace Naylah.XamarinPlayground.Droid
 			// aapt resource value: 0x7f09000e
 			public const int view_offset_helper = 2131296270;
 			
-			// aapt resource value: 0x7f0900b4
-			public const int visible = 2131296436;
+			// aapt resource value: 0x7f0900b5
+			public const int visible = 2131296437;
 			
 			// aapt resource value: 0x7f090093
 			public const int volume_item_container = 2131296403;
@@ -5740,7 +5745,10 @@ namespace Naylah.XamarinPlayground.Droid
 			public const int Tabbar = 2130968642;
 			
 			// aapt resource value: 0x7f040043
-			public const int Toolbar = 2130968643;
+			public const int TextInputLayout = 2130968643;
+			
+			// aapt resource value: 0x7f040044
+			public const int Toolbar = 2130968644;
 			
 			static Layout()
 			{

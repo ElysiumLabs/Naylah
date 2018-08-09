@@ -24,7 +24,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Naylah.App\Naylah.App.csproj" />
-    <ProjectReference Include="..\Naylah.Core\Naylah.Core.csproj" />
   </ItemGroup>
 
   <ItemGroup>

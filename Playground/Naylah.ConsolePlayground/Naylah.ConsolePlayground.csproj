@@ -49,8 +49,8 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Naylah.Core\Naylah.Core.csproj">
-      <Project>{f262fe40-8852-4508-b079-40f5fb1f3ffa}</Project>
+    <ProjectReference Include="..\..\Source\Core\Naylah.Core\Naylah.Core.csproj">
+      <Project>{23BE2F73-DD46-44C9-9DDF-0D5ED0C5C24D}</Project>
       <Name>Naylah.Core</Name>
     </ProjectReference>
   </ItemGroup>

@@ -1,0 +1,56 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27428.2011
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1 - Libs", "1 - Libs", "{5C31237A-4217-4129-9B3F-7554BD19232C}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Naylah.App", "Naylah.App\Naylah.App.csproj", "{C47B534E-3CA9-42F5-B75F-95A16D7033A5}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "App", "App", "{A0410270-ED52-49D1-A81F-D47E437E1F2F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Xamarin", "Xamarin", "{BDDCF7D6-530A-454D-80BB-56EC3701B467}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Naylah.App.Xamarin", "Naylah.App.Xamarin\Naylah.App.Xamarin.csproj", "{980E97C2-007F-4103-9CEB-E48879609278}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Naylah.App.Xamarin.Android", "Naylah.App.Xamarin.Android\Naylah.App.Xamarin.Android.csproj", "{DE9BA0E0-5DA1-4359-88DD-2577E3EFAF93}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Naylah.App.Xamarin.iOS", "Naylah.App.Xamarin.iOS\Naylah.App.Xamarin.iOS.csproj", "{E71F3053-056C-4381-9638-048ED73BDFF6}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C47B534E-3CA9-42F5-B75F-95A16D7033A5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C47B534E-3CA9-42F5-B75F-95A16D7033A5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C47B534E-3CA9-42F5-B75F-95A16D7033A5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C47B534E-3CA9-42F5-B75F-95A16D7033A5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{980E97C2-007F-4103-9CEB-E48879609278}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{980E97C2-007F-4103-9CEB-E48879609278}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{980E97C2-007F-4103-9CEB-E48879609278}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{980E97C2-007F-4103-9CEB-E48879609278}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DE9BA0E0-5DA1-4359-88DD-2577E3EFAF93}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DE9BA0E0-5DA1-4359-88DD-2577E3EFAF93}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DE9BA0E0-5DA1-4359-88DD-2577E3EFAF93}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DE9BA0E0-5DA1-4359-88DD-2577E3EFAF93}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E71F3053-056C-4381-9638-048ED73BDFF6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E71F3053-056C-4381-9638-048ED73BDFF6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E71F3053-056C-4381-9638-048ED73BDFF6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E71F3053-056C-4381-9638-048ED73BDFF6}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{C47B534E-3CA9-42F5-B75F-95A16D7033A5} = {A0410270-ED52-49D1-A81F-D47E437E1F2F}
+		{BDDCF7D6-530A-454D-80BB-56EC3701B467} = {A0410270-ED52-49D1-A81F-D47E437E1F2F}
+		{980E97C2-007F-4103-9CEB-E48879609278} = {BDDCF7D6-530A-454D-80BB-56EC3701B467}
+		{DE9BA0E0-5DA1-4359-88DD-2577E3EFAF93} = {BDDCF7D6-530A-454D-80BB-56EC3701B467}
+		{E71F3053-056C-4381-9638-048ED73BDFF6} = {BDDCF7D6-530A-454D-80BB-56EC3701B467}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {418B0EE5-0D92-4ABE-AAAE-680B343BC5F1}
+	EndGlobalSection
+EndGlobal

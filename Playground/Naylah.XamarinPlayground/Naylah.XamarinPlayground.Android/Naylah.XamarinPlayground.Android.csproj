@@ -92,16 +92,16 @@
     <Folder Include="Resources\drawable\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Naylah.App.Xamarin.Android\Naylah.App.Xamarin.Android.csproj">
+    <ProjectReference Include="..\..\..\Source\App\Naylah.App.Xamarin.Android\Naylah.App.Xamarin.Android.csproj">
       <Project>{de9ba0e0-5da1-4359-88dd-2577e3efaf93}</Project>
       <Name>Naylah.App.Xamarin.Android</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Naylah.App.Xamarin\Naylah.App.Xamarin.csproj">
-      <Project>{ab24c6bc-9568-44c8-830f-b2b18f23e459}</Project>
+    <ProjectReference Include="..\..\..\Source\App\Naylah.App.Xamarin\Naylah.App.Xamarin.csproj">
+      <Project>{980e97c2-007f-4103-9ceb-e48879609278}</Project>
       <Name>Naylah.App.Xamarin</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Naylah.App\Naylah.App.csproj">
-      <Project>{034c6837-8858-45d0-a0fe-a637bb1b8cc7}</Project>
+    <ProjectReference Include="..\..\..\Source\App\Naylah.App\Naylah.App.csproj">
+      <Project>{c47b534e-3ca9-42f5-b75f-95a16d7033a5}</Project>
       <Name>Naylah.App</Name>
     </ProjectReference>
     <ProjectReference Include="..\Naylah.XamarinPlayground\Naylah.XamarinPlayground.csproj">
