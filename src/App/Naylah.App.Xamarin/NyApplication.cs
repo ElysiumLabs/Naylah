@@ -1,6 +1,7 @@
 ﻿using Naylah.App.Common;
 using Naylah.App.Navigation;
 using Naylah.App.UI.Style;
+using Naylah.DI.Abstractions;
 using System;
 using System.Threading.Tasks;
 using Xamarin.Forms;
@@ -22,6 +23,12 @@ namespace Naylah.App
         }
 
         public new static NyApplication Current { get; set; }
+
+        #region DI & IoC
+
+        public IDependencyResolver DependencyResolver { get; set; }
+
+        #endregion DI & IoC
 
         #region Style
 

@@ -37,6 +37,9 @@
     <NoWarn>1591</NoWarn>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Naylah.Core, Version=1.1.1.1, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Naylah.Core.2018.8.9.1\lib\netstandard2.0\Naylah.Core.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />

@@ -1,5 +1,4 @@
-﻿using System.Reflection;
-using Xamarin.Forms;
+﻿using Xamarin.Forms;
 
 namespace Naylah.App.Common
 {
@@ -11,18 +10,18 @@ namespace Naylah.App.Common
 
             BackgroundColor = Color.Accent;
 
-            // ...
-            // NOTE: use for debugging, not in released app code!
-            var assembly = typeof(DefaultSplashPage).GetTypeInfo().Assembly;
-            foreach (var res in assembly.GetManifestResourceNames())
-            {
-                System.Diagnostics.Debug.WriteLine("found resource: " + res);
-            }
+            //// ...
+            //// NOTE: use for debugging, not in released app code!
+            //var assembly = typeof(DefaultSplashPage).GetTypeInfo().Assembly;
+            //foreach (var res in assembly.GetManifestResourceNames())
+            //{
+            //    System.Diagnostics.Debug.WriteLine("found resource: " + res);
+            //}
 
-            var embeddedImage = new Image { Source = ImageSource.FromResource("Naylah.App.Resources.bg_default.png", typeof(DefaultSplashPage).GetTypeInfo().Assembly) };
+            //var embeddedImage = new Image { Source = ImageSource.FromResource("Naylah.App.Resources.bg_default.png", typeof(DefaultSplashPage).GetTypeInfo().Assembly) };
 
-            Content = embeddedImage;
-            BackgroundImage = embeddedImage.Source.ToString();
+            //Content = embeddedImage;
+            //BackgroundImage = embeddedImage.Source.ToString();
         }
     }
 }
