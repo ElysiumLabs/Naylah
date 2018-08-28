@@ -13,13 +13,15 @@
       <group>
         <dependency id="Naylah.Core" version="2018.*" />
         <dependency id="Naylah.App" version="2018.*" />
+        <dependency id="Microsoft.Extensions.DependencyInection" version="2.1.1" />
+        <dependency id="Microsoft.Extensions.Logging" version="2.1.1" />
         <dependency id="Xamarin.Forms" version="3.1.0.637273" />
       </group>
       <group targetFramework="MonoAndroid">
         <!--MonoAndroid dependencies go here-->
       </group>
       <group targetFramework="Xamarin.iOS10">
-        <!--Xamarin.iOS10 dependencies go here-->
+        <dependency id="FloatLabeledEntry.iOS" version="1.1.1" />
       </group>
       <group targetFramework="uap">
         <!--<dependency id="iTextSharp" version="5.5.9" />-->

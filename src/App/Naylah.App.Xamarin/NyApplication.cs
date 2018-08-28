@@ -1,14 +1,13 @@
 ﻿using Naylah.App.Common;
 using Naylah.App.Navigation;
 using Naylah.App.UI.Style;
-using Naylah.DI.Abstractions;
 using System;
 using System.Threading.Tasks;
 using Xamarin.Forms;
 
 namespace Naylah.App
 {
-    public abstract class NyApplication : Application
+    public abstract class NyApplication : Application, INyApplication
     {
         public NyApplication()
         {
@@ -26,7 +25,7 @@ namespace Naylah.App
 
         #region DI & IoC
 
-        public IDependencyResolver DependencyResolver { get; set; }
+        public IServiceProvider Services { get; set; }
 
         #endregion DI & IoC
 

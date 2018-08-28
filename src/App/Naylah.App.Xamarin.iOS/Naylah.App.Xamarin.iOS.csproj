@@ -37,6 +37,9 @@
     <NoWarn>1591</NoWarn>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="FloatLabeledEntry.iOS, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\FloatLabeledEntry.iOS.1.1.1\lib\Xamarin.iOS10\FloatLabeledEntry.iOS.dll</HintPath>
+    </Reference>
     <Reference Include="Naylah.Core, Version=1.1.1.1, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Naylah.Core.2018.8.9.1\lib\netstandard2.0\Naylah.Core.dll</HintPath>
     </Reference>
@@ -66,8 +69,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Extensions\NyApplicationBuilderExtensions.cs" />
+    <Compile Include="Platform\NyApplicationBuilderExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Renderes\ContentButtonViewRenderer.cs" />
+    <Compile Include="Renderers\ContentButtonViewRenderer.cs" />
+    <Compile Include="Renderers\NyEntryRenderer.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Naylah.App.Xamarin\Naylah.App.Xamarin.csproj">
