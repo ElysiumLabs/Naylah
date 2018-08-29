@@ -1,6 +1,5 @@
 using Naylah.App;
 using Naylah.XamarinPlayground.UI.Styles;
-using Naylah.XamarinPlayground.Views;
 using System.Threading.Tasks;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
@@ -24,7 +23,7 @@ namespace Naylah.XamarinPlayground
 
             //var q = Naylah.App.IoC.DependencyResolver.Resolve<App>();
 
-            NavigationServiceFactory(new NavigationPage(new Page1()));
+            NavigationServiceFactory(new NavigationPage(new MainPage()));
         }
 
         //public override object GetIntialViewPage()

@@ -29,8 +29,27 @@ namespace Naylah.App.UI.Controls
 
         public event EventHandler Released;
 
+        public Action<ContentButtonView> PressedAnimation { get; set; }
+
+        public Action<ContentButtonView> ReleasedAnimation { get; set; }
+
         public ContentButtonView()
         {
+            PressedAnimation = UIUtils.DefaultButtonPressedAnimation;
+            ReleasedAnimation = UIUtils.DefaultButtonReleasedAnimation;
+
+            Pressed += ContentButtonView_Pressed;
+            Released += ContentButtonView_Released;
+        }
+
+        private void ContentButtonView_Released(object sender, EventArgs e)
+        {
+            ReleasedAnimation?.Invoke(this);
+        }
+
+        private void ContentButtonView_Pressed(object sender, EventArgs e)
+        {
+            PressedAnimation?.Invoke(this);
         }
 
         private void CommandCanExecuteChanged(object sender, EventArgs eventArgs)
