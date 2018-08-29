@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Naylah.Domain;
 using System;
 using System.Collections.Generic;
 
@@ -71,8 +72,10 @@ namespace Naylah.App
 
             app.Services = _appServices;
 
+            DomainEvent.Resolver = new
+
             return app;
-         }
+        }
 
         private void BuildHostConfiguration()
         {

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 namespace Naylah.DI.Abstractions
 {
+    [Obsolete()]
     public interface IDependencyResolver
     {
         T GetService<T>();

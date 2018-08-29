@@ -1,21 +1,14 @@
-﻿using Naylah.DI.Abstractions;
-using Naylah.Domain.Abstractions;
+﻿using Naylah.Domain.Abstractions;
 using Naylah.Extensions;
 using System;
 using System.Collections.Generic;
 
 namespace Naylah.Domain
 {
+    [Obsolete("Also note that it would be good to introduce an IEventDispatcher abstraction. Don't call a static class from within your code. Even Udi Dahan (who initially described such static class a long time ago) now considers this an anti-pattern. Instead, inject an IEventDispatcher abstraction into classes that require event dispatching.")]
     public class DomainEvent
     {
-        //public static IEventDispatcher Dispatcher { get; set; }
-
-        //public static void Raise<T>(T @event) where T : IDomainEvent
-        //{
-        //    Dispatcher.Dispatch(@event);
-        //}
-
-        public static IDependencyResolver Resolver { get; set; }
+        public static IServiceProvider Resolver { get; set; }
 
         public static void Raise<T>(T domainEvent) where T : IEvent
         {
@@ -47,7 +40,11 @@ namespace Naylah.Domain
         {
             var handlerType = typeof(IHandler<>);
             var genericHandlerType = handlerType.MakeGenericType(typeof(T));
-            return Resolver.GetServices(genericHandlerType);
+
+            var enumerableType = typeof(IEnumerable<>);
+            var enumerableGenericHandlerType = enumerableType.MakeGenericType(genericHandlerType);
+
+            return (IEnumerable<dynamic>)Resolver.GetService(enumerableGenericHandlerType);
         }
     }
 }

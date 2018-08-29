@@ -1,6 +1,7 @@
-﻿using System.Runtime.CompilerServices;
+﻿using Naylah.Domain.Abstractions;
+using System.Runtime.CompilerServices;
 
-namespace Naylah.Domain.Abstractions
+namespace Naylah.Domain
 {
     public class Notification : IEvent
     {
