@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Naylah.Domain;
+using Naylah.Domain.Abstractions;
 using System;
 using System.Collections.Generic;
 
@@ -72,8 +73,6 @@ namespace Naylah.App
 
             app.Services = _appServices;
 
-            DomainEvent.Resolver = new
-
             return app;
         }
 
@@ -129,6 +128,8 @@ namespace Naylah.App
             //services.AddSingleton<IHostLifetime, ConsoleLifetime>();
             services.AddSingleton<TApplication, TApplication>();
             services.AddSingleton<NyApplication, TApplication>();
+            services.AddSingleton<IEventDispatcher, Dispatcher>();
+            services.AddSingleton<Dispatcher, Dispatcher>();
             services.AddOptions();
             services.AddLogging();
 

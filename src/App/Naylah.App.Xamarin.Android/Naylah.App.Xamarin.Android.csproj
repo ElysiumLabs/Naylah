@@ -73,7 +73,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Naylah.Core">
-      <Version>2018.8.9.1</Version>
+      <Version>2018.8.29.1</Version>
     </PackageReference>
     <PackageReference Include="Xamarin.Android.Support.Design">
       <Version>25.4.0.2</Version>

@@ -41,7 +41,7 @@
       <HintPath>..\packages\FloatLabeledEntry.iOS.1.1.1\lib\Xamarin.iOS10\FloatLabeledEntry.iOS.dll</HintPath>
     </Reference>
     <Reference Include="Naylah.Core, Version=1.1.1.1, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Naylah.Core.2018.8.9.1\lib\netstandard2.0\Naylah.Core.dll</HintPath>
+      <HintPath>..\packages\Naylah.Core.2018.8.29.1\lib\netstandard2.0\Naylah.Core.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Xml" />

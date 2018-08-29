@@ -9,7 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Naylah.Core" Version="2018.8.9.1" />
+    <PackageReference Include="Naylah.Core" Version="2018.8.29.1" />
   </ItemGroup>
 
   <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
