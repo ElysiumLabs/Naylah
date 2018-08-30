@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Naylah.System
+namespace Naylah
 {
     public class DateTimeZone : IEquatable<DateTimeZone>, IEquatable<DateTime>
     {

@@ -1,4 +1,4 @@
-﻿namespace Naylah.Domain
+﻿namespace Naylah
 {
     public interface IValueObject
     {

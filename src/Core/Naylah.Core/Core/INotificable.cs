@@ -1,7 +1,6 @@
-﻿using Naylah.Domain.Abstractions;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
-namespace Naylah.Domain
+namespace Naylah
 {
     public interface INotificable
     {

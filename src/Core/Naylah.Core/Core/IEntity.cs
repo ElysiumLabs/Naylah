@@ -1,8 +1,7 @@
-﻿using Naylah.Domain.Abstractions;
-using System;
+﻿using System;
 using System.Collections.Generic;
 
-namespace Naylah.Domain
+namespace Naylah
 {
     public interface IEntity<T> : IEntity, IModifiableEntity
     {

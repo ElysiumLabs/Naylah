@@ -1,9 +1,8 @@
-﻿using Naylah.Domain.Abstractions;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
-namespace Naylah.Domain
+namespace Naylah
 {
     public abstract class Entity : IEntity<string>, INotificable
     {
@@ -88,5 +87,10 @@ namespace Naylah.Domain
         }
 
         #endregion IComparable
+
+        public static T Create<T>() where T : Entity
+        {
+            return Activator.CreateInstance<T>();
+        }
     }
 }

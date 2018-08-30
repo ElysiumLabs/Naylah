@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Naylah.System
+namespace Naylah
 {
     public static class DateTimeZonePeriodExtensions
     {
