@@ -1,9 +1,6 @@
 ﻿using Android.App;
 using Android.Content.PM;
 using Android.OS;
-using Autofac;
-using Autofac.Extensions.DependencyInjection;
-using Naylah.App;
 
 namespace Naylah.XamarinPlayground.Droid
 {
@@ -25,21 +22,21 @@ namespace Naylah.XamarinPlayground.Droid
 
             global::Xamarin.Forms.Forms.Init(this, bundle);
 
-            var app = new NyApplicationBuilder<App>()
-                //.UseServiceProviderFactory()
-                .UseServiceProviderFactory(new AutofacServiceProviderFactory())
-                .ConfigureContainer<ContainerBuilder>((appctx, builder) =>
-                {
-                    builder.Register<string>(x => "teste");
-                    // registering services in the Autofac ContainerBuilder
-                })
-                .Build();
+            //var app = new NyApplicationBuilder<App>()
+            //    //.UseServiceProviderFactory()
+            //    .UseServiceProviderFactory(new AutofacServiceProviderFactory())
+            //    .ConfigureContainer<ContainerBuilder>((appctx, builder) =>
+            //    {
+            //        builder.Register<string>(x => "teste");
+            //        // registering services in the Autofac ContainerBuilder
+            //    })
+            //    .Build();
 
-            var a = app.Services.GetService(typeof(string));
+            //var a = app.Services.GetService(typeof(string));
 
-            app.Run(this);
+            //app.Run(this);
 
-            //LoadApplication(app); //Dont need cause app.Run(this); already do this
+            LoadApplication(new App()); //Dont need cause app.Run(this); already do this
         }
     }
 }

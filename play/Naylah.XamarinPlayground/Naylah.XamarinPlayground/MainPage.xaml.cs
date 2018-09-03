@@ -1,6 +1,4 @@
 ﻿using Naylah.App.Navigation;
-using Naylah.App.UI.Style;
-using Naylah.XamarinPlayground.UI.Styles;
 using System;
 using System.Threading.Tasks;
 using Xamarin.Forms;
@@ -12,7 +10,6 @@ namespace Naylah.XamarinPlayground
         public MainPage()
         {
             InitializeComponent();
-            var nav = App.Current.Services.GetService(typeof(FormsNavigationService));
         }
 
         public async Task OnNavigatedFromAsync(object parameter)
@@ -32,7 +29,7 @@ namespace Naylah.XamarinPlayground
 
         private void Button_Clicked(object sender, EventArgs e)
         {
-            App.Current.StyleKit = (App.Current.StyleKit.GetType() == typeof(Style1)) ? new Style2() as StyleKit : new Style1() as StyleKit;
+            //App.Current.StyleKit = (App.Current.StyleKit.GetType() == typeof(Style1)) ? new Style2() as StyleKit : new Style1() as StyleKit;
         }
     }
 }

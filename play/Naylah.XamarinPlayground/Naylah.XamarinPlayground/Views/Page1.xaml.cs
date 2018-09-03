@@ -30,7 +30,7 @@ namespace Naylah.XamarinPlayground.Views
         {
             try
             {
-                var r = await App.Current.NavigationService.NavigateSetRootAsync((new Page2() { BackgroundColor = Color.Purple }));
+                //var r = await App.Current.NavigationService.NavigateSetRootAsync((new Page2() { BackgroundColor = Color.Purple }));
             }
             catch (System.Exception)
             {
