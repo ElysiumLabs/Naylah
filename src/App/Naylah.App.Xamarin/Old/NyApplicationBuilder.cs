@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Naylah.App.Navigation;
 using Naylah.Domain;
 using Naylah.Domain.Abstractions;
 using System;
@@ -7,7 +8,7 @@ using System.Collections.Generic;
 
 namespace Naylah.App
 {
-    public class NyApplicationBuilder<TApplication> where TApplication : NyApplication
+    public class NyApplicationBuilder<TApplication> where TApplication : NyApplicationOld
     {
         private List<Action<IConfigurationBuilder>> _configureHostConfigActions = new List<Action<IConfigurationBuilder>>();
         private List<Action<ApplicationBuilderContext, IConfigurationBuilder>> _configureAppConfigActions = new List<Action<ApplicationBuilderContext, IConfigurationBuilder>>();
@@ -127,9 +128,12 @@ namespace Naylah.App
             //services.AddSingleton<IApplicationLifetime, ApplicationLifetime>();
             //services.AddSingleton<IHostLifetime, ConsoleLifetime>();
             services.AddSingleton<TApplication, TApplication>();
-            services.AddSingleton<NyApplication, TApplication>();
+            services.AddSingleton<NyApplicationOld, TApplication>();
             services.AddSingleton<IEventDispatcher, Dispatcher>();
             services.AddSingleton<Dispatcher, Dispatcher>();
+
+            services.AddSingleton<FormsNavigationService>(x => NyApplicationOld.Current.NavigationService);
+
             services.AddOptions();
             services.AddLogging();
 

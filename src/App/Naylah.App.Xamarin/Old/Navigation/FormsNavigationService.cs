@@ -13,9 +13,9 @@ namespace Naylah.App.Navigation
         IDisposable
 
     {
-        private NyApplication App;
+        private NyApplicationOld App;
 
-        public static FormsNavigationService Create(object shellView, NyApplication app = null)
+        public static FormsNavigationService Create(object shellView, NyApplicationOld app = null)
         {
             return new FormsNavigationService(shellView, app);
         }
@@ -24,13 +24,13 @@ namespace Naylah.App.Navigation
         {
         }
 
-        public FormsNavigationService(object shellView, NyApplication app)
+        public FormsNavigationService(object shellView, NyApplicationOld app)
         {
             InitializeShell(shellView, app);
             HookNavigationEvents();
         }
 
-        private void InitializeShell(object shellView, NyApplication app)
+        private void InitializeShell(object shellView, NyApplicationOld app)
         {
             NavigablePageFacade = null;
 
@@ -46,7 +46,7 @@ namespace Naylah.App.Navigation
             OnNavigatedTo(NavigablePageFacade.ShellPage, null, NavigationMode.New);
         }
 
-        private void AttachToApplication(NyApplication app)
+        private void AttachToApplication(NyApplicationOld app)
         {
             App = app;
 
@@ -54,7 +54,7 @@ namespace Naylah.App.Navigation
 
             App.NavigationService = this;
             App.MainPage = NavigablePageFacade.ShellPage;
-            NyApplication.HardwareBackPressed = HandleHardwareBackPressed;
+            NyApplicationOld.HardwareBackPressed = HandleHardwareBackPressed;
         }
 
         private Task<bool?> HandleHardwareBackPressed()

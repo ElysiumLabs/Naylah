@@ -12,6 +12,7 @@ namespace Naylah.XamarinPlayground
         public MainPage()
         {
             InitializeComponent();
+            var nav = App.Current.Services.GetService(typeof(FormsNavigationService));
         }
 
         public async Task OnNavigatedFromAsync(object parameter)

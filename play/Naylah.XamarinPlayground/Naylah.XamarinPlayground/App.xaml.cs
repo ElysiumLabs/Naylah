@@ -8,7 +8,7 @@ using Xamarin.Forms.Xaml;
 
 namespace Naylah.XamarinPlayground
 {
-    public partial class App : NyApplication
+    public partial class App : NyApplicationOld
     {
         public App()
         {

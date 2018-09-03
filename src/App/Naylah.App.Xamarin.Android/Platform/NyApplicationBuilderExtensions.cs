@@ -10,9 +10,9 @@ namespace Naylah.App
         /// </summary>
         /// <param name="application"></param>
         /// <param name="formsAppCompatActivity"></param>
-        public static void Run(this NyApplication application, global::Xamarin.Forms.Platform.Android.FormsAppCompatActivity formsAppCompatActivity)
+        public static void Run(this NyApplicationOld application, global::Xamarin.Forms.Platform.Android.FormsAppCompatActivity formsAppCompatActivity)
         {
-            MethodInfo m = formsAppCompatActivity.GetType().GetMethod("LoadApplication", BindingFlags.NonPublic | BindingFlags.Instance, null, new Type[] { typeof(NyApplication) }, null);
+            MethodInfo m = formsAppCompatActivity.GetType().GetMethod("LoadApplication", BindingFlags.NonPublic | BindingFlags.Instance, null, new Type[] { typeof(NyApplicationOld) }, null);
             m.Invoke(formsAppCompatActivity, new object[] { application });
         }
     }
