@@ -1,5 +1,4 @@
 ﻿using Naylah.Data.Access;
-using Naylah.Domain;
 using Naylah.Domain.Abstractions;
 using System;
 
@@ -26,7 +25,7 @@ namespace Naylah.Services
 
         public bool Commit()
         {
-            if (notificationsHandler.HasEvents())
+            if (notificationsHandler?.HasEvents() == true)
                 return false;
 
             if (CanCommit?.Invoke() == true)

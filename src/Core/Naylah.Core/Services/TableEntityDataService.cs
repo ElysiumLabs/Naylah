@@ -1,6 +1,6 @@
 ﻿using Naylah.Data.Abstractions;
 using Naylah.Data.Access;
-using Naylah.Domain;
+using Naylah.Domain.Abstractions;
 using System;
 using System.Linq;
 using System.Linq.Expressions;
@@ -16,9 +16,17 @@ namespace Naylah.Services
         protected IRepository<TEntity> repository;
 
         public TableEntityDataService(
+           IUnitOfWork _unitOfWork,
+           IRepository<TEntity> repository
+           ) : this(_unitOfWork, repository, null)
+        {
+        }
+
+        public TableEntityDataService(
             IUnitOfWork _unitOfWork,
-            IRepository<TEntity> repository
-            ) : base(_unitOfWork)
+            IRepository<TEntity> repository,
+            IHandler<Notification> notificationHandler
+            ) : base(_unitOfWork, notificationHandler)
         {
             this.repository = repository;
         }
