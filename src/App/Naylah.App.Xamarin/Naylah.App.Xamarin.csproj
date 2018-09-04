@@ -32,9 +32,4 @@
     <ProjectReference Include="..\Naylah.App\Naylah.App.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Old\Default\" />
-    <Folder Include="Old\IoC\" />
-  </ItemGroup>
-
 </Project>

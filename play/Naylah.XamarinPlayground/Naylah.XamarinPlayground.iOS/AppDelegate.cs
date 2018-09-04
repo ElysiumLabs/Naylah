@@ -1,6 +1,4 @@
 ﻿using Foundation;
-using Microsoft.Extensions.DependencyInjection;
-using Naylah.App;
 using UIKit;
 
 namespace Naylah.XamarinPlayground.iOS
@@ -19,19 +17,15 @@ namespace Naylah.XamarinPlayground.iOS
         {
             global::Xamarin.Forms.Forms.Init();
 
-            var b = new NyApplicationBuilder<App>()
-               .ConfigureServices(ConfigureServices)
-               .Build();
+            //var b = new NyApplicationBuilder<App>()
+            //   .ConfigureServices(ConfigureServices)
+            //   .Build();
 
-            b.Run(this);
+            //b.Run(this);
 
-            //LoadApplication(app); //Dont need cause app.Run(this); already do this
+            LoadApplication(new App()); //Dont need cause app.Run(this); already do this
 
             return base.FinishedLaunching(app, options);
-        }
-
-        private void ConfigureServices(ApplicationBuilderContext arg1, IServiceCollection arg2)
-        {
         }
     }
 }

@@ -138,9 +138,14 @@ namespace Naylah.App.UI.Style
 
         #endregion IconColors
 
-        public void Apply(NyApplicationOld nyApplication)
+        public void Apply(NyApplication nyApplication)
         {
-            var r = nyApplication.Resources;
+            var r = nyApplication?.Resources;
+
+            if (r == null)
+            {
+                return;
+            }
 
             foreach (var item in this)
             {
