@@ -53,6 +53,7 @@
     <Compile Include="Platform\NumericEntryBehaviorListener.cs" />
     <Compile Include="Platform\NyApplicationBuilderExtensions.cs" />
     <Compile Include="Renderers\ContentButtonViewRenderer.cs" />
+    <Compile Include="Renderers\CustomListViewRenderer.cs" />
     <Compile Include="Resources\Resource.Designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
