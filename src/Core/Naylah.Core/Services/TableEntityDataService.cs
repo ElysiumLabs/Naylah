@@ -7,24 +7,24 @@ using System.Linq.Expressions;
 
 namespace Naylah.Services
 {
-    public class TableEntityDataService<TEntity, TModel> : DataService
-        where TEntity : Entity, IEntityDataActionCRUDModel<TModel>, new()
+    public class TableEntityDataService<TEntity, TModel, TIdentifier> : DataService
+        where TEntity : class, IEntity<TIdentifier>, IEntityDataActionCRUDModel<TModel>, new()
         where TModel : class, new()
     {
         public bool UseSoftDelete { get; set; } = false;
 
-        protected IRepository<TEntity> repository;
+        protected IRepository<TEntity, TIdentifier> repository;
 
         public TableEntityDataService(
            IUnitOfWork _unitOfWork,
-           IRepository<TEntity> repository
+           IRepository<TEntity, TIdentifier> repository
            ) : this(_unitOfWork, repository, null)
         {
         }
 
         public TableEntityDataService(
             IUnitOfWork _unitOfWork,
-            IRepository<TEntity> repository,
+            IRepository<TEntity, TIdentifier> repository,
             IHandler<Notification> notificationHandler
             ) : base(_unitOfWork, notificationHandler)
         {
@@ -45,9 +45,9 @@ namespace Naylah.Services
                 : null;
         }
 
-        public virtual TModel Update(string id, TModel model)
+        public virtual TModel Update(TIdentifier id, TModel model)
         {
-            var entity = repository.GetById(id?.Trim());
+            var entity = repository.GetById(id);
 
             if (entity == null)
             {
@@ -63,7 +63,7 @@ namespace Naylah.Services
                 : null;
         }
 
-        public virtual TModel GetById(string id, params Expression<Func<TEntity, object>>[] includes)
+        public virtual TModel GetById(TIdentifier id, params Expression<Func<TEntity, object>>[] includes)
         {
             var entity = repository.GetById(id, includes);
 
@@ -75,7 +75,7 @@ namespace Naylah.Services
             return entity.ReadTo();
         }
 
-        public virtual TModel Delete(string id)
+        public virtual TModel Delete(TIdentifier id)
         {
             var entity = repository.GetById(id);
 

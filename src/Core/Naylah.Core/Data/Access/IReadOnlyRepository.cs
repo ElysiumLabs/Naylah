@@ -5,7 +5,7 @@ using System.Linq.Expressions;
 
 namespace Naylah.Data.Access
 {
-    public interface IReadOnlyRepository<TEntity> where TEntity : IEntity
+    public interface IReadOnlyRepository<TEntity, TIdentifier> where TEntity : IEntity
     {
         IEnumerable<TEntity> GetAll(
             Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null,
@@ -21,7 +21,7 @@ namespace Naylah.Data.Access
             int? take = null);
 
         TEntity GetById(
-            object id,
+            TIdentifier id,
             Expression<Func<TEntity, object>>[] includes = null);
 
         int GetCount(Expression<Func<TEntity, bool>> filter = null);

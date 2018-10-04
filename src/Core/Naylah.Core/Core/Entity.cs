@@ -88,7 +88,7 @@ namespace Naylah
 
         #endregion IComparable
 
-        public static T Create<T>() where T : Entity
+        public static T Create<T>() where T : class, IEntity, new()
         {
             return Activator.CreateInstance<T>();
         }

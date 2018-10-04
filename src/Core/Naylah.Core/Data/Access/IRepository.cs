@@ -1,6 +1,6 @@
 ﻿namespace Naylah.Data.Access
 {
-    public interface IRepository<TEntity> : IReadOnlyRepository<TEntity> where TEntity : IEntity
+    public interface IRepository<TEntity, TIdentifier> : IReadOnlyRepository<TEntity, TIdentifier> where TEntity : IEntity
     {
         void Create(TEntity entity);
 
@@ -8,7 +8,7 @@
 
         void Delete(TEntity entity);
 
-        void Delete(object id);
+        void Delete(TIdentifier id);
 
         void Save();
     }
