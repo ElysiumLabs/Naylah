@@ -1,8 +1,6 @@
-﻿using Naylah.Domain;
-
-namespace Naylah.Data.Access
+﻿namespace Naylah.Data.Access
 {
-    public interface IRepository<TEntity> : IReadOnlyRepository<TEntity> where TEntity : Entity
+    public interface IRepository<TEntity> : IReadOnlyRepository<TEntity> where TEntity : IEntity
     {
         void Create(TEntity entity);
 

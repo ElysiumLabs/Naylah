@@ -1,12 +1,11 @@
-﻿using Naylah.Domain;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 
 namespace Naylah.Data.Access
 {
-    public interface IReadOnlyRepository<TEntity> where TEntity : Entity
+    public interface IReadOnlyRepository<TEntity> where TEntity : IEntity
     {
         IEnumerable<TEntity> GetAll(
             Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null,

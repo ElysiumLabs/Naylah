@@ -15,12 +15,12 @@ namespace Naylah
             return entity.Id;
         }
 
-        public static void UpdateCreatedAt(this IModifiableEntity entity)
+        public static void UpdateCreatedAt(this IModifiable entity)
         {
             entity.CreatedAt = DateTime.UtcNow;
         }
 
-        public static void UpdateUpdateAt(this IModifiableEntity entity)
+        public static void UpdateUpdateAt(this IModifiable entity)
         {
             entity.UpdatedAt = DateTime.UtcNow;
         }
