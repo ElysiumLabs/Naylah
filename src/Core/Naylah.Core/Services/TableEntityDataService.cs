@@ -1,5 +1,6 @@
 ﻿using Naylah.Data.Abstractions;
 using Naylah.Data.Access;
+using Naylah.Data.Extensions;
 using Naylah.Domain.Abstractions;
 using System;
 using System.Linq;
@@ -102,14 +103,16 @@ namespace Naylah.Services
             return null;
         }
 
-        public virtual IQueryable<TModel> GetAll(Expression<Func<TEntity, object>>[] includes, int? skip = null, int? take = null)
+        public virtual IQueryable<TModel> GetAll()
         {
-            return repository
-                .GetAll(null, includes, skip, take)
+            var q =
+                repository
+                .GetAllAsQueryable()
                 .Where(x => !x.Deleted)
-                .ToList()
                 .Select(x => x.ReadTo())
-                .AsQueryable();
+                .Project().To<TModel>();
+
+            return q;
         }
     }
 }
