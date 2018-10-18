@@ -1,6 +1,9 @@
 ﻿namespace Naylah.Data.Access
 {
-    public interface IRepository<TEntity, TIdentifier> : IReadOnlyRepository<TEntity, TIdentifier> where TEntity : IEntity
+    public interface IRepository<TEntity, TIdentifier> :
+        IReadableRepository<TEntity, TIdentifier>,
+        IQueryableRepository<TEntity, TIdentifier>
+        where TEntity : IEntity
     {
         void Create(TEntity entity);
 

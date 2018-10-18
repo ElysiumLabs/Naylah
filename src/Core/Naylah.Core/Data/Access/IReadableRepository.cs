@@ -5,7 +5,7 @@ using System.Linq.Expressions;
 
 namespace Naylah.Data.Access
 {
-    public interface IReadOnlyRepository<TEntity, TIdentifier> where TEntity : IEntity
+    public interface IReadableRepository<TEntity, TIdentifier> where TEntity : IEntity
     {
         IEnumerable<TEntity> GetAll(
             Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null,
