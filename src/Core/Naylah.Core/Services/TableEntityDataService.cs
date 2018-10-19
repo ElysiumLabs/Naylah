@@ -12,6 +12,8 @@ namespace Naylah.Services
         where TEntity : class, IEntity<TIdentifier>, IEntityDataActionCRUDModel<TModel>, new()
         where TModel : class, new()
     {
+        public Func<IQueryable<TEntity>, IQueryable<TModel>> Projection { get; set; } = (q) => q.Project().To<TModel>();
+
         public bool UseSoftDelete { get; set; } = false;
 
         protected IRepository<TEntity, TIdentifier> repository;
@@ -106,13 +108,14 @@ namespace Naylah.Services
         public virtual IQueryable<TModel> GetAll()
         {
             var q =
-                repository
-                .GetAllAsQueryable()
-                .Where(x => !x.Deleted)
-                .Select(x => x.ReadTo())
-                .Project().To<TModel>();
+                 repository
+                 .GetAllAsQueryable()
+                 .Where(x => !x.Deleted)
+                 ;
 
-            return q;
+            var r = Projection.Invoke(q);
+
+            return r;
         }
     }
 }
