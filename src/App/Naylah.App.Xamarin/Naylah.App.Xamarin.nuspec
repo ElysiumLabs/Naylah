@@ -10,20 +10,26 @@
     <description>:P</description>
     <tags>naylah app xamarin forms</tags>
     <dependencies>
-      <group>
-        <dependency id="Naylah.Core" version="2018.*" />
-        <dependency id="Naylah.App" version="2018.*" />
-        <dependency id="Microsoft.Extensions.DependencyInjection" version="2.1.1" />
-        <dependency id="Microsoft.Extensions.Logging" version="2.1.1" />
-        <dependency id="Xamarin.Forms" version="3.1.0.637273" />
-        <dependency id="Prism.Forms" version="7.0.0.396" />
-        <dependency id="Prism.Autofac.Forms" version="7.0.0.396" />
+      <group targetFramework=".NETStandard1.0">
+        <dependency id="NETStandard.Library" version="1.6.1" exclude="Build,Analyzers" />
+        <dependency id="Naylah.Core" version="2018.*" exclude="Build,Analyzers" />
+        <dependency id="Naylah.App" version="2018.*" exclude="Build,Analyzers" />
+        <dependency id="Prism.Unity.Forms" version="7.1.0.431" exclude="Build,Analyzers" />
       </group>
-      <group targetFramework="MonoAndroid">
-        <!--MonoAndroid dependencies go here-->
+
+      <group targetFramework="MonoAndroid7.1">
+        <dependency id="Naylah.Core" version="2018.*" exclude="Build,Analyzers" />
+        <dependency id="Naylah.App" version="2018.*" exclude="Build,Analyzers" />
+        <dependency id="Prism.Unity.Forms" version="7.1.0.431" exclude="Build,Analyzers" />
       </group>
+      <group targetFramework=".NETStandard2.0">
+        <dependency id="Naylah.Core" version="2018.*" exclude="Build,Analyzers" />
+        <dependency id="Naylah.App" version="2018.*" exclude="Build,Analyzers" />
+        <dependency id="Prism.Unity.Forms" version="7.1.0.431" exclude="Build,Analyzers" />
+      </group>
+
       <group targetFramework="Xamarin.iOS10">
-        <dependency id="FloatLabeledEntry.iOS" version="1.1.1" />
+        <dependency id="FloatLabeledEntry.iOS" version="1.1.1" exclude="Build,Analyzers" />
       </group>
       <group targetFramework="uap">
         <!--<dependency id="iTextSharp" version="5.5.9" />-->
@@ -31,6 +37,7 @@
     </dependencies>
 
     <references>
+
       <group>
         <reference file="Naylah.App.Xamarin.dll" />
       </group>

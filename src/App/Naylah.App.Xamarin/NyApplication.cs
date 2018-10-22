@@ -1,6 +1,6 @@
 ﻿using Naylah.App.UI.Style;
 using Prism;
-using Prism.Autofac;
+using Prism.Unity;
 using Prism.Ioc;
 
 namespace Naylah.App
