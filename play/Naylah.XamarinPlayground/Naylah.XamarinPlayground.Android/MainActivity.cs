@@ -1,6 +1,7 @@
 ﻿using Android.App;
 using Android.Content.PM;
 using Android.OS;
+using Naylah.App.Xamarin.Android.Services;
 
 namespace Naylah.XamarinPlayground.Droid
 {
@@ -19,7 +20,7 @@ namespace Naylah.XamarinPlayground.Droid
             ToolbarResource = Resource.Layout.Toolbar;
 
             base.OnCreate(bundle);
-
+            HapticFeedbackService.Init(this);
             global::Xamarin.Forms.Forms.Init(this, bundle);
 
             //var app = new NyApplicationBuilder<App>()

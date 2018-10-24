@@ -1,4 +1,6 @@
 ﻿using Naylah.App.Navigation;
+using Naylah.App.UI.UX;
+using System;
 using System.Threading.Tasks;
 
 using Xamarin.Forms;
@@ -26,16 +28,19 @@ namespace Naylah.XamarinPlayground.Views
         {
         }
 
-        private async void Button_Clicked(object sender, System.EventArgs e)
+        private void leve_Clicked(object sender, EventArgs e)
         {
-            try
-            {
-                //var r = await App.Current.NavigationService.NavigateSetRootAsync((new Page2() { BackgroundColor = Color.Purple }));
-            }
-            catch (System.Exception)
-            {
-                throw;
-            }
+            HapticFeedback.Instance.Run(HapticFeedbackType.Softy);
+        }
+
+        private void medio_Clicked(object sender, EventArgs e)
+        {
+            HapticFeedback.Instance.Run(HapticFeedbackType.Medium);
+        }
+
+        private void pesado_Clicked(object sender, EventArgs e)
+        {
+            HapticFeedback.Instance.Run(HapticFeedbackType.Heavy);
         }
     }
 }

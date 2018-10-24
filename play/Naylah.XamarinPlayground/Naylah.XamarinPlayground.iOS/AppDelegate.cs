@@ -1,4 +1,5 @@
 ﻿using Foundation;
+using Naylah.App.Xamarin.iOS.Services;
 using UIKit;
 
 namespace Naylah.XamarinPlayground.iOS
@@ -16,7 +17,7 @@ namespace Naylah.XamarinPlayground.iOS
         public override bool FinishedLaunching(UIApplication app, NSDictionary options)
         {
             global::Xamarin.Forms.Forms.Init();
-
+            HapticFeedbackService.Init();
             //var b = new NyApplicationBuilder<App>()
             //   .ConfigureServices(ConfigureServices)
             //   .Build();

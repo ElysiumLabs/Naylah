@@ -13,11 +13,6 @@ namespace Naylah.App.Xamarin.iOS.Services
 
     public class iOSHapticFeedback : IHapticFeedback
     {
-        public void Feedback(string style)
-        {
-
-        }
-
         public void Run(HapticFeedbackType hapticFeedbackType)
         {
             UIImpactFeedbackGenerator impact = null;

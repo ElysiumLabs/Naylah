@@ -26,13 +26,13 @@ namespace Naylah.App.Xamarin.Android.Services
             switch (hapticFeedbackType)
             {
                 case HapticFeedbackType.Softy:
-                    activity.Window.DecorView.RootView.PerformHapticFeedback(FeedbackConstants.ClockTick);
+                    activity.Window.DecorView.RootView.PerformHapticFeedback(FeedbackConstants.ContextClick);
                     break;
                 case HapticFeedbackType.Medium:
-                    activity.Window.DecorView.RootView.PerformHapticFeedback(FeedbackConstants.VirtualKey);
+                    activity.Window.DecorView.RootView.PerformHapticFeedback(FeedbackConstants.KeyboardPress);
                     break;
                 case HapticFeedbackType.Heavy:
-                    activity.Window.DecorView.RootView.PerformHapticFeedback(FeedbackConstants.LongPress);
+                    activity.Window.DecorView.RootView.PerformHapticFeedback(FeedbackConstants.KeyboardPress);
                     break;
             }
         }

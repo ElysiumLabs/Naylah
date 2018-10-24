@@ -3,16 +3,10 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Naylah.XamarinPlayground.Views.Page1">
     <ContentPage.Content>
-        <StackLayout>
-            <Label Text="1"
-                VerticalOptions="CenterAndExpand"
-                HorizontalOptions="CenterAndExpand" />
-            <Button
-                HeightRequest="100"
-                BackgroundColor="Accent"
-                WidthRequest="100"
-                Clicked="Button_Clicked">
-            </Button>
+        <StackLayout Orientation="Vertical" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand">
+            <Button x:Name="leve" Clicked="leve_Clicked" Text="DE LEVE" />
+            <Button x:Name="medio" Clicked="medio_Clicked" Text="MÉDIO" />
+            <Button x:Name="pesado" Clicked="pesado_Clicked" Text="PESADÃO" />
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>
