@@ -28,6 +28,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <IntermediateOutputPath>C:\Users\CAMILA~1\AppData\Local\Temp\vs35C8.tmp\Debug\</IntermediateOutputPath>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -38,6 +39,7 @@
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>bin\Release\Naylah.App.Xamarin.Android.xml</DocumentationFile>
     <NoWarn>1591</NoWarn>
+    <IntermediateOutputPath>C:\Users\CAMILA~1\AppData\Local\Temp\vs35C8.tmp\Release\</IntermediateOutputPath>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.CSharp" />
@@ -56,6 +58,7 @@
     <Compile Include="Renderers\CustomListViewRenderer.cs" />
     <Compile Include="Resources\Resource.Designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\HapticFeedbackService.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />
@@ -76,11 +79,9 @@
     <PackageReference Include="Naylah.Core">
       <Version>2018.10.19.1</Version>
     </PackageReference>
-
     <PackageReference Include="Xamarin.Forms">
       <Version>3.2.0.839982</Version>
     </PackageReference>
-
     <PackageReference Include="Xamarin.Android.Support.Design" Version="27.0.2.1" />
     <PackageReference Include="Xamarin.Android.Support.v7.AppCompat" Version="27.0.2.1" />
     <PackageReference Include="Xamarin.Android.Support.v4" Version="27.0.2.1" />

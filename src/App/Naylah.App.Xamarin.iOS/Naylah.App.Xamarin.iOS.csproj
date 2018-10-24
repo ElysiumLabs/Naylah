@@ -69,6 +69,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Renderers\ContentButtonViewRenderer.cs" />
     <Compile Include="Renderers\NyEntryRenderer.cs" />
+    <Compile Include="Services\HapticFeedbackService.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Naylah.App.Xamarin\Naylah.App.Xamarin.csproj">
