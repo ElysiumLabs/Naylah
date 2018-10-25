@@ -1,5 +1,5 @@
 ﻿using Naylah.App.Navigation;
-using Naylah.App.UI.UX;
+using Naylah.App.UX;
 using System;
 using System.Threading.Tasks;
 

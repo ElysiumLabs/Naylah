@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Naylah.App.UX;
+using System;
 using System.Windows.Input;
 using Xamarin.Forms;
 
@@ -33,10 +34,13 @@ namespace Naylah.App.UI.Controls
 
         public Action<ContentButtonView> ReleasedAnimation { get; set; }
 
+        public Action<ContentButtonView> FeedbackAction { get; set; }
+
         public ContentButtonView()
         {
             PressedAnimation = UIUtils.DefaultButtonPressedAnimation;
             ReleasedAnimation = UIUtils.DefaultButtonReleasedAnimation;
+            FeedbackAction = UXUtils.DefaultButtonHapticFeedback;
 
             Pressed += ContentButtonView_Pressed;
             Released += ContentButtonView_Released;
@@ -50,6 +54,7 @@ namespace Naylah.App.UI.Controls
         private void ContentButtonView_Pressed(object sender, EventArgs e)
         {
             PressedAnimation?.Invoke(this);
+            FeedbackAction?.Invoke(this);
         }
 
         private void CommandCanExecuteChanged(object sender, EventArgs eventArgs)

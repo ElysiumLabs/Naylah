@@ -1,4 +1,4 @@
-﻿namespace Naylah.App.UI.UX
+﻿namespace Naylah.App.UX
 {
     public class HapticFeedback
     {
@@ -14,7 +14,8 @@
     {
         public void Run(HapticFeedbackType hapticFeedbackType)
         {
-            throw new System.Exception("Not initialized in device platforms isbrubles");
+            //This is a default thing should not be used;
+            //throw new System.Exception("Not initialized in device platforms isbrubles");
         }
     }
 

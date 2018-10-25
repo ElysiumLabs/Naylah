@@ -1,6 +1,6 @@
 ﻿using Android.App;
 using Android.Views;
-using Naylah.App.UI.UX;
+using Naylah.App.UX;
 
 namespace Naylah.App.Xamarin.Android.Services
 {
@@ -28,9 +28,11 @@ namespace Naylah.App.Xamarin.Android.Services
                 case HapticFeedbackType.Softy:
                     activity.Window.DecorView.RootView.PerformHapticFeedback(FeedbackConstants.ContextClick);
                     break;
+
                 case HapticFeedbackType.Medium:
                     activity.Window.DecorView.RootView.PerformHapticFeedback(FeedbackConstants.KeyboardPress);
                     break;
+
                 case HapticFeedbackType.Heavy:
                     activity.Window.DecorView.RootView.PerformHapticFeedback(FeedbackConstants.KeyboardPress);
                     break;
