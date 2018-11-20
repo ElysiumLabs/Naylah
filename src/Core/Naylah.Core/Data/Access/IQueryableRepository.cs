@@ -6,6 +6,6 @@ namespace Naylah.Data.Access
 {
     public interface IQueryableRepository<TEntity, TIdentifier> where TEntity : IEntity
     {
-        IQueryable<TEntity> GetAllAsQueryable(Expression<Func<TEntity, object>>[] includes = null);
+        IQueryable<TEntity> GetAllAsQueryable(params Expression<Func<TEntity, object>>[] includes);
     }
 }

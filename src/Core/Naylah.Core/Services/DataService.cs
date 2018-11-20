@@ -6,31 +6,32 @@ namespace Naylah.Services
 {
     public class DataService
     {
-        private readonly IUnitOfWork unitOfWork;
-        private readonly IHandler<Notification> notificationsHandler;
-
         public DataService(IUnitOfWork unitOfWork) : this(unitOfWork, null)
         {
         }
 
         public DataService(IUnitOfWork unitOfWork, IHandler<Notification> notificationsHandler)
         {
-            this.unitOfWork = unitOfWork;
-            this.notificationsHandler = notificationsHandler;
+            UnitOfWork = unitOfWork;
+            NotificationsHandler = notificationsHandler;
 
             CanCommit = () => { return true; };
         }
 
         public Func<bool> CanCommit { get; set; }
 
+        protected IHandler<Notification> NotificationsHandler { get; private set; }
+
+        protected IUnitOfWork UnitOfWork { get; private set; }
+
         public bool Commit()
         {
-            if (notificationsHandler?.HasEvents() == true)
+            if (NotificationsHandler?.HasEvents() == true)
                 return false;
 
             if (CanCommit?.Invoke() == true)
             {
-                unitOfWork.Commit();
+                UnitOfWork.Commit();
                 return true;
             }
 
