@@ -4,7 +4,7 @@ using System.Collections.ObjectModel;
 
 namespace Naylah
 {
-    public abstract class Entity : IEntity<string>, INotificable
+    public abstract class Entity : IEntity<string>, IModifiable, INotificable
     {
         public Entity() : this(false)
         {

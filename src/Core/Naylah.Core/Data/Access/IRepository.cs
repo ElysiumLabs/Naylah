@@ -1,4 +1,6 @@
-﻿namespace Naylah.Data.Access
+﻿using System;
+
+namespace Naylah.Data.Access
 {
     public interface IRepository<TEntity, TIdentifier> :
         IReadableRepository<TEntity, TIdentifier>,
@@ -13,6 +15,5 @@
 
         void Delete(TIdentifier id);
 
-        void Save();
     }
 }

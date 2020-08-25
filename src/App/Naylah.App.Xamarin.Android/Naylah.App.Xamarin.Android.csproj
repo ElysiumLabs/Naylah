@@ -28,7 +28,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <IntermediateOutputPath>C:\Users\Angus\AppData\Local\Temp\vs5B65.tmp\Debug\</IntermediateOutputPath>
+    <IntermediateOutputPath>C:\Users\Breno\AppData\Local\Temp\vs1337.tmp\Debug\</IntermediateOutputPath>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -39,7 +39,7 @@
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>bin\Release\Naylah.App.Xamarin.Android.xml</DocumentationFile>
     <NoWarn>1591</NoWarn>
-    <IntermediateOutputPath>C:\Users\Angus\AppData\Local\Temp\vs5B65.tmp\Release\</IntermediateOutputPath>
+    <IntermediateOutputPath>C:\Users\Breno\AppData\Local\Temp\vs1337.tmp\Release\</IntermediateOutputPath>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.CSharp" />
@@ -78,6 +78,9 @@
   <ItemGroup>
     <PackageReference Include="Naylah.Core">
       <Version>2018.10.19.1</Version>
+    </PackageReference>
+    <PackageReference Include="Prism.Unity.Forms">
+      <Version>7.2.0.1422</Version>
     </PackageReference>
     <PackageReference Include="Xamarin.Forms">
       <Version>3.2.0.839982</Version>

@@ -2,15 +2,15 @@
 using Naylah.Domain.Abstractions;
 using System;
 
-namespace Naylah.Services
+namespace Naylah.Data.Services
 {
-    public class DataService
+    public class DataServiceBase
     {
-        public DataService(IUnitOfWork unitOfWork) : this(unitOfWork, null)
+        public DataServiceBase(IUnitOfWork unitOfWork) : this(unitOfWork, null)
         {
         }
 
-        public DataService(IUnitOfWork unitOfWork, IHandler<Notification> notificationsHandler)
+        public DataServiceBase(IUnitOfWork unitOfWork, IHandler<Notification> notificationsHandler)
         {
             UnitOfWork = unitOfWork;
             NotificationsHandler = notificationsHandler;
@@ -18,13 +18,13 @@ namespace Naylah.Services
             CanCommit = () => { return true; };
         }
 
-        public Func<bool> CanCommit { get; set; }
+        protected Func<bool> CanCommit { get; set; }
 
         protected IHandler<Notification> NotificationsHandler { get; private set; }
 
         protected IUnitOfWork UnitOfWork { get; private set; }
 
-        public bool Commit()
+        protected bool Commit()
         {
             if (NotificationsHandler?.HasEvents() == true)
                 return false;
@@ -38,7 +38,7 @@ namespace Naylah.Services
             return false;
         }
 
-        public bool CommitDo(Action ifCommitAction)
+        protected bool CommitDo(Action ifCommitAction)
         {
             var commited = Commit();
 

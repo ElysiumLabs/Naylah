@@ -31,7 +31,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <AndroidLinkMode>None</AndroidLinkMode>
-    <IntermediateOutputPath>C:\Users\Angus\AppData\Local\Temp\vs6029.tmp\Debug\</IntermediateOutputPath>
+    <IntermediateOutputPath>C:\Users\Breno\AppData\Local\Temp\vs14BE.tmp\Debug\</IntermediateOutputPath>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -42,7 +42,7 @@
     <WarningLevel>4</WarningLevel>
     <AndroidManagedSymbols>true</AndroidManagedSymbols>
     <AndroidUseSharedRuntime>false</AndroidUseSharedRuntime>
-    <IntermediateOutputPath>C:\Users\Angus\AppData\Local\Temp\vs6029.tmp\Release\</IntermediateOutputPath>
+    <IntermediateOutputPath>C:\Users\Breno\AppData\Local\Temp\vs14BE.tmp\Release\</IntermediateOutputPath>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Mono.Android" />

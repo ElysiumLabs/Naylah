@@ -9,7 +9,6 @@ namespace Naylah
             if ((string.IsNullOrEmpty(entity.Id)) || (force))
             {
                 entity.Id = Guid.NewGuid().ToString("D").ToUpper();
-                entity.UpdateCreatedAt();
             }
 
             return entity.Id;

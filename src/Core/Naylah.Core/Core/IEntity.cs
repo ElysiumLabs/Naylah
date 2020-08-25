@@ -4,7 +4,7 @@
     {
     }
 
-    public interface IEntity<TIdentifier> : IEntity, IModifiable
+    public interface IEntity<TIdentifier> : IEntity
     {
         TIdentifier Id { get; set; }
     }
