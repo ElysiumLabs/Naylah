@@ -14,7 +14,7 @@ namespace Naylah.Data.Services
     {
         protected IRepository<TEntity, TIdentifier> Repository;
 
-        protected virtual Func<IQueryable<TEntity>, IQueryable<TModel>> Projection { get; set; } = 
+        protected internal virtual Func<IQueryable<TEntity>, IQueryable<TModel>> Projection { get; set; } =
             (q) => q.Project().To<TModel>();
 
         protected bool UseSoftDelete { get; set; } = false;
@@ -53,6 +53,16 @@ namespace Naylah.Data.Services
             return FindBy(x => x.Id.Equals(identifier), includes);
         }
 
+        protected internal virtual IQueryable<TEntity> GetEntities()
+        {
+            return Repository.GetAllAsQueryable().Where(x => !x.Deleted);
+        }
+
+        protected virtual void GenerateId(TEntity entity)
+        {
+            //application id generation...
+        }
+
         protected virtual bool RaiseNotification(Notification notification)
         {
             if (NotificationThrowException)
@@ -70,7 +80,8 @@ namespace Naylah.Data.Services
         public virtual TModel Create(TModel model)
         {
             var entity = Entity.Create<TEntity>();
-            
+            GenerateId(entity);
+
             entity.UpdateFrom(model, new EntityUpdateOptions(UpsertType.Insert));
             entity.UpdateCreatedAt();
 
@@ -83,6 +94,8 @@ namespace Naylah.Data.Services
 
             return ToModel(entity);
         }
+
+       
 
         public virtual TModel Update(TModel model)
         {
@@ -159,17 +172,54 @@ namespace Naylah.Data.Services
             return ToModel(entity);
         }
 
-        public virtual IQueryable<TModel> GetAll()
+        public virtual IQueryable<TModel> GetAll(params Expression<Func<TEntity, bool>>[] predicates)
         {
-            var entityQuery =
-                 Repository
-                 .GetAllAsQueryable()
-                 .Where(x => !x.Deleted)
-                 ;
+            var entityQuery = GetEntities();
+
+            if (predicates != null)
+            {
+                foreach (var predicate in predicates)
+                {
+                    entityQuery = entityQuery.Where(predicate);
+                }
+            }
 
             var projectedQuery = Projection.Invoke(entityQuery);
-
             return projectedQuery;
+        }
+
+    }
+
+    public abstract class StringTableDataService<TEntity, TModel> : TableDataService<TEntity, TModel, string>
+       where TEntity : class, IEntityUpdate<TModel>, IEntity<string>, IModifiable, new()
+       where TModel : class, IEntity<string>, new()
+    {
+        public StringTableDataService(IUnitOfWork _unitOfWork, IRepository<TEntity, string> repository) : base(_unitOfWork, repository)
+        {
+        }
+
+        protected override TEntity FindById(string identifier, params Expression<Func<TEntity, object>>[] includes)
+        {
+            return FindBy(x => x.Id == identifier, includes);
+        }
+
+        protected override void GenerateId(TEntity entity)
+        {
+            entity.GenerateId();
+        }
+    }
+
+    public abstract class IntTableDataService<TEntity, TModel> : TableDataService<TEntity, TModel, int>
+       where TEntity : class, IEntityUpdate<TModel>, IEntity<int>, IModifiable, new()
+       where TModel : class, IEntity<int>, new()
+    {
+        public IntTableDataService(IUnitOfWork _unitOfWork, IRepository<TEntity, int> repository) : base(_unitOfWork, repository)
+        {
+        }
+
+        protected override TEntity FindById(int identifier, params Expression<Func<TEntity, object>>[] includes)
+        {
+            return FindBy(x => x.Id == identifier, includes);
         }
 
     }

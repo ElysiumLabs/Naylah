@@ -2,6 +2,7 @@
 using Naylah.Data.Abstractions;
 using Naylah.Data.Access;
 using Naylah.Data.Services;
+using Naylah.Data.Utils;
 using Naylah.Domain;
 using Naylah.Domain.Abstractions;
 using System;
@@ -34,6 +35,10 @@ namespace Naylah.ConsolePlayground
             var personRepo = new PersonRepo(listOfPeople);
 
             var table = new PersonTableService(unitOfNothing, personRepo);
+
+            var wrapper = table.CreateWrapper();
+
+            var ttt = wrapper.GetEntities();
 
             var q = table.GetAll().ToList();
 
@@ -126,7 +131,7 @@ namespace Naylah.ConsolePlayground
         }
     }
 
-    public class PersonTableService : TableDataService<Person, PersonM, string>
+    public class PersonTableService : StringTableDataService<Person, PersonM>
     {
         public PersonTableService(IUnitOfWork _unitOfWork, IRepository<Person, string> repository) : base(_unitOfWork, repository)
         {
@@ -221,4 +226,6 @@ namespace Naylah.ConsolePlayground
     {
         public string Id { get; set; }
     }
+
+    
 }
