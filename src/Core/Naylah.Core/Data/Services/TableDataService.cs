@@ -77,6 +77,26 @@ namespace Naylah.Data.Services
             return true;
         }
 
+        protected virtual TModel UpdateInternal(TEntity entity, TModel model)
+        {
+            if (entity == null)
+            {
+                RaiseNotification(Notification.FromType(GetType(), "Entity is null"));
+            }
+
+            entity.UpdateFrom(model, new EntityUpdateOptions(UpsertType.Update));
+            entity.UpdateUpdateAt();
+
+            Repository.Update(entity);
+
+            if (!Commit())
+            {
+                RaiseNotification(Notification.FromType(GetType(), "Transaction was not commited"));
+            }
+
+            return ToModel(entity);
+        }
+
         public virtual TModel Create(TModel model)
         {
             var entity = Entity.Create<TEntity>();
@@ -95,33 +115,21 @@ namespace Naylah.Data.Services
             return ToModel(entity);
         }
 
-       
-
-        public virtual TModel Update(TModel model)
+        public virtual TModel Update(TModel model, Expression<Func<TEntity, bool>> customPredicate = null)
         {
-            var entity = FindById(model.Id);
+            var entity = customPredicate != null ? FindBy(customPredicate) : FindById(model.Id);
 
             if (entity == null)
             {
                 RaiseNotification(Notification.FromType(GetType(), "Entity not found"));
             }
 
-            entity.UpdateFrom(model, new EntityUpdateOptions(UpsertType.Update));
-            entity.UpdateUpdateAt();
-
-            Repository.Update(entity);
-
-            if (!Commit())
-            {
-                RaiseNotification(Notification.FromType(GetType(), "Transaction was not commited"));
-            }
-
-            return ToModel(entity);
+            return UpdateInternal(entity, model);
         }
 
-        public virtual TModel Upsert(TModel model)
+        public virtual TModel Upsert(TModel model, Expression<Func<TEntity, bool>> customPredicate = null)
         {
-            var entity = FindById(model.Id);
+            var entity = customPredicate != null ? FindBy(customPredicate) : FindById(model.Id);
 
             if (entity == null)
             {
@@ -129,7 +137,7 @@ namespace Naylah.Data.Services
             }
             else
             {
-                return Update(model);
+                return UpdateInternal(entity, model);
             }
         }
 

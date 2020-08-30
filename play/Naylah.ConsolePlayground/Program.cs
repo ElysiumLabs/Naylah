@@ -42,6 +42,7 @@ namespace Naylah.ConsolePlayground
 
             var q = table.GetAll().ToList();
 
+
             //CadastraPessoa
             {
                 e.Dispatch(p1);
@@ -51,6 +52,8 @@ namespace Naylah.ConsolePlayground
             Console.WriteLine(p1.Age);
             Console.ReadKey();
         }
+
+      
     }
 
     public class NothingOfWork : IUnitOfWork
