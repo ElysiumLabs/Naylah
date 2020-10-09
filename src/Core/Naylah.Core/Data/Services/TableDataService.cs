@@ -141,7 +141,7 @@ namespace Naylah.Data.Services
             }
         }
 
-        public virtual TModel GetById(TIdentifier id, params Expression<Func<TEntity, object>>[] includes)
+        public virtual TModel GetById(TIdentifier id)
         {
             var entity = FindById(id);
 
