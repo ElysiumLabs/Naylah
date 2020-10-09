@@ -43,19 +43,19 @@ namespace Naylah.Data.Services
             return new TModel() { Id = entity.Id };
         }
 
-        protected virtual TEntity FindBy(Expression<Func<TEntity, bool>> predicate, params Expression<Func<TEntity, object>>[] includes)
-        {
-            return Repository.GetAllAsQueryable(includes).Where(predicate).FirstOrDefault();
-        }
-
-        protected virtual TEntity FindById(TIdentifier identifier, params Expression<Func<TEntity, object>>[] includes)
-        {
-            return FindBy(x => x.Id.Equals(identifier), includes);
-        }
-
         protected internal virtual IQueryable<TEntity> GetEntities()
         {
-            return Repository.GetAllAsQueryable().Where(x => !x.Deleted);
+            return Repository.GetAllAsQueryable();
+        }
+
+        protected virtual TEntity FindBy(Expression<Func<TEntity, bool>> predicate)
+        {
+            return GetEntities().Where(predicate).FirstOrDefault();
+        }
+
+        protected virtual TEntity FindById(TIdentifier identifier)
+        {
+            return FindBy(x => x.Id.Equals(identifier));
         }
 
         protected virtual void GenerateId(TEntity entity)
@@ -184,6 +184,11 @@ namespace Naylah.Data.Services
         {
             var entityQuery = GetEntities();
 
+            if (UseSoftDelete)
+            {
+                entityQuery = entityQuery.Where(x => !x.Deleted);
+            }
+
             if (predicates != null)
             {
                 foreach (var predicate in predicates)
@@ -206,9 +211,9 @@ namespace Naylah.Data.Services
         {
         }
 
-        protected override TEntity FindById(string identifier, params Expression<Func<TEntity, object>>[] includes)
+        protected override TEntity FindById(string identifier)
         {
-            return FindBy(x => x.Id == identifier, includes);
+            return FindBy(x => x.Id == identifier);
         }
 
         protected override void GenerateId(TEntity entity)
@@ -225,9 +230,9 @@ namespace Naylah.Data.Services
         {
         }
 
-        protected override TEntity FindById(int identifier, params Expression<Func<TEntity, object>>[] includes)
+        protected override TEntity FindById(int identifier)
         {
-            return FindBy(x => x.Id == identifier, includes);
+            return FindBy(x => x.Id == identifier);
         }
 
     }
