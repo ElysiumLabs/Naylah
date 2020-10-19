@@ -13,12 +13,15 @@ namespace Naylah.Data.Utils
     {
         private readonly TableDataService<TEntity, TModel, TIdentifier> tableDataService;
 
+
         public TableDataServiceWrapper(TableDataService<TEntity, TModel, TIdentifier> tableDataService)
         {
             this.tableDataService = tableDataService;
         }
 
         public Func<IQueryable<TEntity>, IQueryable<TModel>> Projection { get { return tableDataService.Projection; } }
+
+        public Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> Ordering { get { return tableDataService.Ordering; } }
 
         public virtual IQueryable<TEntity> GetEntities()
         {

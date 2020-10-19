@@ -26,8 +26,8 @@ namespace Naylah.ConsolePlayground
             var c = services.BuildServiceProvider();
             var e = c.GetService<IEventDispatcher>();
 
-            var p1 = new Person() { Id = "1", Name = "Camila" };
-            var p2 = new Person() { Id = "2", Name = "Breno" };
+            var p1 = new Person() { Id = "1", Name = "Camila", CreatedAt = DateTime.UtcNow };
+            var p2 = new Person() { Id = "2", Name = "Breno", CreatedAt =  DateTime.UtcNow.AddDays(2) };
 
             var listOfPeople = new List<Person>() { p1, p2 };
 
@@ -49,7 +49,11 @@ namespace Naylah.ConsolePlayground
                 //Salvo no banco
             }
 
-            Console.WriteLine(p1.Age);
+            foreach (var item in q)
+            {
+                Console.WriteLine(item.Name);
+            }
+            
             Console.ReadKey();
         }
 
@@ -228,6 +232,12 @@ namespace Naylah.ConsolePlayground
     public class PersonM : IEntity<string>
     {
         public string Id { get; set; }
+
+        public string Name { get; set; }
+
+        public DateTime BirthDay { get; set; }
+
+        public int Age { get; set; }
     }
 
     

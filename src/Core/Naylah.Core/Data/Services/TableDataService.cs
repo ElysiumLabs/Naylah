@@ -17,6 +17,9 @@ namespace Naylah.Data.Services
         protected internal virtual Func<IQueryable<TEntity>, IQueryable<TModel>> Projection { get; set; } =
             (q) => q.Project().To<TModel>();
 
+        protected internal virtual Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> Ordering { get; set; } =
+            (q) => q.OrderByDescending(x => x.CreatedAt);
+
         protected bool UseSoftDelete { get; set; } = false;
 
         protected bool NotificationThrowException { get; set; } = false;
@@ -45,7 +48,8 @@ namespace Naylah.Data.Services
 
         protected internal virtual IQueryable<TEntity> GetEntities()
         {
-            return Repository.GetAllAsQueryable();
+            IQueryable<TEntity> query = Repository.GetAllAsQueryable();
+            return Ordering?.Invoke(query) ?? query;
         }
 
         protected virtual TEntity FindBy(Expression<Func<TEntity, bool>> predicate)
