@@ -48,8 +48,7 @@ namespace Naylah.Data.Services
 
         protected internal virtual IQueryable<TEntity> GetEntities()
         {
-            IQueryable<TEntity> query = Repository.GetAllAsQueryable();
-            return Ordering?.Invoke(query) ?? query;
+            return Repository.GetAllAsQueryable();
         }
 
         protected virtual TEntity FindBy(Expression<Func<TEntity, bool>> predicate)
@@ -199,6 +198,11 @@ namespace Naylah.Data.Services
                 {
                     entityQuery = entityQuery.Where(predicate);
                 }
+            }
+
+            if (Ordering != null)
+            {
+                entityQuery = Ordering.Invoke(entityQuery);
             }
 
             var projectedQuery = Projection.Invoke(entityQuery);
