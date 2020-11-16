@@ -14,7 +14,6 @@
   <PropertyGroup>
     <AssemblyName>Naylah.Core</AssemblyName>
     <PackageId>Naylah.Core</PackageId>
-    <NuspecFile>$(MSBuildThisFileDirectory)$(MSBuildProjectName).nuspec</NuspecFile>
     <AssemblyVersion>1.1.1.1</AssemblyVersion>
     <FileVersion>1.1.0.0</FileVersion>
     <RootNamespace>Naylah</RootNamespace>
