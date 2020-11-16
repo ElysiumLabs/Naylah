@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Core\Naylah.Core\Naylah.Core.csproj" />
+    <ProjectReference Include="..\..\src\Data\Naylah.Data.Providers\Naylah.Data.Providers.csproj" />
+    <ProjectReference Include="..\..\src\Web\Naylah.AspNetCore\Naylah.AspNetCore.csproj" />
+  </ItemGroup>
+
+</Project>
