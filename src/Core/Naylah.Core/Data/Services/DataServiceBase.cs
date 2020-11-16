@@ -1,8 +1,9 @@
 ﻿using Naylah.Data.Access;
 using Naylah.Domain.Abstractions;
 using System;
+using System.Threading.Tasks;
 
-namespace Naylah.Data.Services
+namespace Naylah.Data
 {
     public class DataServiceBase
     {
@@ -24,23 +25,23 @@ namespace Naylah.Data.Services
 
         protected IUnitOfWork UnitOfWork { get; private set; }
 
-        protected bool Commit()
+        protected internal async Task<bool> CommitAsync()
         {
             if (NotificationsHandler?.HasEvents() == true)
                 return false;
 
             if (CanCommit?.Invoke() == true)
             {
-                UnitOfWork.Commit();
+                await UnitOfWork.CommitAsync();
                 return true;
             }
 
             return false;
         }
 
-        protected bool CommitDo(Action ifCommitAction)
+        protected async Task<bool> CommitDoAsync(Action ifCommitAction)
         {
-            var commited = Commit();
+            var commited = await CommitAsync();
 
             if (commited)
             {

@@ -1,9 +1,10 @@
 ﻿using System;
+using System.Threading.Tasks;
 
 namespace Naylah.Data.Access
 {
     public interface IUnitOfWork : IDisposable
     {
-        int Commit();
+        Task<int> CommitAsync();
     }
 }

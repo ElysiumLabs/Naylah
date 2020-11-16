@@ -1,14 +1,13 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using Naylah.Data.Abstractions;
+using Naylah.Data;
 using Naylah.Data.Access;
-using Naylah.Data.Services;
-using Naylah.Data.Utils;
 using Naylah.Domain;
 using Naylah.Domain.Abstractions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 
 namespace Naylah.ConsolePlayground
 {
@@ -62,7 +61,8 @@ namespace Naylah.ConsolePlayground
 
     public class NothingOfWork : IUnitOfWork
     {
-        public int Commit()
+
+        public async Task<int> CommitAsync()
         {
             return 1;
         }
@@ -82,17 +82,24 @@ namespace Naylah.ConsolePlayground
             this.people = people;
         }
 
-        public void Create(Person entity)
+        public IQueryable<Person> Entities => people.AsQueryable();
+
+        public ValueTask<Person> AddAsync(Person entity)
         {
             throw new NotImplementedException();
         }
 
-        public void Delete(Person entity)
+        public ValueTask<Person> EditAsync(Person entity)
         {
             throw new NotImplementedException();
         }
 
-        public void Delete(string id)
+        public Person FindBy(Expression<Func<Person, bool>> filter)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Person FindById(string id)
         {
             throw new NotImplementedException();
         }
@@ -109,7 +116,7 @@ namespace Naylah.ConsolePlayground
 
         public IQueryable<Person> GetAllAsQueryable(params Expression<Func<Person, object>>[] includes)
         {
-            return people.AsQueryable();
+            throw new NotImplementedException();
         }
 
         public Person GetById(string id, Expression<Func<Person, object>>[] includes = null)
@@ -127,12 +134,7 @@ namespace Naylah.ConsolePlayground
             throw new NotImplementedException();
         }
 
-        public void Save()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Update(Person entity)
+        public Task RemoveAsync(Person entity)
         {
             throw new NotImplementedException();
         }
@@ -214,7 +216,7 @@ namespace Naylah.ConsolePlayground
         }
     }
 
-    public class Person : Entity, IEvent, IEntityUpdate<PersonM>
+    public class Person : Entity, IEvent, Naylah.IEntityUpdate<PersonM>
     {
         public string Name { get; set; }
 

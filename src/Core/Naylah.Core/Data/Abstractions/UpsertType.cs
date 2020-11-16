@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Naylah.Data.Abstractions
+namespace Naylah
 {
     public enum UpsertType
     {
+        Instance,
         Insert,
         Update
     }

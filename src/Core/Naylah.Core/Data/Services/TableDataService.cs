@@ -1,18 +1,19 @@
-﻿using Naylah.Data.Abstractions;
-using Naylah.Data.Access;
+﻿using Naylah.Data.Access;
 using Naylah.Data.Extensions;
 using Naylah.Domain.Abstractions;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 
-namespace Naylah.Data.Services
+namespace Naylah.Data
 {
     public abstract class TableDataService<TEntity, TModel, TIdentifier> : DataServiceBase
         where TEntity : class, IEntity<TIdentifier>, IModifiable, IEntityUpdate<TModel>, new()
         where TModel : class, IEntity<TIdentifier>, new()
     {
-        protected IRepository<TEntity, TIdentifier> Repository;
+        protected internal IRepository<TEntity, TIdentifier> Repository;
 
         protected internal virtual Func<IQueryable<TEntity>, IQueryable<TModel>> Projection { get; set; } =
             (q) => q.Project().To<TModel>();
@@ -41,27 +42,35 @@ namespace Naylah.Data.Services
             NotificationThrowException = notificationHandler == null;
         }
 
-        protected virtual TModel ToModel(TEntity entity)
+        protected internal virtual TModel ToModel(TEntity entity)
         {
-            return new TModel() { Id = entity.Id };
+            var es = new List<TEntity>() { entity };
+            return Projection?.Invoke(es.AsQueryable()).FirstOrDefault() ?? new TModel() { Id = entity.Id };
+        }
+
+        protected internal virtual TEntity ToEntity(TModel model, UpsertType upsertType)
+        {
+            var entity = Entity.Create<TEntity>();
+            entity.UpdateFrom(model, new EntityUpdateOptions(upsertType));
+            return entity;
         }
 
         protected internal virtual IQueryable<TEntity> GetEntities()
         {
-            return Repository.GetAllAsQueryable();
+            return Repository.Entities;
         }
 
-        protected virtual TEntity FindBy(Expression<Func<TEntity, bool>> predicate)
+        protected virtual async Task<TEntity> FindByAsync(Expression<Func<TEntity, bool>> predicate)
         {
             return GetEntities().Where(predicate).FirstOrDefault();
         }
 
-        protected virtual TEntity FindById(TIdentifier identifier)
+        protected virtual async Task<TEntity> FindByIdAsync(TIdentifier identifier)
         {
-            return FindBy(x => x.Id.Equals(identifier));
+            return await FindByAsync(x => x.Id.Equals(identifier));
         }
 
-        protected virtual void GenerateId(TEntity entity)
+        protected virtual async Task GenerateId(TEntity entity)
         {
             //application id generation...
         }
@@ -80,7 +89,7 @@ namespace Naylah.Data.Services
             return true;
         }
 
-        protected virtual TModel UpdateInternal(TEntity entity, TModel model)
+        protected virtual async Task<TModel> UpdateInternalAsync(TEntity entity, TModel model)
         {
             if (entity == null)
             {
@@ -90,9 +99,9 @@ namespace Naylah.Data.Services
             entity.UpdateFrom(model, new EntityUpdateOptions(UpsertType.Update));
             entity.UpdateUpdateAt();
 
-            Repository.Update(entity);
+            entity = await Repository.EditAsync(entity);
 
-            if (!Commit())
+            if (!await CommitAsync())
             {
                 RaiseNotification(Notification.FromType(GetType(), "Transaction was not commited"));
             }
@@ -100,17 +109,17 @@ namespace Naylah.Data.Services
             return ToModel(entity);
         }
 
-        public virtual TModel Create(TModel model)
-        {
-            var entity = Entity.Create<TEntity>();
-            GenerateId(entity);
 
-            entity.UpdateFrom(model, new EntityUpdateOptions(UpsertType.Insert));
+
+        public virtual async Task<TModel> Create(TModel model)
+        {
+            var entity = ToEntity(model, UpsertType.Insert);
+            await GenerateId(entity);
+
             entity.UpdateCreatedAt();
+            await Repository.AddAsync(entity);
 
-            Repository.Create(entity);
-
-            if (!Commit())
+            if (!await CommitAsync())
             {
                 RaiseNotification(Notification.FromType(GetType(), "Transaction was not commited"));
             }
@@ -118,35 +127,35 @@ namespace Naylah.Data.Services
             return ToModel(entity);
         }
 
-        public virtual TModel Update(TModel model, Expression<Func<TEntity, bool>> customPredicate = null)
+        public virtual async Task<TModel> UpdateAsync(TModel model, Expression<Func<TEntity, bool>> customPredicate = null)
         {
-            var entity = customPredicate != null ? FindBy(customPredicate) : FindById(model.Id);
+            var entity = customPredicate != null ? await FindByAsync(customPredicate) : await FindByIdAsync(model.Id);
 
             if (entity == null)
             {
                 RaiseNotification(Notification.FromType(GetType(), "Entity not found"));
             }
 
-            return UpdateInternal(entity, model);
+            return await UpdateInternalAsync(entity, model);
         }
 
-        public virtual TModel Upsert(TModel model, Expression<Func<TEntity, bool>> customPredicate = null)
+        public virtual async Task<TModel> UpsertAsync(TModel model, Expression<Func<TEntity, bool>> customPredicate = null)
         {
-            var entity = customPredicate != null ? FindBy(customPredicate) : FindById(model.Id);
+            var entity = customPredicate != null ? await FindByAsync(customPredicate) : await FindByIdAsync(model.Id);
 
             if (entity == null)
             {
-                return Create(model);
+                return await Create(model);
             }
             else
             {
-                return UpdateInternal(entity, model);
+                return await UpdateInternalAsync(entity, model);
             }
         }
 
-        public virtual TModel GetById(TIdentifier id)
+        public virtual async Task<TModel> GetById(TIdentifier id)
         {
-            var entity = FindById(id);
+            var entity = await FindByIdAsync(id);
 
             if (entity == null)
             {
@@ -156,9 +165,9 @@ namespace Naylah.Data.Services
             return ToModel(entity);
         }
 
-        public virtual TModel Delete(TIdentifier id)
+        public virtual async Task<TModel> Delete(TIdentifier id)
         {
-            var entity = Repository.GetById(id);
+            var entity = await FindByIdAsync(id);
 
             if (entity == null)
             {
@@ -167,15 +176,15 @@ namespace Naylah.Data.Services
 
             if (!UseSoftDelete)
             {
-                Repository.Delete(entity);
+                await Repository.RemoveAsync(entity);
             }
             else
             {
                 entity.Deleted = true;
-                Repository.Update(entity);
+                entity = await Repository.EditAsync(entity);
             }
 
-            if (!Commit())
+            if (!await CommitAsync())
             {
                 RaiseNotification(Notification.FromType(GetType(), "Transaction was not commited"));
             }
@@ -183,21 +192,20 @@ namespace Naylah.Data.Services
             return ToModel(entity);
         }
 
-        public virtual IQueryable<TModel> GetAll(params Expression<Func<TEntity, bool>>[] predicates)
+        protected internal virtual IQueryable<TModel> Project(IQueryable<TEntity> entities)
         {
-            var entityQuery = GetEntities();
+            var entityQuery = entities;
+            var projectedQuery = Projection.Invoke(entityQuery);
+            return projectedQuery;
+        }
+
+        public virtual IQueryable<TModel> GetAll(IQueryable<TEntity> adptedEntities = null)
+        {
+            var entityQuery = adptedEntities ?? GetEntities();
 
             if (UseSoftDelete)
             {
                 entityQuery = entityQuery.Where(x => !x.Deleted);
-            }
-
-            if (predicates != null)
-            {
-                foreach (var predicate in predicates)
-                {
-                    entityQuery = entityQuery.Where(predicate);
-                }
             }
 
             if (Ordering != null)
@@ -205,42 +213,7 @@ namespace Naylah.Data.Services
                 entityQuery = Ordering.Invoke(entityQuery);
             }
 
-            var projectedQuery = Projection.Invoke(entityQuery);
-            return projectedQuery;
-        }
-
-    }
-
-    public abstract class StringTableDataService<TEntity, TModel> : TableDataService<TEntity, TModel, string>
-       where TEntity : class, IEntityUpdate<TModel>, IEntity<string>, IModifiable, new()
-       where TModel : class, IEntity<string>, new()
-    {
-        public StringTableDataService(IUnitOfWork _unitOfWork, IRepository<TEntity, string> repository) : base(_unitOfWork, repository)
-        {
-        }
-
-        protected override TEntity FindById(string identifier)
-        {
-            return FindBy(x => x.Id == identifier);
-        }
-
-        protected override void GenerateId(TEntity entity)
-        {
-            entity.GenerateId();
-        }
-    }
-
-    public abstract class IntTableDataService<TEntity, TModel> : TableDataService<TEntity, TModel, int>
-       where TEntity : class, IEntityUpdate<TModel>, IEntity<int>, IModifiable, new()
-       where TModel : class, IEntity<int>, new()
-    {
-        public IntTableDataService(IUnitOfWork _unitOfWork, IRepository<TEntity, int> repository) : base(_unitOfWork, repository)
-        {
-        }
-
-        protected override TEntity FindById(int identifier)
-        {
-            return FindBy(x => x.Id == identifier);
+            return Project(entityQuery);
         }
 
     }

@@ -2,10 +2,11 @@
 using System.Linq;
 using System.Linq.Expressions;
 
-namespace Naylah.Data.Access
+namespace Naylah.Data
 {
-    public interface IQueryableRepository<TEntity, TIdentifier> where TEntity : IEntity
+    public interface IQueryRepository<TEntity, TIdentifier> 
+        where TEntity : IEntity<TIdentifier>
     {
-        IQueryable<TEntity> GetAllAsQueryable(params Expression<Func<TEntity, object>>[] includes);
+        IQueryable<TEntity> Entities { get; }
     }
 }

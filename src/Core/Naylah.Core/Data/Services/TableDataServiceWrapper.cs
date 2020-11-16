@@ -1,11 +1,10 @@
-﻿using Naylah.Data.Abstractions;
-using Naylah.Data.Services;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
-namespace Naylah.Data.Utils
+namespace Naylah.Data
 {
     public class TableDataServiceWrapper<TEntity, TModel, TIdentifier>
         where TEntity : class, IEntity<TIdentifier>, IModifiable, IEntityUpdate<TModel>, new()
@@ -19,14 +18,33 @@ namespace Naylah.Data.Utils
             this.tableDataService = tableDataService;
         }
 
+        public IRepository<TEntity, TIdentifier> Repository { get { return tableDataService.Repository; } }
+
         public Func<IQueryable<TEntity>, IQueryable<TModel>> Projection { get { return tableDataService.Projection; } }
 
         public Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> Ordering { get { return tableDataService.Ordering; } }
+
+        public virtual TModel ToModel(TEntity entity)
+        {
+            return tableDataService.ToModel(entity);
+        }
+
+        public virtual TEntity ToEntity(TModel model, UpsertType upsertType)
+        {
+            return tableDataService.ToEntity(model, upsertType);
+        }
 
         public virtual IQueryable<TEntity> GetEntities()
         {
             return tableDataService.GetEntities();
         }
+
+        public IQueryable<TModel> Project(IQueryable<TEntity> entities)
+        {
+            return tableDataService.Project(entities);
+        }
+
+        public Task<bool> CommitAsync() => tableDataService.CommitAsync();
     }
 
     public static class TableDataServiceWrapperExtensions

@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 
-namespace Naylah.Data.Access
+namespace Naylah.Data
 {
-    public interface IReadableRepository<TEntity, TIdentifier> where TEntity : IEntity
+    [Obsolete]
+    public interface IReadableRepository<TEntity, TIdentifier> 
+        where TEntity : IEntity<TIdentifier>
     {
         IEnumerable<TEntity> GetAll(
             Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null,

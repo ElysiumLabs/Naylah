@@ -1,15 +1,16 @@
-﻿using System;
+﻿using Naylah.Data;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Naylah.Data.Abstractions
+namespace Naylah
 {
     public class EntityUpdateOptions : Dictionary<string, object>
     {
-        public static EntityUpdateOptions Default = new EntityUpdateOptions(UpsertType.Update);
+        public static EntityUpdateOptions Default = new EntityUpdateOptions(UpsertType.Instance);
 
-        public EntityUpdateOptions(UpsertType upsertType, params KeyValuePair<string, object>[] options)
+        public EntityUpdateOptions(UpsertType upsertType = UpsertType.Instance, params KeyValuePair<string, object>[] options)
         {
             UpsertType = upsertType;
 

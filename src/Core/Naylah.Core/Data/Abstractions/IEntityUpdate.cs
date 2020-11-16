@@ -1,8 +1,9 @@
-﻿using System;
+﻿using Naylah.Data;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Naylah.Data.Abstractions
+namespace Naylah
 {
     public interface IEntityUpdate<TSource>
     {

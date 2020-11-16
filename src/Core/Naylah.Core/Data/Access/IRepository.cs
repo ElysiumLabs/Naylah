@@ -1,19 +1,13 @@
 ﻿using System;
+using System.Threading.Tasks;
 
-namespace Naylah.Data.Access
+namespace Naylah.Data
 {
-    public interface IRepository<TEntity, TIdentifier> :
-        IReadableRepository<TEntity, TIdentifier>,
-        IQueryableRepository<TEntity, TIdentifier>
-        where TEntity : IEntity
+    public interface IRepository<TEntity, TIdentifier> : 
+        IQueryRepository<TEntity, TIdentifier>, 
+        ICommandRepository<TEntity, TIdentifier>
+        where TEntity : IEntity<TIdentifier>
     {
-        void Create(TEntity entity);
-
-        void Update(TEntity entity);
-
-        void Delete(TEntity entity);
-
-        void Delete(TIdentifier id);
 
     }
 }
