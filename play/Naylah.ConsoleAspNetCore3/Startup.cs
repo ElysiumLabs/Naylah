@@ -13,6 +13,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.Net.Http.Headers;
+using Microsoft.OpenApi.Models;
 using Naylah.ConsoleAspNetCore.Customizations;
 using Naylah.ConsoleAspNetCore.Entities;
 using Naylah.Data;
@@ -42,20 +43,39 @@ namespace Naylah.ConsoleAspNetCore
                             NamingStrategy = new CamelCaseNamingStrategy()
                         };
                     });
-                    
-            services.AddOData();
 
-            services.AddMvcCore(options =>
+            services.AddDataManagement(null, swagger =>
             {
-                foreach (var outputFormatter in options.OutputFormatters.OfType<OutputFormatter>().Where(x => x.SupportedMediaTypes.Count == 0))
-                {
-                    outputFormatter.SupportedMediaTypes.Add(new MediaTypeHeaderValue("application/prs.odatatestxx-odata"));
-                }
+                swagger.SwaggerDoc("v1", new OpenApiInfo { Title = "teste" + " " + " API", Version = "v1" });
 
-                foreach (var inputFormatter in options.InputFormatters.OfType<InputFormatter>().Where(x => x.SupportedMediaTypes.Count == 0))
+                var scheme1 = new OpenApiSecurityScheme()
                 {
-                    inputFormatter.SupportedMediaTypes.Add(new MediaTypeHeaderValue("application/prs.odatatestxx-odata"));
-                }
+                    In = ParameterLocation.Header,
+                    Description = "Please insert Bearer authorization into field",
+                    Name = "Authorization",
+                    Type = SecuritySchemeType.ApiKey
+                };
+
+                swagger.AddSecurityDefinition("Bearer", scheme1);
+
+
+                //swagger.AddSecurityDefinition("ApiKey", new OpenApiSecurityScheme
+                //{
+                //    In = "header",
+                //    Description = "Please insert APIKEY into field",
+                //    Name = "x-api-key",
+                //    Type = "apiKey"
+                //});
+
+                swagger.AddSecurityRequirement(new OpenApiSecurityRequirement()
+                {
+                    
+                });
+
+                //var requiriment = new OpenApiSecurityRequirement();
+                //requiriment.Add(scheme1, );
+                //swagger.AddSecurityRequirement(requiriment);
+
             });
 
 
@@ -73,9 +93,6 @@ namespace Naylah.ConsoleAspNetCore
 
             services.AddScoped<PersonService>();
 
-            services.AddSwaggerGen(opts =>
-            {
-            });
 
         }
 
