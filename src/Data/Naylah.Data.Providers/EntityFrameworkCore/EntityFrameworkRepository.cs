@@ -22,47 +22,38 @@ namespace Naylah.Data.Providers.EntityFrameworkCore
 
         public ValueTask<TEntity> AddAsync(TEntity entity)
         {
-            dbContext.Entry(entity).State = EntityState.Added;
+            dbContext.Set<TEntity>().Add(entity);
             return new ValueTask<TEntity>(entity);
         }
 
-        public async ValueTask<IEnumerable<TEntity>> AddAsync(IEnumerable<TEntity> entities)
+        public ValueTask<IEnumerable<TEntity>> AddAsync(IEnumerable<TEntity> entities)
         {
-            foreach (var item in entities)
-            {
-                await AddAsync(item);
-            }
-
-            return entities;
+            dbContext.Set<TEntity>().AddRange(entities);
+            return new ValueTask<IEnumerable<TEntity>>(entities);
         }
 
         public ValueTask<TEntity> EditAsync(TEntity entity)
         {
-            dbContext.Entry(entity).State = EntityState.Modified;
+            dbContext.Set<TEntity>().Update(entity);
             return new ValueTask<TEntity>(entity);
         }
 
-        public async ValueTask<IEnumerable<TEntity>> EditAsync(IEnumerable<TEntity> entities)
+        public ValueTask<IEnumerable<TEntity>> EditAsync(IEnumerable<TEntity> entities)
         {
-            foreach (var item in entities)
-            {
-                await EditAsync(item);
-            }
-            return entities;
+            dbContext.Set<TEntity>().UpdateRange(entities);
+            return new ValueTask<IEnumerable<TEntity>>(entities);
         }
 
         public Task RemoveAsync(TEntity entity)
         {
-            dbContext.Entry(entity).State = EntityState.Deleted;
+            dbContext.Set<TEntity>().Remove(entity);
             return Task.FromResult(1);
         }
 
-        public async Task RemoveAsync(IEnumerable<TEntity> entities)
+        public Task RemoveAsync(IEnumerable<TEntity> entities)
         {
-            foreach (var item in entities)
-            {
-                await RemoveAsync(item);
-            }
+            dbContext.Set<TEntity>().RemoveRange(entities);
+            return Task.FromResult(1);
         }
     }
 }
