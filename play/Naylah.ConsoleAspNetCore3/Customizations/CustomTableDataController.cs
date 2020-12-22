@@ -24,10 +24,10 @@ namespace Naylah.ConsoleAspNetCore.Customizations
             this.tableDataService = tableDataService;
         }
 
-        public override PageResult<TModel> GetAll()
-        {
-            return tableDataService.CreateODataWrapper(ODataQuerySettings).GetPaged(Request);
-        }
+        //public override PageResult<TModel> GetAll()
+        //{
+        //    return tableDataService.CreateODataWrapper(ODataQuerySettings).GetPaged(Request);
+        //}
 
         [HttpPost("bulk/add")]
         public async Task<IEnumerable<TModel>> AddRange([FromBody]IEnumerable<TModel> models)

@@ -29,10 +29,12 @@ namespace Naylah.Data
         [HttpGet("")]
         public virtual PageResult<TModel> GetAll()
         {
-            return tableDataService.CreateODataWrapper().GetPaged(Request, GetEntities());
+            var odataWrapper = tableDataService.CreateODataWrapper(Request);
+            var e = odataWrapper.ApplyTo<TModel>(GetEntities());
+            return odataWrapper.Paged(e);
         }
-
-        [HttpGet("{id}")]
+       
+        [HttpGet("qwe/{id}")]
         public virtual async Task<TModel> GetById(TIdentifier id)
         {
             return await tableDataService.GetById(id);

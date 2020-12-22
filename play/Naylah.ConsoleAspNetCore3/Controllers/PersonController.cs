@@ -28,5 +28,22 @@ namespace Naylah.ConsoleAspNetCore.Controllers
             var q = service.GetPeopleCustom(filter1, filter2);
             return tableDataService.CreateODataWrapper(new ODataQuerySettings() { PageSize = 75}).GetPaged(Request, q);
         }
+
+        [HttpGet("custom2")]
+        public virtual PageResult<object> GetAllCustom2()
+        {
+            var odataWrapper = Request.CreateODataWrapper<Person>();
+            var e = odataWrapper.ApplyTo(GetEntities());
+            return odataWrapper.Paged<object>(e);
+        }
+
+        [HttpGet("custom3")]
+        public virtual PageResult<PersonDTO2> GetAllCustom3()
+        {
+            var odataWrapper = Request.CreateODataWrapper<Person>();
+            var e = odataWrapper.ApplyTo(GetEntities(), (q) => q.Select(x => new PersonDTO2() { Name = x.Name }));
+            return odataWrapper.Paged<PersonDTO2>(e);
+        }
+
     }
 }
