@@ -69,7 +69,7 @@ namespace Naylah.ConsoleAspNetCore
 
                 swagger.AddSecurityRequirement(new OpenApiSecurityRequirement()
                 {
-                    
+
                 });
 
                 //var requiriment = new OpenApiSecurityRequirement();
@@ -92,8 +92,7 @@ namespace Naylah.ConsoleAspNetCore
             services.AddScoped<IUnitOfWork, SomeWorker>();
 
             services.AddScoped<PersonService>();
-
-
+            services.AddScoped<PersonServiceV2>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

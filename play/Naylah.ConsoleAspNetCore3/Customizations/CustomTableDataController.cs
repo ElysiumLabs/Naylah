@@ -9,8 +9,6 @@ using System.Threading.Tasks;
 
 namespace Naylah.ConsoleAspNetCore.Customizations
 {
-
-
     public abstract class CustomTableDataController<TEntity, TModel, TIdentifier> : TableDataController<TEntity, TModel, TIdentifier>
           where TEntity : class, IEntity<TIdentifier>, IModifiable, IEntityUpdate<TModel>, new()
           where TModel : class, IEntity<TIdentifier>, new()
