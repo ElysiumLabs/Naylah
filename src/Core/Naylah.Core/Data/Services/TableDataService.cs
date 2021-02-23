@@ -9,21 +9,14 @@ using System.Threading.Tasks;
 
 namespace Naylah.Data
 {
-    public abstract class TableDataService<TEntity, TModel, TIdentifier> : DataServiceBase
+    public abstract class TableDataService<TEntity, TModel, TIdentifier>
+        : TableDataServiceBase<TEntity, TIdentifier>
         where TEntity : class, IEntity<TIdentifier>, IModifiable, IEntityUpdate<TModel>, new()
         where TModel : class, IEntity<TIdentifier>, new()
     {
-        protected internal IRepository<TEntity, TIdentifier> Repository;
 
         protected internal virtual Func<IQueryable<TEntity>, IQueryable<TModel>> Projection { get; set; } =
             (q) => q.Project().To<TModel>();
-
-        protected internal virtual Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> Ordering { get; set; } =
-            (q) => q.OrderByDescending(x => x.CreatedAt);
-
-        protected bool UseSoftDelete { get; set; } = false;
-
-        protected bool NotificationThrowException { get; set; } = false;
 
         public TableDataService(
            IUnitOfWork _unitOfWork,
@@ -36,9 +29,8 @@ namespace Naylah.Data
             IUnitOfWork _unitOfWork,
             IRepository<TEntity, TIdentifier> repository,
             IHandler<Notification> notificationHandler
-            ) : base(_unitOfWork, notificationHandler)
+            ) : base(repository, _unitOfWork, notificationHandler)
         {
-            Repository = repository;
             NotificationThrowException = notificationHandler == null;
         }
 
@@ -53,40 +45,6 @@ namespace Naylah.Data
             var entity = Entity.Create<TEntity>();
             entity.UpdateFrom(model, new EntityUpdateOptions(upsertType));
             return entity;
-        }
-
-        protected internal virtual IQueryable<TEntity> GetEntities()
-        {
-            return Repository.Entities;
-        }
-
-        protected virtual async Task<TEntity> FindByAsync(Expression<Func<TEntity, bool>> predicate)
-        {
-            return GetEntities().Where(predicate).FirstOrDefault();
-        }
-
-        protected virtual async Task<TEntity> FindByIdAsync(TIdentifier identifier)
-        {
-            return await FindByAsync(x => x.Id.Equals(identifier));
-        }
-
-        protected virtual async Task GenerateId(TEntity entity)
-        {
-            //application id generation...
-        }
-
-        protected virtual bool RaiseNotification(Notification notification)
-        {
-            if (NotificationThrowException)
-            {
-                throw new Exception(notification.Key + " - " + notification.Value);
-            }
-            else
-            {
-                NotificationsHandler.Handle(notification);
-            }
-
-            return true;
         }
 
         protected virtual async Task<TModel> UpdateInternalAsync(TEntity entity, TModel model)
@@ -108,8 +66,6 @@ namespace Naylah.Data
 
             return ToModel(entity);
         }
-
-
 
         public virtual async Task<TModel> Create(TModel model)
         {

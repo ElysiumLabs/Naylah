@@ -10,6 +10,15 @@ using System.Threading.Tasks;
 
 namespace Naylah.ConsoleAspNetCore
 {
+    public class PersonServiceV2 : StringTableDataServiceV2<Person>
+    {
+        public PersonServiceV2(
+            IRepository<Person, string> repository,
+            IUnitOfWork unitOfWork) : base(repository, unitOfWork)
+        {
+        }
+    }
+
     public class PersonService : StringAppTableDataService<Person, PersonDTO>
     {
         public PersonService(IUnitOfWork _unitOfWork, IRepository<Person, string> repository) : base(_unitOfWork, repository)
