@@ -10,8 +10,7 @@ namespace Naylah.Data
         where TEntity : class, IEntity<TIdentifier>, IModifiable, IEntityUpdate<TModel>, new()
         where TModel : class, IEntity<TIdentifier>, new()
     {
-        private readonly TableDataService<TEntity, TModel, TIdentifier> tableDataService;
-
+        protected readonly TableDataService<TEntity, TModel, TIdentifier> tableDataService;
 
         public TableDataServiceWrapper(TableDataService<TEntity, TModel, TIdentifier> tableDataService)
         {
