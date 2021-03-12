@@ -39,19 +39,19 @@ namespace Naylah.ConsolePlayground
 
             var ttt = wrapper.GetEntities();
 
-            var q = table.GetAll().ToList();
+            //var q = table.GetAll().ToList();
 
 
-            //CadastraPessoa
-            {
-                e.Dispatch(p1);
-                //Salvo no banco
-            }
+            ////CadastraPessoa
+            //{
+            //    e.Dispatch(p1);
+            //    //Salvo no banco
+            //}
 
-            foreach (var item in q)
-            {
-                Console.WriteLine(item.Name);
-            }
+            //foreach (var item in q)
+            //{
+            //    Console.WriteLine(item.Name);
+            //}
             
             Console.ReadKey();
         }
@@ -142,7 +142,7 @@ namespace Naylah.ConsolePlayground
 
     public class PersonTableService : StringTableDataService<Person, PersonM>
     {
-        public PersonTableService(IUnitOfWork _unitOfWork, IRepository<Person, string> repository) : base(_unitOfWork, repository)
+        public PersonTableService(IUnitOfWork _unitOfWork, IRepository<Person, string> repository) : base(repository, _unitOfWork)
         {
         }
     }

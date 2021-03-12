@@ -22,10 +22,7 @@ namespace Naylah.ConsoleAspNetCore.Customizations
             this.tableDataService = tableDataService;
         }
 
-        //public override PageResult<TModel> GetAll()
-        //{
-        //    return tableDataService.CreateODataWrapper(ODataQuerySettings).GetPaged(Request);
-        //}
+        
 
         [HttpPost("bulk/add")]
         public async Task<IEnumerable<TModel>> AddRange([FromBody]IEnumerable<TModel> models)
@@ -40,7 +37,7 @@ namespace Naylah.ConsoleAspNetCore.Customizations
         }
 
         [HttpPost("bulk/delete")]
-        public async Task DeleteRange([FromBody] IEnumerable<TModel> models)
+        public async Task DeleteRange([FromBody] IEnumerable<TIdentifier> models)
         {
             await tableDataService.RemoveRangeAsync(models);
         }

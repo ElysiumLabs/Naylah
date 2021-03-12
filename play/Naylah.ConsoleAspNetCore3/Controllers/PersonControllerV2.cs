@@ -16,32 +16,32 @@ namespace Naylah.ConsoleAspNetCore.Controllers
     [Route("api/[controller]"), ApiController]
     public class PersonControllerV2 : ControllerBase
     {
-        private readonly PersonServiceV2 tableDataService;
+        //private readonly PersonServiceV2 tableDataService;
 
-        public PersonControllerV2(
-            PersonServiceV2 tableDataService)
-        {
-            this.tableDataService = tableDataService;
-        }
+        //public PersonControllerV2(
+        //    PersonServiceV2 tableDataService)
+        //{
+        //    this.tableDataService = tableDataService;
+        //}
 
-        [HttpGet("")]
-        public IEnumerable<PersonGetRequest> GetPeople()
-        {
-            return tableDataService.GetAll<PersonGetRequest>();
-        }
+        //[HttpGet("")]
+        //public IEnumerable<PersonGetRequest> GetPeople()
+        //{
+        //    return tableDataService.GetAll<PersonGetRequest>();
+        //}
 
-        [HttpPost("SameType")]
-        public async Task<PersonPostRequest> PostReturningSameType(
-            [FromBody] PersonPostRequest person)
-        {
-            return await tableDataService.UpsertAsync(person);
-        }
+        //[HttpPost("SameType")]
+        //public async Task<PersonPostRequest> PostReturningSameType(
+        //    [FromBody] PersonPostRequest person)
+        //{
+        //    return await tableDataService.UpsertAsync<Person, PersonPostRequest>(person);
+        //}
 
-        [HttpPost("OtherType")]
-        public async Task<PersonGetRequest> PostReturningOtherType(
-            [FromBody] PersonPostRequest person)
-        {
-            return await tableDataService.UpsertAsync<PersonPostRequest, PersonGetRequest>(person);
-        }
+        //[HttpPost("OtherType")]
+        //public async Task<PersonPostRequest> PostReturningOtherType(
+        //    [FromBody] PersonPostRequest person)
+        //{
+        //    return await tableDataService.UpsertAsync<Person, PersonPostRequest>(person);
+        //}
     }
 }

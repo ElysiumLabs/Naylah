@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNet.OData;
+using Microsoft.AspNet.OData.Query;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -16,28 +17,36 @@ namespace Naylah.Data
     {
         private readonly TableDataService<TEntity, TModel, TIdentifier> tableDataService;
 
-        public TableDataController(TableDataService<TEntity, TModel, TIdentifier> tableDataService)
-        {
-            this.tableDataService = tableDataService;
-        }
+        protected ODataQuerySettings oDataQuerySettings = new ODataQuerySettings();
 
         protected virtual IQueryable<TEntity> GetEntities()
         {
             return tableDataService.CreateWrapper().GetEntities();
         }
 
-        [HttpGet("")]
-        public virtual PageResult<TModel> GetAll()
+        public TableDataController(TableDataService<TEntity, TModel, TIdentifier> tableDataService)
         {
-            var odataWrapper = tableDataService.CreateODataWrapper(Request);
-            var e = odataWrapper.ApplyTo<TModel>(GetEntities());
-            return odataWrapper.Paged(e);
+            this.tableDataService = tableDataService;
         }
-       
-        [HttpGet("qwe/{id}")]
+
+        [HttpGet("")]
+        public async Task<PageResult<TModel>> GetAll()
+        {
+            //implementation of logic
+
+            //var odataWrapper = Request.CreateODataWrapper(tableDataService);
+            //var e = odataWrapper.ApplyTo();
+            //return odataWrapper.Paged(e);
+
+            //or
+
+            return Request.CreateODataWrapper(tableDataService, oDataQuerySettings).GetPaged();
+        }
+
+        [HttpGet("{id}")]
         public virtual async Task<TModel> GetById(TIdentifier id)
         {
-            return await tableDataService.GetById(id);
+            return await tableDataService.GetByIdAsync(id);
         }
 
         [HttpPost("")]
@@ -49,7 +58,7 @@ namespace Naylah.Data
         [HttpDelete("{id}")]
         public virtual async Task<TModel> Delete(TIdentifier id)
         {
-            return await tableDataService.Delete(id);
+            return await tableDataService.DeleteAsync(id);
         }
 
     }

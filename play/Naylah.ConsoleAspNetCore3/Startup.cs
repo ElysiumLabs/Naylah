@@ -34,6 +34,10 @@ namespace Naylah.ConsoleAspNetCore
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+
+            services.AddAutoMapper(typeof(Startup));
+
+
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
                     .AddNewtonsoftJson(options =>
                     {
@@ -43,6 +47,8 @@ namespace Naylah.ConsoleAspNetCore
                             NamingStrategy = new CamelCaseNamingStrategy()
                         };
                     });
+
+
 
             services.AddDataManagement(null, swagger =>
             {
@@ -92,7 +98,7 @@ namespace Naylah.ConsoleAspNetCore
             services.AddScoped<IUnitOfWork, SomeWorker>();
 
             services.AddScoped<PersonService>();
-            services.AddScoped<PersonServiceV2>();
+            //services.AddScoped<PersonServiceV2>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

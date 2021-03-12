@@ -7,7 +7,7 @@ namespace Naylah.Data
        where TEntity : class, IEntityUpdate<TModel>, IEntity<string>, IModifiable, new()
        where TModel : class, IEntity<string>, new()
     {
-        public StringTableDataService(IUnitOfWork _unitOfWork, IRepository<TEntity, string> repository) : base(_unitOfWork, repository)
+        public StringTableDataService(IRepository<TEntity, string> repository, IUnitOfWork _unitOfWork) : base(repository, _unitOfWork)
         {
         }
 
@@ -16,9 +16,9 @@ namespace Naylah.Data
             return await FindByAsync(x => x.Id == identifier);
         }
 
-        protected override async Task GenerateId(TEntity entity)
+        public override async Task GenerateId(TEntity entity)
         {
-            entity.GenerateId();
+            entity.GenerateId(true);
         }
     }
 }
