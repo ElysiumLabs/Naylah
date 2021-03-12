@@ -15,7 +15,7 @@ namespace Naylah.Data.Utils
     public static class ODataUtils
     {
         //refrac
-        public static Uri TryBuildNextLink<TModel>(IEnumerable<TModel> queryResult, int totalCount, HttpRequest request) where TModel : class, new()
+        public static Uri TryBuildNextLink<TModel>(IEnumerable<TModel> queryResult, long totalCount, HttpRequest request)
         {
             try
             {

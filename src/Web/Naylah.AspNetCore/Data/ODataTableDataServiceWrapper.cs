@@ -12,6 +12,7 @@ using System.Text;
 
 namespace Naylah.Data
 {
+
     public class ODataTableDataServiceWrapper<TEntity, TModel, TIdentifier>
         where TEntity : class, IEntity<TIdentifier>, IModifiable, IEntityUpdate<TModel>, new()
         where TModel : class, IEntity<TIdentifier>, new()

@@ -19,18 +19,34 @@ namespace Naylah.Data
             var es = new List<TEntity>();
             foreach (var model in models)
             {
-                es.Add(service.ToEntity(model, upsertType));
+                var e = service.CreateEntity(model, upsertType);
+                service.UpdateEntity(e, model, upsertType);
+                service.GenerateId(e);
+
+                es.Add(e);
             }
 
             return es;
         }
+
+        public IEnumerable<TEntity> ToEntities(IEnumerable<TIdentifier> identifiers)
+        {
+            var es = new List<TEntity>();
+            foreach (var identifier in identifiers)
+            {
+                es.Add(service.CreateEntity(identifier, UpsertType.Instance));
+            }
+
+            return es;
+        }
+
 
         public IEnumerable<TModel> ToModels(IEnumerable<TEntity> entities)
         {
             var ms = new List<TModel>();
             foreach (var entity in entities)
             {
-                ms.Add(service.ToModel(entity));
+                ms.Add(service.ToModel<TModel>(entity));
             }
             return ms;
         }
@@ -57,10 +73,10 @@ namespace Naylah.Data
             return ToModels(entities);
         }
 
-        public async Task RemoveRangeAsync(IEnumerable<TModel> models)
+        public async Task RemoveRangeAsync(IEnumerable<TIdentifier> identifiers)
         {
             var imp = TableDataServiceExtensions.GetImplementation<ICommandRangeRepository<TEntity, TIdentifier>>(service.CreateWrapper().Repository);
-            var es = ToEntities(models, UpsertType.Update);
+            var es = ToEntities(identifiers);
 
             await imp.RemoveAsync(es);
             await service.CreateWrapper().CommitAsync();
@@ -87,12 +103,12 @@ namespace Naylah.Data
             return await r.EditRangeAsync(models);
         }
 
-        public static async Task RemoveRangeAsync<TEntity, TModel, TIdentifier>(this TableDataService<TEntity, TModel, TIdentifier> service, IEnumerable<TModel> models)
+        public static async Task RemoveRangeAsync<TEntity, TModel, TIdentifier>(this TableDataService<TEntity, TModel, TIdentifier> service, IEnumerable<TIdentifier> identifiers)
             where TEntity : class, IEntity<TIdentifier>, IModifiable, IEntityUpdate<TModel>, new()
             where TModel : class, IEntity<TIdentifier>, new()
         {
             var r = new RangedTableDataServiceOperations<TEntity, TModel, TIdentifier>(service);
-            await r.RemoveRangeAsync(models);
+            await r.RemoveRangeAsync(identifiers);
         }
 
 

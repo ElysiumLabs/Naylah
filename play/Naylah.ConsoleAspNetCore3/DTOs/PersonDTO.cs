@@ -11,4 +11,11 @@ namespace Naylah.ConsoleAspNetCore.DTOs
 
         public string Name { get; set; }
     }
+
+    public class PersonDTO2 : IEntity<string>
+    {
+        public string Id { get; set; }
+
+        public string Name { get; set; }
+    }
 }
