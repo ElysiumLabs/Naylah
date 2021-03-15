@@ -8,6 +8,7 @@ using System.Linq.Expressions;
 
 namespace Naylah.Core.Data.Services
 {
+    //TODO: @gab
     ///// <summary>
     ///// An abstract service that only encapsulates the <typeparamref name="TEntity"/> and the <typeparamref name="TIdentifier"/>
     ///// </summary>

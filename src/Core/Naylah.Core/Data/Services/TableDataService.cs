@@ -21,8 +21,10 @@ namespace Naylah.Data
         {
         }
 
-        protected internal override Func<IQueryable<TEntity>, IQueryable> Projection { get; set; } =
-            (q) => q.Project().To<TModel>();
+        public IQueryable<TModel> GetAll()
+        {
+            return GetAll<TModel>();
+        }
 
         public async Task<TModel> GetByIdAsync(TIdentifier id)
         {
@@ -42,6 +44,25 @@ namespace Naylah.Data
         public virtual async Task<TModel> UpsertAsync(TModel model)
         {
             return await UpsertAsync<TModel>(model);
+        }
+
+        public async Task<TModel> DeleteAsync(TIdentifier identifier)
+        {
+            return await DeleteAsync<TModel>(identifier);
+        }
+
+
+        protected override internal TEntity UpdateEntity(TEntity entity, object model, UpsertType upsertType)
+        {
+            if (!(model is TModel tmodel))
+            {
+                throw new Exception("not good");
+            }
+
+            entity.Id = tmodel.Id;
+
+            entity.UpdateFrom(tmodel);
+            return entity;
         }
 
         protected override async Task<TCustomModel> CreateAsync<TCustomModel>(TCustomModel model)
@@ -106,11 +127,6 @@ namespace Naylah.Data
             return ToModel<TCustomModel>(entity);
         }
 
-        public async Task<TModel> DeleteAsync(TIdentifier identifier)
-        {
-            return await DeleteAsync<TModel>(identifier);
-        }
-
         protected override async Task<TCustomModel> DeleteAsync<TCustomModel>(TIdentifier identifier)
         {
             var entity = await FindByIdAsync(identifier);
@@ -135,25 +151,12 @@ namespace Naylah.Data
             return await DeleteAsync<TCustomModel>(model.Id);
         }
 
-
-
         protected async Task<TEntity> CreateInternalAsync(TEntity entity, TModel model)
         {
             return await CreateInternalAsync(entity, model);
         }
 
-        protected internal override TEntity UpdateEntity(TEntity entity, object model, UpsertType upsertType)
-        {
-            if (!(model is TModel tmodel))
-            {
-                throw new Exception("not good");
-            }
-
-            entity.Id = tmodel.Id;
-
-            entity.UpdateFrom(tmodel);
-            return entity;
-        }
+        
 
 
     }

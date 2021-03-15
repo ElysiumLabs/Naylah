@@ -17,12 +17,29 @@ namespace Naylah.Data
         {
         }
 
-        //change later
-        public virtual Task GenerateId(TEntity entity)
+        protected internal virtual TEntity CreateEntity(TIdentifier identifier, UpsertType upsertType)
+        {
+            var entity = Activator.CreateInstance<TEntity>();
+            entity.Id = identifier;
+
+            return entity;
+        }
+
+        protected internal virtual TEntity CreateEntity(object model, UpsertType upsertType)
+        {
+            var entity = Activator.CreateInstance<TEntity>();
+            UpdateEntity(entity, model, upsertType);
+            return entity;
+        }
+
+        protected internal virtual Task GenerateId(TEntity entity)
         {
             //application id generation...
             return Task.FromResult(1);
         }
+
+        protected internal abstract TEntity UpdateEntity(TEntity entity, object model, UpsertType upsertType);
+
 
         protected abstract Task<TCustomModel> CreateAsync<TCustomModel>(TCustomModel model)
             where TCustomModel : class, IEntity<TIdentifier>, new();
@@ -39,24 +56,7 @@ namespace Naylah.Data
         protected abstract Task<TCustomModel> DeleteAsync<TCustomModel>(TCustomModel model)
             where TCustomModel : class, IEntity<TIdentifier>, new();
 
-        protected internal virtual TEntity CreateEntity(TIdentifier identifier, UpsertType upsertType)
-        {
-            var entity = Activator.CreateInstance<TEntity>();
-            entity.Id = identifier;
-
-            return entity;
-        }
-
-        protected internal virtual TEntity CreateEntity(object model, UpsertType upsertType)
-        {
-            var entity = Activator.CreateInstance<TEntity>();
-            UpdateEntity(entity, model, upsertType);
-            return entity;
-        }
-
-        protected internal abstract TEntity UpdateEntity(TEntity entity, object model, UpsertType upsertType);
-
-
+        
         protected virtual async Task<TEntity> CreateInternalAsync(TEntity entity)
         {
             if (entity == null)
@@ -65,9 +65,7 @@ namespace Naylah.Data
             }
 
             entity.UpdateCreatedAt();
-
             entity = await Repository.AddAsync(entity);
-
             return entity;
         }
 
@@ -79,9 +77,7 @@ namespace Naylah.Data
             }
 
             entity.UpdateUpdateAt();
-
             entity = await Repository.EditAsync(entity);
-
             return entity;
         }
 

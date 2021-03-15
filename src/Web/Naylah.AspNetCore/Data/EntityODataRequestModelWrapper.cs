@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNet.OData.Query;
 using Microsoft.AspNetCore.Http;
+using System;
 using System.Linq;
 
 namespace Naylah.Data
@@ -32,8 +33,8 @@ namespace Naylah.Data
         public virtual IQueryable<TModel> ApplyTo()
         {
             var wrapper = tableDataService.CreateWrapper();
-
-            return ProjectionApplyTo(wrapper.GetEntities(), wrapper.Projection).Cast<TModel>();
+            Func<IQueryable<TEntity>, IQueryable<TModel>> projectionFunc = wrapper.Project;
+            return ProjectionApplyTo(wrapper.GetEntities(), projectionFunc).Cast<TModel>();
         }
 
     }

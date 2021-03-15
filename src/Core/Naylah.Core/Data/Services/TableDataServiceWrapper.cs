@@ -19,7 +19,7 @@ namespace Naylah.Data
 
         public IRepository<TEntity, TIdentifier> Repository { get { return tableDataService.Repository; } }
 
-        public Func<IQueryable<TEntity>, IQueryable> Projection { get { return tableDataService.Projection; } }
+        //public Func<IQueryable<TEntity>, IQueryable> Projection { get { return tableDataService.Projection; } }
 
         public Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> Ordering { get { return tableDataService.Ordering; } }
 
@@ -28,9 +28,25 @@ namespace Naylah.Data
             return tableDataService.ToModel<TModel>(entity);
         }
 
+        public virtual void UpdateEntity(TEntity e, TModel model, UpsertType upsertType)
+        {
+            tableDataService.UpdateEntity(e, model, upsertType);
+        }
+
+        [Obsolete("Use CreateEntity instead of this")]
         public virtual TEntity ToEntity(TModel model, UpsertType upsertType)
         {
             return tableDataService.CreateEntity(model, upsertType);
+        }
+
+        public virtual TEntity CreateEntity(TModel model, UpsertType upsertType)
+        {
+            return tableDataService.CreateEntity(model, upsertType);
+        }
+
+        public virtual void GenerateId(TEntity entity)
+        {
+            tableDataService.GenerateId(entity);
         }
 
         public virtual IQueryable<TEntity> GetEntities()
@@ -38,12 +54,12 @@ namespace Naylah.Data
             return tableDataService.GetEntities();
         }
 
-        public IQueryable<TModel> Project(IQueryable<TEntity> entities)
+        public virtual IQueryable<TModel> Project(IQueryable<TEntity> entities)
         {
             return tableDataService.Project<TModel>(entities);
         }
 
-        public Task<bool> CommitAsync() => tableDataService.CommitAsync();
+        public virtual Task<bool> CommitAsync() => tableDataService.CommitAsync();
     }
 
     public static class TableDataServiceWrapperExtensions
