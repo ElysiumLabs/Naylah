@@ -19,13 +19,11 @@ namespace Naylah.Data
 
         public IRepository<TEntity, TIdentifier> Repository { get { return tableDataService.Repository; } }
 
-        //public Func<IQueryable<TEntity>, IQueryable> Projection { get { return tableDataService.Projection; } }
-
         public Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> Ordering { get { return tableDataService.Ordering; } }
 
         public virtual TModel ToModel(TEntity entity)
         {
-            return tableDataService.ToModel<TModel>(entity);
+            return tableDataService.ToModel(entity);
         }
 
         public virtual void UpdateEntity(TEntity e, TModel model, UpsertType upsertType)
@@ -56,7 +54,7 @@ namespace Naylah.Data
 
         public virtual IQueryable<TModel> Project(IQueryable<TEntity> entities)
         {
-            return tableDataService.Project<TModel>(entities);
+            return tableDataService.Project(entities);
         }
 
         public virtual Task<bool> CommitAsync() => tableDataService.CommitAsync();

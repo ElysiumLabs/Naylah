@@ -65,6 +65,16 @@ namespace Naylah.Data
             return entity;
         }
 
+        protected internal TModel ToModel(TEntity entity)
+        {
+            return ToModel<TModel>(entity);
+        }
+
+        protected internal IQueryable<TModel> Project(IQueryable<TEntity> entities)
+        {
+            return Project<TModel>(entities);
+        }
+
         protected override async Task<TCustomModel> CreateAsync<TCustomModel>(TCustomModel model)
         {
             var entity = CreateEntity(model, UpsertType.Insert);
