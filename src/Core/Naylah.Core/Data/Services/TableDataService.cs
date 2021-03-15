@@ -41,9 +41,9 @@ namespace Naylah.Data
             return await UpdateAsync<TModel>(model);
         }
 
-        public virtual async Task<TModel> UpsertAsync(TModel model)
+        public virtual async Task<TModel> UpsertAsync(TModel model, Expression<Func<TEntity, bool>> customPredicate = null)
         {
-            return await UpsertAsync<TModel>(model);
+            return await UpsertAsync<TModel>(model, customPredicate);
         }
 
         public async Task<TModel> DeleteAsync(TIdentifier identifier)
@@ -51,8 +51,12 @@ namespace Naylah.Data
             return await DeleteAsync<TModel>(identifier);
         }
 
+        protected internal virtual TEntity CreateEntity(TModel model, UpsertType upsertType)
+        {
+            return base.CreateEntity(model, upsertType);
+        }
 
-        protected override internal TEntity UpdateEntity(TEntity entity, object model, UpsertType upsertType)
+        override internal TEntity UpdateEntity(TEntity entity, object model, UpsertType upsertType)
         {
             if (!(model is TModel tmodel))
             {
@@ -75,7 +79,7 @@ namespace Naylah.Data
             return Project<TModel>(entities);
         }
 
-        protected override async Task<TCustomModel> CreateAsync<TCustomModel>(TCustomModel model)
+        internal override async Task<TCustomModel> CreateAsync<TCustomModel>(TCustomModel model)
         {
             var entity = CreateEntity(model, UpsertType.Insert);
             await GenerateId(entity);
@@ -90,7 +94,7 @@ namespace Naylah.Data
             return ToModel<TCustomModel>(entity);
         }
 
-        protected override async Task<TCustomModel> UpdateAsync<TCustomModel>(TCustomModel model, Expression<Func<TEntity, bool>> customPredicate = null)
+        internal override async Task<TCustomModel> UpdateAsync<TCustomModel>(TCustomModel model, Expression<Func<TEntity, bool>> customPredicate = null)
         {
             var entity = customPredicate != null ? await FindByAsync(customPredicate) : await FindByIdAsync(model.Id);
 
@@ -111,7 +115,7 @@ namespace Naylah.Data
             return ToModel<TCustomModel>(entity);
         }
 
-        protected override async Task<TCustomModel> UpsertAsync<TCustomModel>(TCustomModel model, Expression<Func<TEntity, bool>> customPredicate = null)
+        internal override async Task<TCustomModel> UpsertAsync<TCustomModel>(TCustomModel model, Expression<Func<TEntity, bool>> customPredicate = null)
         {
             var entity = customPredicate != null ? await FindByAsync(customPredicate) : await FindByIdAsync(model.Id);
 
@@ -137,7 +141,7 @@ namespace Naylah.Data
             return ToModel<TCustomModel>(entity);
         }
 
-        protected override async Task<TCustomModel> DeleteAsync<TCustomModel>(TIdentifier identifier)
+        internal override async Task<TCustomModel> DeleteAsync<TCustomModel>(TIdentifier identifier)
         {
             var entity = await FindByIdAsync(identifier);
 
@@ -156,18 +160,10 @@ namespace Naylah.Data
             return ToModel<TCustomModel>(entity);
         }
 
-        protected override async Task<TCustomModel> DeleteAsync<TCustomModel>(TCustomModel model)
+        internal override async Task<TCustomModel> DeleteAsync<TCustomModel>(TCustomModel model)
         {
             return await DeleteAsync<TCustomModel>(model.Id);
         }
-
-        protected async Task<TEntity> CreateInternalAsync(TEntity entity, TModel model)
-        {
-            return await CreateInternalAsync(entity, model);
-        }
-
-        
-
 
     }
 }

@@ -25,7 +25,7 @@ namespace Naylah.Data
             return entity;
         }
 
-        protected internal virtual TEntity CreateEntity(object model, UpsertType upsertType)
+        internal virtual TEntity CreateEntity(object model, UpsertType upsertType)
         {
             var entity = Activator.CreateInstance<TEntity>();
             UpdateEntity(entity, model, upsertType);
@@ -38,22 +38,22 @@ namespace Naylah.Data
             return Task.FromResult(1);
         }
 
-        protected internal abstract TEntity UpdateEntity(TEntity entity, object model, UpsertType upsertType);
+        internal abstract TEntity UpdateEntity(TEntity entity, object model, UpsertType upsertType);
 
 
-        protected abstract Task<TCustomModel> CreateAsync<TCustomModel>(TCustomModel model)
+        internal abstract Task<TCustomModel> CreateAsync<TCustomModel>(TCustomModel model)
             where TCustomModel : class, IEntity<TIdentifier>, new();
 
-        protected abstract Task<TCustomModel> UpdateAsync<TCustomModel>(TCustomModel model, Expression<Func<TEntity, bool>> customPredicate = null)
+        internal abstract Task<TCustomModel> UpdateAsync<TCustomModel>(TCustomModel model, Expression<Func<TEntity, bool>> customPredicate = null)
             where TCustomModel : class, IEntity<TIdentifier>, new();
 
-        protected abstract Task<TCustomModel> UpsertAsync<TCustomModel>(TCustomModel model, Expression<Func<TEntity, bool>> customPredicate = null)
+        internal abstract Task<TCustomModel> UpsertAsync<TCustomModel>(TCustomModel model, Expression<Func<TEntity, bool>> customPredicate = null)
             where TCustomModel : class, IEntity<TIdentifier>, new();
 
-        protected abstract Task<TCustomModel> DeleteAsync<TCustomModel>(TIdentifier identifier)
+        internal abstract Task<TCustomModel> DeleteAsync<TCustomModel>(TIdentifier identifier)
             where TCustomModel : class, IEntity<TIdentifier>, new();
 
-        protected abstract Task<TCustomModel> DeleteAsync<TCustomModel>(TCustomModel model)
+        internal abstract Task<TCustomModel> DeleteAsync<TCustomModel>(TCustomModel model)
             where TCustomModel : class, IEntity<TIdentifier>, new();
 
         
