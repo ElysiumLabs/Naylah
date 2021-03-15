@@ -21,12 +21,12 @@ namespace Naylah.Data
         {
         }
 
-        public IQueryable<TModel> GetAll()
+        public virtual IQueryable<TModel> GetAll()
         {
             return GetAll<TModel>();
         }
 
-        public async Task<TModel> GetByIdAsync(TIdentifier id)
+        public virtual async Task<TModel> GetByIdAsync(TIdentifier id)
         {
             return await GetByIdAsync<TModel>(id);
         }
@@ -46,7 +46,7 @@ namespace Naylah.Data
             return await UpsertAsync<TModel>(model, customPredicate);
         }
 
-        public async Task<TModel> DeleteAsync(TIdentifier identifier)
+        public virtual async Task<TModel> DeleteAsync(TIdentifier identifier)
         {
             return await DeleteAsync<TModel>(identifier);
         }
@@ -69,12 +69,12 @@ namespace Naylah.Data
             return entity;
         }
 
-        protected internal TModel ToModel(TEntity entity)
+        protected internal virtual TModel ToModel(TEntity entity)
         {
             return ToModel<TModel>(entity);
         }
 
-        protected internal IQueryable<TModel> Project(IQueryable<TEntity> entities)
+        protected internal virtual IQueryable<TModel> Project(IQueryable<TEntity> entities)
         {
             return Project<TModel>(entities);
         }
