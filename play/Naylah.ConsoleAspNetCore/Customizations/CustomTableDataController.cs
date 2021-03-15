@@ -33,7 +33,7 @@ namespace Naylah.ConsoleAspNetCore.Customizations
         }
 
         [HttpPost("bulk/delete")]
-        public async Task DeleteRange([FromBody] IEnumerable<TModel> models)
+        public async Task DeleteRange([FromBody] IEnumerable<TIdentifier> models)
         {
             await tableDataService.RemoveRangeAsync(models);
         }

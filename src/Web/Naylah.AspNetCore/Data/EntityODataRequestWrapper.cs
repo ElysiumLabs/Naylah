@@ -68,23 +68,23 @@ namespace Naylah.Data
             return query;
         }
 
-        protected virtual IQueryable<object> ProjectionApplyTo(IQueryable<TEntity> entities, Func<IQueryable<TEntity>, IQueryable> projection)
+        protected virtual IQueryable ProjectionApplyTo(IQueryable<TEntity> entities, Func<IQueryable<TEntity>, IQueryable> projection)
         {
             var query = ApplyToInternal(entities);
 
             if (projection != null)
             {
-                return projection.Invoke(query).Cast<object>();
+                return projection.Invoke(query);
             }
             else if (entityOpts.SelectExpand != null)
             {
-                return entityOpts.SelectExpand.ApplyTo(query, querySettings).Cast<object>();
+                return entityOpts.SelectExpand.ApplyTo(query, querySettings);
             }
 
             return query;
         }
 
-        public virtual IQueryable<object> ApplyTo(IQueryable<TEntity> entities)
+        public virtual IQueryable ApplyTo(IQueryable<TEntity> entities)
         {
             return ProjectionApplyTo(entities, null);
         }
@@ -92,6 +92,11 @@ namespace Naylah.Data
         public virtual IQueryable<TModel> ApplyTo<TModel>(IQueryable<TEntity> entities, Func<IQueryable<TEntity>, IQueryable<TModel>> projection)
         {
             return ProjectionApplyTo(entities, projection).Cast<TModel>();
+        }
+
+        public PageResult<object> Paged(IQueryable query)
+        {
+            return Paged(query.Cast<object>());
         }
 
         public PageResult<TResult> Paged<TResult>(IQueryable<TResult> query)

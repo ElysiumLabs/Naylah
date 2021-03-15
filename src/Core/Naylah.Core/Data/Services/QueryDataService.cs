@@ -22,9 +22,6 @@ namespace Naylah
         protected internal virtual Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> Ordering { get; set; } =
             (q) => q.OrderByDescending(x => x.CreatedAt);
 
-        protected abstract internal Func<IQueryable<TEntity>, IQueryable> Projection { get; set; }
-
-
         public QueryDataService(
             IRepository<TEntity, TIdentifier> repository,
             IUnitOfWork unitOfWork)
@@ -40,6 +37,19 @@ namespace Naylah
         {
             Repository = repository;
             NotificationThrowException = notificationsHandler == null;
+        }
+
+        public virtual IQueryable<TCustomModel> GetAll<TCustomModel>(IQueryable<TEntity> adptedEntities = null)
+            where TCustomModel : class, IEntity<TIdentifier>, new()
+        {
+            var entityQuery = adptedEntities ?? GetEntities();
+
+            if (Ordering != null)
+            {
+                entityQuery = Ordering.Invoke(entityQuery);
+            }
+
+            return Project<TCustomModel>(entityQuery);
         }
 
         protected internal virtual IQueryable<TEntity> GetEntities()
@@ -64,8 +74,6 @@ namespace Naylah
             return await FindByAsync(x => x.Id.Equals(identifier));
         }
 
-       
-
         protected virtual bool RaiseNotification(Notification notification)
         {
             if (NotificationThrowException)
@@ -80,32 +88,12 @@ namespace Naylah
             return true;
         }
 
-        public virtual IQueryable<TCustomModel> GetAll<TCustomModel>(IQueryable<TEntity> adptedEntities = null)
-            where TCustomModel : class, IEntity<TIdentifier>, new()
+        protected internal virtual IQueryable<TCustomModel> Project<TCustomModel>(IQueryable<TEntity> entities)
         {
-            var entityQuery = adptedEntities ?? GetEntities();
+            //default implementation... override this with your need in subsequent services or
+            //some serivce base...
 
-            if (Ordering != null)
-            {
-                entityQuery = Ordering.Invoke(entityQuery);
-            }
-
-            return Project<TCustomModel>(entityQuery);
-        }
-
-
-        protected internal virtual IQueryable<TCustomModel> Project<TCustomModel>(
-            IQueryable<TEntity> entities, Func<IQueryable<TEntity>, IQueryable<TCustomModel>> customProjection = null)
-        {
-            var entityQuery = entities;
-
-            if (customProjection != null)
-            {
-                return customProjection.Invoke(entityQuery);
-            }
-
-            var projectedQuery = Projection.Invoke(entityQuery);
-            return projectedQuery.Cast<TCustomModel>();
+            return entities.Project().To<TCustomModel>();
         }
 
         protected internal virtual TCustomModel ToModel<TCustomModel>(TEntity entity)

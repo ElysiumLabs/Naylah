@@ -12,7 +12,7 @@ using System.Text;
 
 namespace Naylah.Data
 {
-
+    [Obsolete("Use the new Request wrapper for odata", true)]
     public class ODataTableDataServiceWrapper<TEntity, TModel, TIdentifier>
         where TEntity : class, IEntity<TIdentifier>, IModifiable, IEntityUpdate<TModel>, new()
         where TModel : class, IEntity<TIdentifier>, new()
@@ -108,6 +108,7 @@ namespace Naylah.Data
 
     public static class ODataTableServiceWrapperExtensions
     {
+        [Obsolete("Use the new Request wrapper for odata", true)]
         public static ODataTableDataServiceWrapper<TEntity, TModel, TIdentifier> CreateODataWrapper<TEntity, TModel, TIdentifier>(
             this TableDataService<TEntity, TModel, TIdentifier> tableDataService, ODataQuerySettings oDataQuerySettings = null
             )

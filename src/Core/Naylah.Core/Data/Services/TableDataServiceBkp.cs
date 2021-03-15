@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Naylah.Data
 {
-    public class TableDataServiceBkp<TEntity, TModel, TIdentifier> : QueryDataService<TEntity, TIdentifier>
+    class TableDataServiceBkp<TEntity, TModel, TIdentifier> : QueryDataService<TEntity, TIdentifier>
         where TEntity : class, IEntity<TIdentifier>, IEntityUpdate<TModel>, IModifiable, new()
         where TModel : class, IEntity<TIdentifier>, new()
     {
@@ -28,14 +28,10 @@ namespace Naylah.Data
             return Task.FromResult(1);
         }
 
-
-        protected override internal Func<IQueryable<TEntity>, IQueryable> Projection { get; set; } =
-           (q) => q.Project().To<TModel>() ;
-
         protected internal virtual TModel ToModel(TEntity entity)
         {
             var es = new List<TEntity>() { entity };
-            return Projection?.Invoke(es.AsQueryable()).Cast<TModel>().FirstOrDefault() ?? new TModel() { Id = entity.Id };
+            return Project<TModel>(es.AsQueryable()).FirstOrDefault() ?? new TModel() { Id = entity.Id };
         }
 
         protected internal virtual TEntity ToEntity(TModel model, UpsertType upsertType)
@@ -188,12 +184,12 @@ namespace Naylah.Data
 
 
 
-        protected internal virtual IQueryable<TModel> Project(IQueryable<TEntity> entities)
-        {
-            var entityQuery = entities;
-            var projectedQuery = Projection.Invoke(entityQuery);
-            return projectedQuery.Cast<TModel>();
-        }
+        //protected internal virtual IQueryable<TModel> Project(IQueryable<TEntity> entities)
+        //{
+        //    var entityQuery = entities;
+        //    var projectedQuery = Projection.Invoke(entityQuery);
+        //    return projectedQuery.Cast<TModel>();
+        //}
 
         public virtual IQueryable<TModel> GetAll(IQueryable<TEntity> adptedEntities = null)
         {
@@ -209,7 +205,7 @@ namespace Naylah.Data
                 entityQuery = Ordering.Invoke(entityQuery);
             }
 
-            return Project(entityQuery);
+            return Project<TModel>(entityQuery);
         }
 
     }

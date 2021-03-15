@@ -8,10 +8,12 @@ namespace Naylah.Data
         where TModel : class, IEntity<TIdentifier>, new()
     {
         private readonly TableDataService<TEntity, TModel, TIdentifier> service;
+        private readonly TableDataServiceWrapper<TEntity, TModel, TIdentifier> wrapper;
 
         public RangedTableDataServiceOperations(TableDataService<TEntity, TModel, TIdentifier> service)
         {
             this.service = service;
+            wrapper = service.CreateWrapper();
         }
 
         public IEnumerable<TEntity> ToEntities(IEnumerable<TModel> models, UpsertType upsertType)
@@ -19,9 +21,13 @@ namespace Naylah.Data
             var es = new List<TEntity>();
             foreach (var model in models)
             {
-                var e = service.CreateEntity(model, upsertType);
-                service.UpdateEntity(e, model, upsertType);
-                service.GenerateId(e);
+                var e = wrapper.CreateEntity(model, upsertType);
+                wrapper.UpdateEntity(e, model, upsertType);
+
+                if (upsertType == UpsertType.Insert)
+                {
+                    wrapper.GenerateId(e);
+                }
 
                 es.Add(e);
             }
@@ -46,7 +52,7 @@ namespace Naylah.Data
             var ms = new List<TModel>();
             foreach (var entity in entities)
             {
-                ms.Add(service.ToModel<TModel>(entity));
+                ms.Add(wrapper.ToModel(entity));
             }
             return ms;
         }
@@ -57,7 +63,7 @@ namespace Naylah.Data
             var es = ToEntities(models, UpsertType.Insert);
             var entities = await imp.AddAsync(es);
 
-            await service.CreateWrapper().CommitAsync();
+            await wrapper.CommitAsync();
 
             return ToModels(entities);
         }
@@ -68,7 +74,7 @@ namespace Naylah.Data
             var es = ToEntities( models, UpsertType.Update);
             var entities = await imp.EditAsync(es);
 
-            await service.CreateWrapper().CommitAsync();
+            await wrapper.CommitAsync();
 
             return ToModels(entities);
         }
@@ -79,7 +85,7 @@ namespace Naylah.Data
             var es = ToEntities(identifiers);
 
             await imp.RemoveAsync(es);
-            await service.CreateWrapper().CommitAsync();
+            await wrapper.CommitAsync();
         }
 
     }

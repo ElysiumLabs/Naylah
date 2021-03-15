@@ -16,7 +16,7 @@ namespace Naylah.Data
             return await FindByAsync(x => x.Id == identifier);
         }
 
-        public override async Task GenerateId(TEntity entity)
+        protected internal override async Task GenerateId(TEntity entity)
         {
             entity.GenerateId(true);
         }
