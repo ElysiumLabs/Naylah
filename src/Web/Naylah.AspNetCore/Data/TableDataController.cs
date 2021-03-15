@@ -30,7 +30,7 @@ namespace Naylah.Data
         }
 
         [HttpGet("")]
-        public async Task<PageResult<TModel>> GetAll()
+        public virtual async Task<PageResult<TModel>> GetAll()
         {
             //implementation of logic
 

@@ -88,11 +88,8 @@ namespace Naylah
             return true;
         }
 
-        protected internal virtual IQueryable<TCustomModel> Project<TCustomModel>(IQueryable<TEntity> entities)
+        internal virtual IQueryable<TCustomModel> Project<TCustomModel>(IQueryable<TEntity> entities)
         {
-            //default implementation... override this with your need in subsequent services or
-            //some serivce base...
-
             return entities.Project().To<TCustomModel>();
         }
 
