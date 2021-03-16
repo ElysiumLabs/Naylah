@@ -9,11 +9,18 @@ namespace Naylah.Data
     public abstract class TableDataServiceBase<TEntity, TIdentifier> : QueryDataService<TEntity, TIdentifier>
         where TEntity : class, IEntity<TIdentifier>, IModifiable, new()
     {
-        public TableDataServiceBase(IRepository<TEntity, TIdentifier> repository, IUnitOfWork unitOfWork) : base(repository, unitOfWork)
+        protected TableDataServiceBase(
+            IRepository<TEntity, TIdentifier> repository, 
+            IUnitOfWork unitOfWork)
+            : base(repository, unitOfWork)
         {
         }
 
-        public TableDataServiceBase(IRepository<TEntity, TIdentifier> repository, IUnitOfWork unitOfWork, IHandler<Notification> notificationsHandler) : base(repository, unitOfWork, notificationsHandler)
+        protected TableDataServiceBase(
+            IRepository<TEntity, TIdentifier> repository,
+            IUnitOfWork unitOfWork,
+            IHandler<Notification> notificationsHandler)
+            : base(repository, unitOfWork, notificationsHandler)
         {
         }
 
@@ -40,7 +47,6 @@ namespace Naylah.Data
 
         internal abstract TEntity UpdateEntity(TEntity entity, object model, UpsertType upsertType);
 
-
         internal abstract Task<TCustomModel> CreateAsync<TCustomModel>(TCustomModel model)
             where TCustomModel : class, IEntity<TIdentifier>, new();
 
@@ -56,7 +62,6 @@ namespace Naylah.Data
         internal abstract Task<TCustomModel> DeleteAsync<TCustomModel>(TCustomModel model)
             where TCustomModel : class, IEntity<TIdentifier>, new();
 
-        
         protected virtual async Task<TEntity> CreateInternalAsync(TEntity entity)
         {
             if (entity == null)

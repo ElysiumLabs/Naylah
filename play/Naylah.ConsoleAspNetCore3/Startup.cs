@@ -84,17 +84,21 @@ namespace Naylah.ConsoleAspNetCore
 
             });
 
-
+            var connectionString = Configuration.GetConnectionString("LocalDB");
             services.
-                AddDbContext<ORM.TestDbContext>(options => options.UseSqlServer("Server=(localdb)\\MSSQLLocalDB;Database=NaylahTestDevDB;Trusted_Connection=True;MultipleActiveResultSets=false", ORM.TestDbContext.ConfigureDBContext))
+                AddDbContext<ORM.TestDbContext>(options => options.UseSqlServer(connectionString, ORM.TestDbContext.ConfigureDBContext))
             ;
 
             //services.AddSingleton(new List<Person>());
             //services.AddScoped<IRepository<Person, string>, SomeRepository>();
 
             services.AddEntityFrameworkRepository<ORM.TestDbContext, Person, string>();
+            services.AddEntityFrameworkRepository<ORM.TestDbContext, Book, string>();
+            services.AddEntityFrameworkRepository<ORM.TestDbContext, Author, string>();
 
             services.AddScoped(typeof(StringAppTableDataService<,>));
+            services.AddScoped(typeof(StringTableDataServiceCustom<>));
+            services.AddScoped(typeof(TableDataServiceCustom<,>));
             services.AddScoped<IUnitOfWork, SomeWorker>();
 
             services.AddScoped<PersonService>();
