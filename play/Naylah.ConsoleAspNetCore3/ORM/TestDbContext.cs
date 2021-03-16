@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.Extensions.Configuration;
 using Naylah.ConsoleAspNetCore.Entities;
 using System;
 using System.Collections.Generic;
@@ -18,14 +19,21 @@ namespace Naylah.ConsoleAspNetCore.ORM
 
         }
 
-        public TestDbContext(DbContextOptions<TestDbContext> options) : base(options)
+        public TestDbContext(
+            DbContextOptions<TestDbContext> options) : base(options)
         {
         }
 
         public TestDbContext CreateDbContext(string[] args)
         {
             var optionsBuilder = new DbContextOptionsBuilder<TestDbContext>();
-            optionsBuilder.UseSqlServer("Server=(localdb)\\MSSQLLocalDB;Database=NaylahTestDevDB;Trusted_Connection=True;MultipleActiveResultSets=false", ConfigureDBContext);
+            IConfiguration configuration = new ConfigurationBuilder()
+                .SetBasePath(AppContext.BaseDirectory)
+                .AddJsonFile("appsettings.Development.json")
+                .Build();
+
+            var connectionString = configuration.GetConnectionString("LocalDB");
+            optionsBuilder.UseSqlServer(connectionString, ConfigureDBContext);
 
             return new TestDbContext(optionsBuilder.Options);
         }
@@ -35,6 +43,9 @@ namespace Naylah.ConsoleAspNetCore.ORM
             modelBuilder.HasDefaultSchema(schema);
 
             modelBuilder.Entity<Person>().HasKey(x => x.Id);
+
+            Author.EntityConfigure(modelBuilder);
+            Book.EntityConfigure(modelBuilder);
         }
 
         internal static void ConfigureDBContext(SqlServerDbContextOptionsBuilder obj)

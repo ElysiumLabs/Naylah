@@ -66,6 +66,7 @@ namespace Naylah.Data.Extensions
         {
             var sourceProperty = sourceProperties.FirstOrDefault(src => src.Name == destinationProperty.Name);
 
+            // TODO: needs review on object mappings
             if (sourceProperty != null)
             {
                 return Expression.Bind(destinationProperty, Expression.Property(parameterExpression, sourceProperty));
