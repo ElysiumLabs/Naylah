@@ -12,6 +12,8 @@ namespace Naylah.Data
     public class EntityODataRequestWrapper<TEntity>
         where TEntity : class, new()
     {
+        public bool UseLongCount { get; set; } = false;
+
         protected readonly HttpRequest request;
         protected readonly ODataQuerySettings querySettings;
         protected readonly ODataQueryOptions<TEntity> entityOpts;
@@ -101,7 +103,8 @@ namespace Naylah.Data
 
         public PageResult<TResult> Paged<TResult>(IQueryable<TResult> query)
         {
-            var totalCount = query.LongCount();
+            long totalCount = UseLongCount ? query.LongCount() : query.Count();
+
             var skip = entityOpts.Skip?.Value;
             var top = entityOpts.Top?.Value ?? querySettings.PageSize;
 
