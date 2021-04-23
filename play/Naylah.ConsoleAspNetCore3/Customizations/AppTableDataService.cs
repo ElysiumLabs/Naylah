@@ -1,4 +1,7 @@
-﻿using Naylah.Data;
+﻿using AutoMapper;
+using AutoMapper.QueryableExtensions;
+using Microsoft.EntityFrameworkCore;
+using Naylah.Data;
 using Naylah.Data.Access;
 using System;
 using System.Collections.Generic;
@@ -40,8 +43,16 @@ namespace Naylah.ConsoleAspNetCore.Customizations
         where TEntity : class, IEntity<string>, IModifiable, IEntityUpdate<TModel>, new()
         where TModel : class, IEntity<string>, new()
     {
-        public StringAppTableDataService(IUnitOfWork _unitOfWork, IRepository<TEntity, string> repository) : base(repository, _unitOfWork)
+        public StringAppTableDataService(IMapper mapper, IUnitOfWork _unitOfWork, IRepository<TEntity, string> repository) : base(repository, _unitOfWork)
         {
+            Mapper = mapper;
+        }
+
+        public IMapper Mapper { get; }
+
+        protected override IQueryable<TModel> Project(IQueryable<TEntity> entities)
+        {
+            return entities.AsNoTracking().ProjectTo<TModel>(Mapper.ConfigurationProvider);
         }
     }
 }

@@ -9,13 +9,13 @@ namespace Naylah.ConsoleAspNetCore.DTOs
     {
         public string Id { get; set; }
 
-        public string Name { get; set; }
+        public PersonName Name { get; set; } = new PersonName();
     }
 
     public class PersonDTO2 : IEntity<string>
     {
         public string Id { get; set; }
 
-        public string Name { get; set; }
+        public PersonName Name { get; set; } = new PersonName();
     }
 }

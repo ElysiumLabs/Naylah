@@ -10,22 +10,22 @@ namespace Naylah.Data
         where TModel : class, IEntity<TIdentifier>, new()
     {
         private readonly TableDataService<TEntity, TModel, TIdentifier> tableDataService;
-        private readonly ODataQueryOptions<TModel> modelOpts;
+        //private readonly ODataQueryOptions<TModel> modelOpts;
 
         public EntityODataRequestModelWrapper(TableDataService<TEntity, TModel, TIdentifier> tableDataService, HttpRequest request, ODataQuerySettings oDataQuerySettings = null) : base(request, oDataQuerySettings)
         {
             this.tableDataService = tableDataService;
-            modelOpts = GetEntityModelOptions<TModel>();
+            //modelOpts = GetEntityModelOptions<TModel>();
         }
 
-        public bool ModelValidation { get; set; } = true;
+        public bool ModelValidation { get; set; } = false;
 
         protected override IQueryable<TEntity> ApplyToInternal(IQueryable<TEntity> entities)
         {
-            if (ModelValidation)
-            {
-                modelOpts.Validate(validationSettings);
-            }
+            //if (ModelValidation)
+            //{
+            //    modelOpts.Validate(validationSettings);
+            //}
 
             return base.ApplyToInternal(entities);
         }
@@ -34,7 +34,7 @@ namespace Naylah.Data
         {
             var wrapper = tableDataService.CreateWrapper();
             Func<IQueryable<TEntity>, IQueryable<TModel>> projectionFunc = wrapper.Project;
-            return ProjectionApplyTo(wrapper.GetEntities(), projectionFunc).Cast<TModel>();
+            return (IQueryable<TModel>)ProjectionApplyTo(wrapper.GetEntities(), projectionFunc);
         }
 
     }

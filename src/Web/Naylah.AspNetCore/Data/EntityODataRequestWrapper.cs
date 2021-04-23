@@ -17,10 +17,10 @@ namespace Naylah.Data
         protected readonly ODataQueryOptions<TEntity> entityOpts;
         protected readonly ODataValidationSettings validationSettings;
 
-        protected ODataQueryOptions<TType> GetEntityModelOptions<TType>() where TType : class, new()
+        protected virtual ODataQueryOptions<TType> GetEntityModelOptions<TType>() where TType : class, new()
         {
             var builder = new ODataConventionModelBuilder();
-            builder.EntitySet<TType>(nameof(TType)).EntityType.Filter().OrderBy().Page().Expand();
+            builder.EntitySet<TType>(nameof(TType)).EntityType.Count().Filter().Select().Expand().OrderBy().Page();
             var m = builder.GetEdmModel();
 
             return new ODataQueryOptions<TType>(new ODataQueryContext(m, typeof(TType), null), request);

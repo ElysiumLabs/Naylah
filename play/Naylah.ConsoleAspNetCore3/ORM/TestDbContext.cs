@@ -35,6 +35,7 @@ namespace Naylah.ConsoleAspNetCore.ORM
             modelBuilder.HasDefaultSchema(schema);
 
             modelBuilder.Entity<Person>().HasKey(x => x.Id);
+            modelBuilder.Entity<Person>().OwnsOne(x => x.Name);
         }
 
         internal static void ConfigureDBContext(SqlServerDbContextOptionsBuilder obj)

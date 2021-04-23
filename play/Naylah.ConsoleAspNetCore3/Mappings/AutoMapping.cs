@@ -10,6 +10,7 @@ namespace Naylah.ConsoleAspNetCore.Mappings
     {
         public AutoMapping()
         {
+            //CreateMap<DTOs.PersonDTO, DTOs.PersonDTO>().ReverseMap(); 
             CreateMap<Entities.Person, DTOs.PersonDTO>().ReverseMap(); 
             CreateMap<Entities.Person, DTOs.PersonDTO2>().ReverseMap(); 
         }

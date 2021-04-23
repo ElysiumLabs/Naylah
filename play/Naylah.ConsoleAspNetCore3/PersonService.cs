@@ -1,4 +1,5 @@
-﻿using Naylah.ConsoleAspNetCore.Customizations;
+﻿using AutoMapper;
+using Naylah.ConsoleAspNetCore.Customizations;
 using Naylah.ConsoleAspNetCore.DTOs;
 using Naylah.ConsoleAspNetCore.Entities;
 using Naylah.Data;
@@ -21,7 +22,7 @@ namespace Naylah.ConsoleAspNetCore
 
     public class PersonService : StringAppTableDataService<Person, PersonDTO>
     {
-        public PersonService(IUnitOfWork _unitOfWork, IRepository<Person, string> repository) : base(_unitOfWork, repository)
+        public PersonService(IMapper mapper,IUnitOfWork _unitOfWork, IRepository<Person, string> repository) : base(mapper, _unitOfWork, repository)
         {
         }
 
@@ -36,7 +37,7 @@ namespace Naylah.ConsoleAspNetCore
 
             if (!string.IsNullOrEmpty(filter2))
             {
-                q = q.Where(x => x.Name == filter2);
+                //q = q.Where(x => x.Name == filter2);
             }
 
             return q;

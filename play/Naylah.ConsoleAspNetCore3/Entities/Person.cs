@@ -12,7 +12,7 @@ namespace Naylah.ConsoleAspNetCore.Entities
     public class PersonGetRequest : IEntity<string>
     {
         public string Id { get; set; }
-        public string Name { get; set; }
+        public PersonName Name { get; set; } = new PersonName();
         public DateTimeOffset? CreatedAt { get; set; }
         public DateTimeOffset? UpdatedAt { get; set; }
     }
@@ -20,7 +20,7 @@ namespace Naylah.ConsoleAspNetCore.Entities
     public class PersonPostRequest : IEntity<string>
     {
         public string Id { get; set; }
-        public string Name { get; set; }
+        public PersonName Name { get; set; } = new PersonName();
         public string Version { get; set; }
     }
 
@@ -36,7 +36,7 @@ namespace Naylah.ConsoleAspNetCore.Entities
         public string Version { get; set; }
         public bool Deleted { get; set; }
 
-        public string Name { get; set; }
+        public PersonName Name { get; set; } = new PersonName();
 
         public void UpdateFrom(Person source, EntityUpdateOptions options = null)
         {
