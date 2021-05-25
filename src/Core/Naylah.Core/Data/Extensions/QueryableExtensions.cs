@@ -45,8 +45,15 @@ namespace Naylah.Data.Extensions
 
         private static Expression<Func<TSource, TDest>> BuildExpression<TDest>()
         {
+
+#if NETSTANDARD2_0
             var sourceProperties = typeof(TSource).GetProperties();
             var destinationProperties = typeof(TDest).GetProperties().Where(dest => dest.CanWrite);
+#else
+            var sourceProperties = typeof(TSource).GetRuntimeProperties();
+            var destinationProperties = typeof(TDest).GetRuntimeProperties();
+#endif
+
             var parameterExpression = Expression.Parameter(typeof(TSource), "src");
 
             var bindings = destinationProperties
@@ -79,7 +86,11 @@ namespace Naylah.Data.Extensions
 
                 if (sourceProperty != null)
                 {
+#if NETSTANDARD2_0
                     var sourceChildProperty = sourceProperty.PropertyType.GetProperties().FirstOrDefault(src => src.Name == propertyNames[1]);
+#else
+                    var sourceChildProperty = sourceProperty.PropertyType.GetRuntimeProperties().FirstOrDefault(src => src.Name == propertyNames[1]);
+#endif
 
                     if (sourceChildProperty != null)
                     {
@@ -98,7 +109,13 @@ namespace Naylah.Data.Extensions
 
         private static string[] SplitCamelCase(string input)
         {
-            return Regex.Replace(input, "([A-Z])", " $1", RegexOptions.Compiled).Trim().Split(' ');
+            return Regex.Replace(input, "([A-Z])", " $1",
+#if NETSTANDARD2_0
+                RegexOptions.Compiled
+#else
+                RegexOptions.None
+#endif
+                ).Trim().Split(' ');
         }
     }
 }

@@ -6,9 +6,12 @@ namespace Naylah
 {
     public static class DateTimeZonePeriodExtensions
     {
+#if NETSTANDARD2_0
         public static void ConvertToTimeZone(this DateTimeZonePeriod durationTimeBox, string timeZoneInfoId)
         {
+
             var timeZoneInfoTo = TimeZoneInfo.FindSystemTimeZoneById(timeZoneInfoId);
+
 
             durationTimeBox.Start = new DateTimeZone(
                 TimeZoneInfo.ConvertTime(durationTimeBox.Start.DateTime, durationTimeBox.Start.TimeZoneInfo, timeZoneInfoTo), timeZoneInfoId
@@ -16,12 +19,14 @@ namespace Naylah
             durationTimeBox.End = new DateTimeZone(
                 TimeZoneInfo.ConvertTime(durationTimeBox.End.DateTime, durationTimeBox.End.TimeZoneInfo, timeZoneInfoTo), timeZoneInfoId
                 );
+
         }
 
         public static void ConvertToTimeZone(this IEnumerable<DateTimeZonePeriod> durationTimeBoxes, string timeZoneInfoId)
         {
             durationTimeBoxes.ForEach(x => x.ConvertToTimeZone(timeZoneInfoId));
         }
+#endif
     }
 
     public class DateTimeZonePeriod : IEquatable<DateTimeZonePeriod>
@@ -50,7 +55,7 @@ namespace Naylah
             }
         }
 
-        #region Condition operators, IEqualitable
+#region Condition operators, IEqualitable
 
         public static bool operator ==(DateTimeZonePeriod left,
                                      DateTimeZonePeriod right)
@@ -87,6 +92,6 @@ namespace Naylah
             return result;
         }
 
-        #endregion Condition operators, IEqualitable
+#endregion Condition operators, IEqualitable
     }
 }

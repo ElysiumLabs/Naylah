@@ -5,8 +5,11 @@ using System.Collections.Generic;
 
 namespace Naylah.Domain
 {
+
+#if NETSTANDARD2_0
     public class Dispatcher : IEventDispatcher
     {
+
         private readonly IServiceProvider serviceProvider;
 
         public Dispatcher(IServiceProvider serviceProvider)
@@ -14,7 +17,8 @@ namespace Naylah.Domain
             this.serviceProvider = serviceProvider;
         }
 
-        public void Dispatch<TEvent>(TEvent @event) where TEvent : IEvent
+
+    public void Dispatch<TEvent>(TEvent @event) where TEvent : IEvent
         {
             var handlers = GetHandlersFor<TEvent>();
 
@@ -51,4 +55,6 @@ namespace Naylah.Domain
             return (IEnumerable<dynamic>)serviceProvider.GetService(enumerableGenericHandlerType);
         }
     }
+
+#endif
 }

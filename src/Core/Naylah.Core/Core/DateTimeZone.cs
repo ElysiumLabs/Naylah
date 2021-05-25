@@ -30,9 +30,19 @@ namespace Naylah
 
         public string TimeZoneInfoId { get; protected set; }
 
-        public TimeZoneInfo TimeZoneInfo { get { return TimeZoneInfo.FindSystemTimeZoneById(TimeZoneInfoId); } }
+        public TimeZoneInfo TimeZoneInfo 
+        { 
+            get 
+            {
+#if NETSTANDARD2_0
+                return TimeZoneInfo.FindSystemTimeZoneById(TimeZoneInfoId); 
+#else
+                return null; // TODO FIX;
+#endif
+            } 
+        }
 
-        #region Cast operators
+#region Cast operators
 
         public static implicit operator DateTimeZone(DateTime dateTime)
         {
@@ -44,9 +54,9 @@ namespace Naylah
             return dateTimeWithZone.DateTime;
         }
 
-        #endregion Cast operators
+#endregion Cast operators
 
-        #region Condition operators, IEqualitable
+#region Condition operators, IEqualitable
 
         public static bool operator ==(DateTimeZone left,
                                      DateTimeZone right)
@@ -82,7 +92,7 @@ namespace Naylah
             return result;
         }
 
-        #region DateTime comparation
+#region DateTime comparation
 
         public static bool operator ==(DateTimeZone left,
                                     DateTime right)
@@ -117,8 +127,8 @@ namespace Naylah
             return Equals(other, DateTime);
         }
 
-        #endregion DateTime comparation
+#endregion DateTime comparation
 
-        #endregion Condition operators, IEqualitable
+#endregion Condition operators, IEqualitable
     }
 }

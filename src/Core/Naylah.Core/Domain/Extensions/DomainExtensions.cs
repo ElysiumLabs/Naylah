@@ -4,6 +4,7 @@ using System;
 
 namespace Naylah.Domain
 {
+#if NETSTANDARD2_0
     public static class DomainExtensions
     {
         [Obsolete]
@@ -17,4 +18,5 @@ namespace Naylah.Domain
             return (IHandler<Notification>)serviceProvider.GetService(typeof(IHandler<Notification>));
         }
     }
+#endif
 }

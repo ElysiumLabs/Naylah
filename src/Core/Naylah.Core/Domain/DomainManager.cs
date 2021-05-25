@@ -2,6 +2,7 @@
 
 namespace Naylah.Domain
 {
+#if NETSTANDARD2_0
     public class DomainManager
     {
         public DomainManager()
@@ -36,4 +37,5 @@ namespace Naylah.Domain
         //    }
         //}
     }
+#endif
 }

@@ -5,6 +5,8 @@ using System.Collections.Generic;
 
 namespace Naylah.Domain
 {
+
+#if NETSTANDARD2_0
     [Obsolete("Also note that it would be good to introduce an IEventDispatcher abstraction. Don't call a static class from within your code. Even Udi Dahan (who initially described such static class a long time ago) now considers this an anti-pattern. Instead, inject an IEventDispatcher abstraction into classes that require event dispatching.")]
     public class DomainEvent
     {
@@ -47,4 +49,5 @@ namespace Naylah.Domain
             return (IEnumerable<dynamic>)Resolver.GetService(enumerableGenericHandlerType);
         }
     }
+#endif
 }

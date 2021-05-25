@@ -1,5 +1,6 @@
 namespace Naylah
 {
+#if NETSTANDARD2_0
     [System.Serializable]
     public class NotAssignableException : System.Exception
     {
@@ -10,4 +11,5 @@ namespace Naylah
             System.Runtime.Serialization.SerializationInfo info,
             System.Runtime.Serialization.StreamingContext context) : base(info, context) { }
     }
+#endif
 }
