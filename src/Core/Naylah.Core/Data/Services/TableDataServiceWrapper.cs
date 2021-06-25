@@ -28,18 +28,18 @@ namespace Naylah.Data
 
         public virtual void UpdateEntity(TEntity e, TModel model, UpsertType upsertType)
         {
-            tableDataService.UpdateEntity(e, model, upsertType);
+            tableDataService.UpdateEntityInternal(e, model, upsertType);
         }
 
         [Obsolete("Use CreateEntity instead of this")]
         public virtual TEntity ToEntity(TModel model, UpsertType upsertType)
         {
-            return tableDataService.CreateEntity(model, upsertType);
+            return tableDataService.CreateEntity(model);
         }
 
         public virtual TEntity CreateEntity(TModel model, UpsertType upsertType)
         {
-            return tableDataService.CreateEntity(model, upsertType);
+            return tableDataService.CreateEntity(model);
         }
 
         public virtual void GenerateId(TEntity entity)

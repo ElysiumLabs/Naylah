@@ -11,4 +11,11 @@ namespace Naylah.ConsoleAspNetCore.DTOs
         public string LastName { get; set; }
 
     }
+
+    public class PersonNameFull : PersonName
+    {
+        public string Full { get; set; }
+
+
+    }
 }

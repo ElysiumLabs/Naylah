@@ -17,29 +17,33 @@ namespace Naylah.Data
         {
         }
 
-        protected internal virtual TEntity CreateEntity(TIdentifier identifier, UpsertType upsertType)
-        {
-            var entity = Activator.CreateInstance<TEntity>();
-            entity.Id = identifier;
-
-            return entity;
-        }
-
-        internal virtual TEntity CreateEntity(object model, UpsertType upsertType)
-        {
-            var entity = Activator.CreateInstance<TEntity>();
-            UpdateEntity(entity, model, upsertType);
-            return entity;
-        }
-
         protected internal virtual Task GenerateId(TEntity entity)
         {
             //application id generation...
             return Task.FromResult(1);
         }
 
-        internal abstract TEntity UpdateEntity(TEntity entity, object model, UpsertType upsertType);
+        internal virtual TEntity CreateEntity(TIdentifier identifier)
+        {
+            var entity = Activator.CreateInstance<TEntity>();
+            entity.Id = identifier;
+            return entity;
+        }
 
+        internal virtual TEntity CreateEntity(object model)
+        {
+            var entity = Activator.CreateInstance<TEntity>();
+            UpdateEntityInternal(entity, model, UpsertType.Insert);
+            return entity;
+        }
+
+        internal virtual TEntity UpdateEntity(TEntity entity, object model)
+        {
+            UpdateEntityInternal(entity, model, UpsertType.Update);
+            return entity;
+        }
+
+        internal abstract TEntity UpdateEntityInternal(TEntity entity, object model, UpsertType upsertType);
 
         internal abstract Task<TCustomModel> CreateAsync<TCustomModel>(TCustomModel model)
             where TCustomModel : class, IEntity<TIdentifier>, new();

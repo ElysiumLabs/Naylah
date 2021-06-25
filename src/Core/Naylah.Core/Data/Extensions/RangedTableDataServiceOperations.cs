@@ -40,7 +40,7 @@ namespace Naylah.Data
             var es = new List<TEntity>();
             foreach (var identifier in identifiers)
             {
-                es.Add(service.CreateEntity(identifier, UpsertType.Instance));
+                es.Add(service.CreateEntity(identifier));
             }
 
             return es;

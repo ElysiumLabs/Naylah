@@ -9,13 +9,15 @@ namespace Naylah.ConsoleAspNetCore.DTOs
     {
         public string Id { get; set; }
 
-        public PersonName Name { get; set; } = new PersonName();
+        public PersonNameFull Name { get; set; } = new PersonNameFull();
+
+        public PersonName Test { get; set; } = new PersonName();
     }
 
     public class PersonDTO2 : IEntity<string>
     {
         public string Id { get; set; }
 
-        public PersonName Name { get; set; } = new PersonName();
+        public PersonNameFull Name { get; set; } = new PersonNameFull();
     }
 }

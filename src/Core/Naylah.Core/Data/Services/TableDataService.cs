@@ -51,21 +51,30 @@ namespace Naylah.Data
             return await DeleteAsync<TModel>(identifier);
         }
 
-        protected internal virtual TEntity CreateEntity(TModel model, UpsertType upsertType)
+        protected internal virtual TEntity CreateEntity(TModel model)
         {
-            return base.CreateEntity(model, upsertType);
+            return base.CreateEntity(model);
         }
 
-        override internal TEntity UpdateEntity(TEntity entity, object model, UpsertType upsertType)
+        protected virtual TEntity UpdateEntity(TEntity entity, TModel model)
+        {
+            return base.UpdateEntity(entity, model);
+        }
+
+        internal override TEntity UpdateEntityInternal(TEntity entity, object model, UpsertType upsertType)
         {
             if (!(model is TModel tmodel))
             {
-                throw new Exception("not good");
+                throw new Exception("Model is not TModel");
             }
 
-            entity.Id = tmodel.Id;
+            return UpdateEntityModel(entity, tmodel, upsertType);
+        }
 
-            entity.UpdateFrom(tmodel);
+        protected internal virtual TEntity UpdateEntityModel(TEntity entity, TModel tmodel, UpsertType upsertType)
+        {
+            entity.Id = tmodel.Id;
+            entity.UpdateFrom(tmodel, new EntityUpdateOptions(upsertType));
             return entity;
         }
 
@@ -81,7 +90,7 @@ namespace Naylah.Data
 
         internal override async Task<TCustomModel> CreateAsync<TCustomModel>(TCustomModel model)
         {
-            var entity = CreateEntity(model, UpsertType.Insert);
+            var entity = CreateEntity(model);
             await GenerateId(entity);
 
             entity = await CreateInternalAsync(entity);
@@ -103,7 +112,7 @@ namespace Naylah.Data
                 RaiseNotification(Notification.FromType(GetType(), "Entity not found"));
             }
 
-            UpdateEntity(entity, model, UpsertType.Update);
+            UpdateEntity(entity, model);
 
             entity = await UpdateInternalAsync(entity);
 
@@ -121,17 +130,19 @@ namespace Naylah.Data
 
             if (entity == null)
             {
-                entity = CreateEntity(model, UpsertType.Insert);
+                entity = CreateEntity(model);
                 await GenerateId(entity);
 
                 entity = await CreateInternalAsync(entity);
             }
             else
             {
-                UpdateEntity(entity, model, UpsertType.Update);
+                UpdateEntity(entity, model);
 
                 entity = await UpdateInternalAsync(entity);
             }
+
+            await UpsertPostAsync(entity);
 
             if (!await CommitAsync())
             {
@@ -139,6 +150,11 @@ namespace Naylah.Data
             }
 
             return ToModel<TCustomModel>(entity);
+        }
+
+        protected virtual Task UpsertPostAsync(TEntity entity)
+        {
+            return Task.FromResult(0);
         }
 
         internal override async Task<TCustomModel> DeleteAsync<TCustomModel>(TIdentifier identifier)
