@@ -22,7 +22,7 @@ namespace Microsoft.Extensions.DependencyInjection
                 return new CosmosSQLContainerRepository<TEntity>(container, partitionKeyResolver);
             });
 
-            serviceCollection.AddScoped<IRepository<TEntity, string>>(x => x.GetRequiredService<CosmosSQLContainerRepository<TEntity>>());
+            serviceCollection.AddScoped<IRepository<TEntity>>(x => x.GetRequiredService<CosmosSQLContainerRepository<TEntity>>());
             return serviceCollection;
         }
     }

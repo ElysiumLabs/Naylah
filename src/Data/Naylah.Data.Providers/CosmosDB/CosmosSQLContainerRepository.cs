@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Naylah.Data.Providers.CosmosDB
 {
-    public class CosmosSQLContainerRepository<TEntity> : IRepository<TEntity, string>, ICommandRangeRepository<TEntity, string>
+    public class CosmosSQLContainerRepository<TEntity> : IRepository<TEntity>, ICommandRangeRepository<TEntity>
        where TEntity : class, IEntity<string>
     {
         private readonly Container container;

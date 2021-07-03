@@ -22,7 +22,7 @@ namespace Naylah.ConsoleAspNetCore
 
     public class PersonService : StringAppTableDataService<Person, PersonDTO>
     {
-        public PersonService(IMapper mapper,IUnitOfWork _unitOfWork, IRepository<Person, string> repository) : base(mapper, _unitOfWork, repository)
+        public PersonService(IMapper mapper,IUnitOfWork _unitOfWork, IRepository<Person> repository) : base(mapper, _unitOfWork, repository)
         {
         }
 

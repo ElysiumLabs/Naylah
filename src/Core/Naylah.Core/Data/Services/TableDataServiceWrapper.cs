@@ -17,7 +17,7 @@ namespace Naylah.Data
             this.tableDataService = tableDataService;
         }
 
-        public IRepository<TEntity, TIdentifier> Repository { get { return tableDataService.Repository; } }
+        public IRepository<TEntity> Repository { get { return tableDataService.Repository; } }
 
         public Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> Ordering { get { return tableDataService.Ordering; } }
 

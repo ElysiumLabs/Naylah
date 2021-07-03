@@ -3,10 +3,10 @@ using System.Threading.Tasks;
 
 namespace Naylah.Data
 {
-    public interface IRepository<TEntity, TIdentifier> : 
-        IQueryRepository<TEntity, TIdentifier>, 
-        ICommandRepository<TEntity, TIdentifier>
-        where TEntity : IEntity<TIdentifier>
+    public interface IRepository<TEntity> : 
+        IQueryRepository<TEntity>, 
+        ICommandRepository<TEntity>
+        where TEntity : class
     {
 
     }

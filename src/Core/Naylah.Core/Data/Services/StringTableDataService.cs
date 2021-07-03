@@ -7,7 +7,7 @@ namespace Naylah.Data
        where TEntity : class, IEntityUpdate<TModel>, IEntity<string>, IModifiable, new()
        where TModel : class, IEntity<string>, new()
     {
-        public StringTableDataService(IRepository<TEntity, string> repository, IUnitOfWork _unitOfWork) : base(repository, _unitOfWork)
+        public StringTableDataService(IRepository<TEntity> repository, IUnitOfWork _unitOfWork) : base(repository, _unitOfWork)
         {
         }
 

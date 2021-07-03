@@ -9,11 +9,11 @@ namespace Naylah.Data
     public abstract class TableDataServiceBase<TEntity, TIdentifier> : QueryDataService<TEntity, TIdentifier>
         where TEntity : class, IEntity<TIdentifier>, IModifiable, new()
     {
-        public TableDataServiceBase(IRepository<TEntity, TIdentifier> repository, IUnitOfWork unitOfWork) : base(repository, unitOfWork)
+        public TableDataServiceBase(IRepository<TEntity> repository, IUnitOfWork unitOfWork) : base(repository, unitOfWork)
         {
         }
 
-        public TableDataServiceBase(IRepository<TEntity, TIdentifier> repository, IUnitOfWork unitOfWork, IHandler<Notification> notificationsHandler) : base(repository, unitOfWork, notificationsHandler)
+        public TableDataServiceBase(IRepository<TEntity> repository, IUnitOfWork unitOfWork, IHandler<Notification> notificationsHandler) : base(repository, unitOfWork, notificationsHandler)
         {
         }
 

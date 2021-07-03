@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Naylah.ConsoleAspNetCore.Customizations
 {
-    public class SomeRepository : IRepository<Person, string>
+    public class SomeRepository : IRepository<Person>
     {
         private readonly List<Person> people;
 

@@ -5,8 +5,8 @@ using System.Threading.Tasks;
 
 namespace Naylah.Data
 {
-    public interface ICommandRepository<TEntity, TIdentifier>
-        where TEntity : IEntity
+    public interface ICommandRepository<TEntity>
+        where TEntity : class
     {
         ValueTask<TEntity> AddAsync(TEntity entity);
 
@@ -15,8 +15,8 @@ namespace Naylah.Data
         Task RemoveAsync(TEntity entity);
     }
 
-    public interface ICommandRangeRepository<TEntity, TIdentifier>
-        where TEntity : IEntity
+    public interface ICommandRangeRepository<TEntity>
+        where TEntity : class
     {
         ValueTask<IEnumerable<TEntity>> AddAsync(IEnumerable<TEntity> entities);
 

@@ -4,8 +4,8 @@ using System.Linq.Expressions;
 
 namespace Naylah.Data
 {
-    public interface IQueryRepository<TEntity, TIdentifier> 
-        where TEntity : IEntity<TIdentifier>
+    public interface IQueryRepository<TEntity>
+        where TEntity : class
     {
         IQueryable<TEntity> Entities { get; }
     }

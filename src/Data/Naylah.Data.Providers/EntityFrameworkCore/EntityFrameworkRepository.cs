@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace Naylah.Data.Providers.EntityFrameworkCore
 {
-    public class EntityFrameworkRepository<TDbContext, TEntity, TIdentifier> : IRepository<TEntity, TIdentifier>, ICommandRangeRepository<TEntity, TIdentifier>
+    public class EntityFrameworkRepository<TDbContext, TEntity> : IRepository<TEntity>, ICommandRangeRepository<TEntity>
        where TDbContext : DbContext
-       where TEntity : class, IEntity<TIdentifier>
+       where TEntity : class
     {
         protected readonly TDbContext dbContext;
 

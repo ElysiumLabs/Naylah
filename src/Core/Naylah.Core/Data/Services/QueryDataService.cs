@@ -13,7 +13,7 @@ namespace Naylah
     public abstract class QueryDataService<TEntity, TIdentifier> : DataServiceBase
         where TEntity : class, IEntity<TIdentifier>, IModifiable, new()
     {
-        protected internal readonly IRepository<TEntity, TIdentifier> Repository;
+        protected internal readonly IRepository<TEntity> Repository;
 
         protected bool UseSoftDelete { get; set; } = false;
 
@@ -23,14 +23,14 @@ namespace Naylah
             (q) => q.OrderByDescending(x => x.CreatedAt);
 
         public QueryDataService(
-            IRepository<TEntity, TIdentifier> repository,
+            IRepository<TEntity> repository,
             IUnitOfWork unitOfWork)
             : this(repository, unitOfWork, null)
         {
         }
 
         public QueryDataService(
-            IRepository<TEntity, TIdentifier> repository,
+            IRepository<TEntity> repository,
             IUnitOfWork unitOfWork,
             IHandler<Notification> notificationsHandler)
             : base(unitOfWork, notificationsHandler)

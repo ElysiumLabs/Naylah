@@ -11,12 +11,22 @@ namespace Microsoft.Extensions.DependencyInjection
 {
     public static class EntityFrameworkExtensions
     {
-        public static IServiceCollection AddEntityFrameworkRepository<TDbContext, TEntity, TIdentifier>(this IServiceCollection serviceCollection)
-           where TEntity : class, IEntity<TIdentifier>, new()
+        public static IServiceCollection AddEntityFrameworkRepository<TDbContext, TEntity>(this IServiceCollection serviceCollection)
+           where TEntity : class, new()
            where TDbContext : DbContext
         {
-            serviceCollection.AddScoped<EntityFrameworkRepository<TDbContext, TEntity, TIdentifier>>();
-            serviceCollection.AddScoped<IRepository<TEntity, TIdentifier>>(x => x.GetRequiredService<EntityFrameworkRepository<TDbContext, TEntity, TIdentifier>>());
+            serviceCollection.AddScoped<EntityFrameworkRepository<TDbContext, TEntity>>();
+            serviceCollection.AddScoped<IRepository<TEntity>>(x => x.GetRequiredService<EntityFrameworkRepository<TDbContext, TEntity>>());
+            return serviceCollection;
+        }
+
+        [Obsolete("Don't need TIdentifier in Repository anymore")]
+        public static IServiceCollection AddEntityFrameworkRepository<TDbContext, TEntity, TIdentifier>(this IServiceCollection serviceCollection)
+           where TEntity : class, new()
+           where TDbContext : DbContext
+        {
+            serviceCollection.AddScoped<EntityFrameworkRepository<TDbContext, TEntity>>();
+            serviceCollection.AddScoped<IRepository<TEntity>>(x => x.GetRequiredService<EntityFrameworkRepository<TDbContext, TEntity>>());
             return serviceCollection;
         }
     }

@@ -13,11 +13,11 @@ namespace Naylah.Data
         where TEntity : class, IEntity<TIdentifier>, IEntityUpdate<TModel>, IModifiable, new()
         where TModel : class, IEntity<TIdentifier>, new()
     {
-        public TableDataService(IRepository<TEntity, TIdentifier> repository, IUnitOfWork unitOfWork) : base(repository, unitOfWork)
+        public TableDataService(IRepository<TEntity> repository, IUnitOfWork unitOfWork) : base(repository, unitOfWork)
         {
         }
 
-        public TableDataService(IRepository<TEntity, TIdentifier> repository, IUnitOfWork unitOfWork, IHandler<Notification> notificationsHandler) : base(repository, unitOfWork, notificationsHandler)
+        public TableDataService(IRepository<TEntity> repository, IUnitOfWork unitOfWork, IHandler<Notification> notificationsHandler) : base(repository, unitOfWork, notificationsHandler)
         {
         }
 

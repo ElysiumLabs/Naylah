@@ -11,7 +11,7 @@ namespace Naylah.ConsoleAspNetCore.Customizations
         where TEntity : class, IEntity<string>, IModifiable, IEntityUpdate<TModel>, new()
         where TModel : class, IEntity<string>, new()
     {
-        public StringAppTableDataService(IUnitOfWork _unitOfWork, IRepository<TEntity, string> repository) : base(repository, _unitOfWork)
+        public StringAppTableDataService(IUnitOfWork _unitOfWork, IRepository<TEntity> repository) : base(repository, _unitOfWork)
         {
         }
 

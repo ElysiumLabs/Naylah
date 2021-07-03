@@ -59,7 +59,7 @@ namespace Naylah.Data
 
         public async Task<IEnumerable<TModel>> AddRangeAsync(IEnumerable<TModel> models)
         {
-            var imp = TableDataServiceExtensions.GetImplementation<ICommandRangeRepository<TEntity, TIdentifier>>(service.CreateWrapper().Repository);
+            var imp = TableDataServiceExtensions.GetImplementation<ICommandRangeRepository<TEntity>>(service.CreateWrapper().Repository);
             var es = ToEntities(models, UpsertType.Insert);
             var entities = await imp.AddAsync(es);
 
@@ -70,7 +70,7 @@ namespace Naylah.Data
 
         public async Task<IEnumerable<TModel>> EditRangeAsync(IEnumerable<TModel> models)
         {
-            var imp = TableDataServiceExtensions.GetImplementation<ICommandRangeRepository<TEntity, TIdentifier>>(service.CreateWrapper().Repository);
+            var imp = TableDataServiceExtensions.GetImplementation<ICommandRangeRepository<TEntity>>(service.CreateWrapper().Repository);
             var es = ToEntities( models, UpsertType.Update);
             var entities = await imp.EditAsync(es);
 
@@ -81,7 +81,7 @@ namespace Naylah.Data
 
         public async Task RemoveRangeAsync(IEnumerable<TIdentifier> identifiers)
         {
-            var imp = TableDataServiceExtensions.GetImplementation<ICommandRangeRepository<TEntity, TIdentifier>>(service.CreateWrapper().Repository);
+            var imp = TableDataServiceExtensions.GetImplementation<ICommandRangeRepository<TEntity>>(service.CreateWrapper().Repository);
             var es = ToEntities(identifiers);
 
             await imp.RemoveAsync(es);

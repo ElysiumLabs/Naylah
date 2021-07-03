@@ -73,7 +73,7 @@ namespace Naylah.ConsolePlayground
         }
     }
 
-    public class PersonRepo : IRepository<Person, string>
+    public class PersonRepo : IRepository<Person>
     {
         private readonly IList<Person> people;
 
@@ -142,7 +142,7 @@ namespace Naylah.ConsolePlayground
 
     public class PersonTableService : StringTableDataService<Person, PersonM>
     {
-        public PersonTableService(IUnitOfWork _unitOfWork, IRepository<Person, string> repository) : base(repository, _unitOfWork)
+        public PersonTableService(IUnitOfWork _unitOfWork, IRepository<Person> repository) : base(repository, _unitOfWork)
         {
         }
     }
