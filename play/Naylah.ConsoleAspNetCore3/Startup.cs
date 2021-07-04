@@ -154,6 +154,7 @@ namespace Naylah.ConsoleAspNetCore
     {
         public async Task<HealthCheckResult> CheckHealthAsync(HealthCheckContext context, CancellationToken cancellationToken = default)
         {
+            await Task.Delay(3000);
             var r = new Random();
             var i = r.Next(3);
             switch (i)

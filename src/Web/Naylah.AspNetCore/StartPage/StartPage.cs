@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
+using Naylah.HealthChecks;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -25,42 +26,62 @@ namespace Naylah.StartPage
             }
         }
 
-        public virtual async Task ExecuteAsync(HttpContext context, StartPageOptions _options, HealthCheckService healthyCheck)
+        public virtual async Task ExecuteAsync(HttpContext context, StartPageOptions _options, HealthCheckService healthyCheck, CachedHealthCheckService cachedHealthCheckService)
         {
             var s = await GetPageStringAsync();
 
             s = s.Replace("{{ServiceName}}", _options.Title);
 
-            if (healthyCheck!= null)
+            if (healthyCheck != null)
             {
-                var servicesString = "<table style='width: 100 % '>";
+                var servicesString = "";
 
-                servicesString += "<tr><td> </td><th> Service </th><th> Status </th></tr>";
+                var r = await cachedHealthCheckService.GetOrCheckHealthAsync(healthyCheck);
 
-                var r = await healthyCheck.CheckHealthAsync();
-                s = s.Replace("{{Message}}", "Status: " + r.Status);
-
-                foreach (var hi in r.Entries)
+                if (r != null)
                 {
-                    servicesString += "<tr><td> " + GetHealthStatusEmojiCode(hi.Value.Status) + " </td><td> " + hi.Key + " </td><td> " + hi.Value.Status + " </td></tr>";
-                }
+                    s = s.Replace("{{Message}}", "Status: " + r.Report.Status);
+                    s = s.Replace("{{Message2}}", GetHealthDateTimeString(r.Date));
 
-                servicesString += "</table>";
+                    servicesString = "<table style='width: 100 % '>";
+                    servicesString += "<tr><td> </td><th> Service </th><th> Status </th></tr>";
+
+                    foreach (var hi in r.Report.Entries)
+                    {
+                        servicesString += "<tr><td> " + GetHealthStatusEmojiCode(hi.Value.Status) + " </td><td> " + hi.Key + " </td><td> " + hi.Value.Status + " </td></tr>";
+                    }
+
+                    servicesString += "</table>";
+                }
+                else
+                {
+                    s = s.Replace("{{Message}}", "Status: " + "Evaluating...");
+                    s = s.Replace("{{Message2}}", "");
+                }
+                
 
                 s = s.Replace("{{Services}}", servicesString);
             }
             else
             {
                 s = s.Replace("{{Message}}", _options.Message);
+                s = s.Replace("{{Message2}}", "");
                 s = s.Replace("{{Services}}", "");
             }
 
-            s = s.Replace("{{CompanyName}}", _options.Organization ?? _options.Title);
+            s = s.Replace("{{OrganizationName}}", _options.Organization ?? _options.Title);
             s = s.Replace("{{Year}}", DateTimeOffset.UtcNow.Year.ToString());
 
             await context.Response.WriteAsync(s);
 
 
+        }
+
+        private string GetHealthDateTimeString(DateTimeOffset date)
+        {
+            return "<script> document.write(new Date('" + 
+                date.ToString("o")+
+                "').toLocaleString()); </script>";
         }
 
         protected string GetHealthStatusEmojiCode(HealthStatus status)

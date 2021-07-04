@@ -4,6 +4,7 @@ using System;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
+using Naylah.HealthChecks;
 
 namespace Naylah.StartPage
 {
@@ -11,7 +12,7 @@ namespace Naylah.StartPage
     {
         private readonly RequestDelegate _next;
         private readonly StartPageOptions _options;
-
+        private CachedHealthCheckService cachedHealthCheckService;
 
         public StartPageMiddleware(RequestDelegate next, IOptions<StartPageOptions> options)
         {
@@ -40,14 +41,19 @@ namespace Naylah.StartPage
                 return _next(context);
             }
 
-            using (var scope = context.RequestServices.CreateScope())
-            {
-                var startPageProvider = scope.ServiceProvider.GetService<IStartPageProvider>();
-                var healthyCheck = scope.ServiceProvider.GetService<HealthCheckService>();
+            var startPageProvider = context.RequestServices.GetService<IStartPageProvider>();
+            var healthyCheck = context.RequestServices.GetService<HealthCheckService>();
 
-                var welcomePage = startPageProvider?.GetStartPage() ?? new StartPage();
-                return welcomePage.ExecuteAsync(context, _options, healthyCheck);
-            }
+            cachedHealthCheckService =
+                cachedHealthCheckService ??
+                context.RequestServices.GetService<CachedHealthCheckService>()
+                ?? new CachedHealthCheckService(new CachedHealthCheckServiceOptions()
+                {
+                    CacheDuration = _options.HealtyCheckCacheDuration
+                });
+
+            var welcomePage = startPageProvider?.GetStartPage() ?? new StartPage();
+            return welcomePage.ExecuteAsync(context, _options, healthyCheck, cachedHealthCheckService);
 
         }
 

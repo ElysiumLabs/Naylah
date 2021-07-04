@@ -36,7 +36,8 @@ html{line-height:1.15;-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%}bo
                         <div class="hero-copy">
                             <div class="container-sm">
                                 <h1 class="hero-title h2-mobile mt-0 is-revealing">{{ServiceName}}</h1>
-                                <p class="hero-paragraph is-revealing">{{Message}}</p>
+                                <p class="hero-paragraph is-revealing" style="margin-bottom: 8px">{{Message}}</p>
+                                <p class="hero-paragraph is-revealing" style="font-size: 16px">{{Message2}}</p>
                                 <div class="hero-form newsletter-form field field-grouped is-revealing">
                                     {{Services}}
                                 </div>
@@ -272,11 +273,10 @@ html{line-height:1.15;-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%}bo
                 <div class="site-footer-inner">
                     <ul class="footer-links list-reset">
                         <li>
-                            
+                            <a href="{{OrganizationUrl}}" target="_blank">{{OrganizationName}}</a>
                         </li>
                     </ul>
-                   
-                    <div class="footer-copyright">&copy; {{Year}} {{CompanyName}}, all rights reserved</div>
+                    <div class="footer-copyright">&copy; {{Year}} {{OrganizationName}}, all rights reserved</div>
                 </div>
             </div>
         </footer>

@@ -1,4 +1,6 @@
-﻿namespace Naylah.StartPage
+﻿using System;
+
+namespace Naylah.StartPage
 {
     public class StartPageOptions
     {
@@ -7,5 +9,7 @@
         public string Message { get; set; } = "This service is up and running ;)";
 
         public string Organization { get; set; } = "";
+
+        public TimeSpan HealtyCheckCacheDuration { get; set; } = TimeSpan.FromSeconds(10);
     }
 }
