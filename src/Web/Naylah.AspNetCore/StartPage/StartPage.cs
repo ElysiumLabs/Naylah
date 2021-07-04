@@ -40,8 +40,7 @@ namespace Naylah.StartPage
 
                 if (r != null)
                 {
-                    s = s.Replace("{{Message}}", "Status: " + r.Report.Status);
-                    s = s.Replace("{{Message2}}", GetHealthDateTimeString(r.Date));
+                    s = s.Replace("{{Message}}",  GetHealthStatusEmojiCode(r.Report.Status)+ "  " + r.Report.Status + " - " + GetHealthDateTimeString(r.Date));
 
                     servicesString = "<table style='width: 100 % '>";
                     servicesString += "<tr><td> </td><th> Service </th><th> Status </th></tr>";
@@ -56,7 +55,6 @@ namespace Naylah.StartPage
                 else
                 {
                     s = s.Replace("{{Message}}", "Status: " + "Evaluating...");
-                    s = s.Replace("{{Message2}}", "");
                 }
                 
 
@@ -65,7 +63,6 @@ namespace Naylah.StartPage
             else
             {
                 s = s.Replace("{{Message}}", _options.Message);
-                s = s.Replace("{{Message2}}", "");
                 s = s.Replace("{{Services}}", "");
             }
 
