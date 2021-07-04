@@ -40,12 +40,14 @@ namespace Naylah.StartPage
                 return _next(context);
             }
 
-            // Dynamically generated for LOC.
-            var startPageProvider = context.RequestServices.GetService<IStartPageProvider>();
-            var healthyCheck = context.RequestServices.GetService<HealthCheckService>();
+            using (var scope = context.RequestServices.CreateScope())
+            {
+                var startPageProvider = scope.ServiceProvider.GetService<IStartPageProvider>();
+                var healthyCheck = scope.ServiceProvider.GetService<HealthCheckService>();
 
-            var welcomePage = startPageProvider?.GetStartPage() ?? new StartPage();
-            return welcomePage.ExecuteAsync(context, _options, healthyCheck);
+                var welcomePage = startPageProvider?.GetStartPage() ?? new StartPage();
+                return welcomePage.ExecuteAsync(context, _options, healthyCheck);
+            }
 
         }
 
