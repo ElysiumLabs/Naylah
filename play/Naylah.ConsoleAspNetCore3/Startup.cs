@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNet.OData.Extensions;
 using Microsoft.AspNetCore.Builder;
@@ -10,6 +11,8 @@ using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.Net.Http.Headers;
@@ -22,21 +25,27 @@ using Newtonsoft.Json.Serialization;
 
 namespace Naylah.ConsoleAspNetCore
 {
-    public class Startup
+    public class StartupOptions : ServiceOptions
     {
-        public Startup(IConfiguration configuration)
+        public StartupOptions()
         {
-            Configuration = configuration;
+            
+        }
+    }
+
+    public class Startup : Service<StartupOptions>
+    {
+        public Startup(IHostEnvironment environment, IConfiguration configuration) : base(environment, configuration)
+        {
+            Options.Name = "My awesome API";
         }
 
-        public IConfiguration Configuration { get; }
-
         // This method gets called by the runtime. Use this method to add services to the container.
-        public void ConfigureServices(IServiceCollection services)
+        public override void ConfigureServices(IServiceCollection services)
         {
+            base.ConfigureServices(services);
 
             services.AddAutoMapper(typeof(Startup));
-
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
                     .AddNewtonsoftJson(options =>
@@ -99,12 +108,25 @@ namespace Naylah.ConsoleAspNetCore
 
             services.AddScoped<PersonService>();
             //services.AddScoped<PersonServiceV2>();
+
+            services.AddHealthChecks().
+                AddCheck<TestCheck>("SqlDb").
+                AddCheck<TestCheck>("CosmosDb").
+                AddCheck<TestCheck>("SAPIntegration").
+                AddCheck<TestCheck>("Teste3").
+                AddCheck<TestCheck>("Teste4").
+                AddCheck<TestCheck>("Teste5").
+                AddCheck<TestCheck>("Teste6");
+
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public override void Configure(IApplicationBuilder app)
         {
-            if (env.IsDevelopment())
+            base.Configure(app);
+
+            if (Environment.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
@@ -122,7 +144,25 @@ namespace Naylah.ConsoleAspNetCore
             {
                 endpoints.MapControllers();
                 endpoints.EnableDependencyInjection();
+                endpoints.MapHealthChecks("/health");
             });
+
+        }
+    }
+
+    public class TestCheck : IHealthCheck
+    {
+        public async Task<HealthCheckResult> CheckHealthAsync(HealthCheckContext context, CancellationToken cancellationToken = default)
+        {
+            var r = new Random();
+            var i = r.Next(3);
+            switch (i)
+            {
+                case 1: return HealthCheckResult.Healthy("");
+                case 2: return HealthCheckResult.Degraded("");
+                case 3: return HealthCheckResult.Unhealthy("");
+                default: return HealthCheckResult.Unhealthy("");
+            }
 
         }
     }
