@@ -27,6 +27,7 @@ namespace Naylah.StartPage
             return app.UseStartPage(x =>
             {
                 x.Title = options.Name;
+                x.Organization = options.Organization;
             });
         }
     }
