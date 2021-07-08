@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using Hellang.Middleware.ProblemDetails;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Naylah.StartPage;
@@ -13,11 +14,13 @@ namespace Naylah
         public virtual void ConfigureServices(IServiceCollection services)
         {
             services.AddSingleton(Options);
+            
+            services.AddProblemDetails(opts => ConfigureProblemDetails(opts, Environment));
         }
 
         public virtual void Configure(IApplicationBuilder app)
         {
-            //app.UseMiddleware<StatsMiddleware>();
+            app.UseProblemDetails();
 
             if (Options.UseDefaultStartupPage)
             {

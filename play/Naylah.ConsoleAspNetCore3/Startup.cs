@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Hellang.Middleware.ProblemDetails;
 using Microsoft.AspNet.OData.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -126,10 +127,10 @@ namespace Naylah.ConsoleAspNetCore
         {
             base.Configure(app);
 
-            if (Environment.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
+            //if (Environment.IsDevelopment())
+            //{
+            //    app.UseDeveloperExceptionPage();
+            //}
 
             app.UseSwagger();
 
@@ -147,6 +148,7 @@ namespace Naylah.ConsoleAspNetCore
                 endpoints.MapHealthChecks("/health");
             });
 
+            
         }
     }
 

@@ -1,4 +1,4 @@
-src/Web/Naylah.AspNetCore/Assets linguist-vendored
+src/Web/Naylah.AspNetCore/Assets/* linguist-vendored
 
 ###############################################################################
 # Set default behavior to automatically normalize line endings.

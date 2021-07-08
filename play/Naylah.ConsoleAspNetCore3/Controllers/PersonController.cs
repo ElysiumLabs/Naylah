@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
+using Hellang.Middleware.ProblemDetails;
 using Microsoft.AspNet.OData;
 using Microsoft.AspNet.OData.Query;
 using Microsoft.AspNetCore.Mvc;
@@ -57,6 +58,14 @@ namespace Naylah.ConsoleAspNetCore.Controllers
         public async Task<PersonDTO> GetAllCustom4(string id)
         {
             return await tableDataService.GetByIdAsync(id);
+        }
+
+        [HttpGet("raiseexception")]
+        public async Task<string> RaiseException()
+        {
+            PersonDTO p = null;
+            return p.Name.FirstName;
+
         }
 
     }
