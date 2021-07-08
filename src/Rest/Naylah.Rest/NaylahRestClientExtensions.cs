@@ -8,11 +8,6 @@ namespace Naylah.Rest
 {
     public static class NaylahRestClientExtensions
     {
-        public static void HandleRequestError(this NaylahRestClient client, IRestRequest request, IRestResponse response)
-        {
-            client.HandleRequestError(request, response);
-        }
-
         public static void HandleRequestError(this RestClient client, IRestRequest request, IRestResponse response)
         {
             if (response.IsSuccessful)
