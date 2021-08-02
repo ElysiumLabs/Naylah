@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Hellang.Middleware.ProblemDetails;
+using Microsoft.AspNet.OData.Builder;
 using Microsoft.AspNet.OData.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -17,6 +18,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.Net.Http.Headers;
+using Microsoft.OData.Edm;
 using Microsoft.OpenApi.Models;
 using Naylah.ConsoleAspNetCore.Customizations;
 using Naylah.ConsoleAspNetCore.Entities;
@@ -47,52 +49,53 @@ namespace Naylah.ConsoleAspNetCore
             base.ConfigureServices(services);
 
             services.AddAutoMapper(typeof(Startup));
+            services.AddOData();
 
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
-                    .AddNewtonsoftJson(options =>
-                    {
-                        options.SerializerSettings.Converters.Add(new Newtonsoft.Json.Converters.StringEnumConverter());
-                        options.SerializerSettings.ContractResolver = new DefaultContractResolver
-                        {
-                            NamingStrategy = new CamelCaseNamingStrategy()
-                        };
-                    });
-
-
-
-            services.AddDataManagement(null, swagger =>
-            {
-                swagger.SwaggerDoc("v1", new OpenApiInfo { Title = "teste" + " " + " API", Version = "v1" });
-
-                var scheme1 = new OpenApiSecurityScheme()
-                {
-                    In = ParameterLocation.Header,
-                    Description = "Please insert Bearer authorization into field",
-                    Name = "Authorization",
-                    Type = SecuritySchemeType.ApiKey
-                };
-
-                swagger.AddSecurityDefinition("Bearer", scheme1);
+            //services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
+            //        .AddNewtonsoftJson(options =>
+            //        {
+            //            options.SerializerSettings.Converters.Add(new Newtonsoft.Json.Converters.StringEnumConverter());
+            //            options.SerializerSettings.ContractResolver = new DefaultContractResolver
+            //            {
+            //                NamingStrategy = new CamelCaseNamingStrategy()
+            //            };
+            //        });
 
 
-                //swagger.AddSecurityDefinition("ApiKey", new OpenApiSecurityScheme
-                //{
-                //    In = "header",
-                //    Description = "Please insert APIKEY into field",
-                //    Name = "x-api-key",
-                //    Type = "apiKey"
-                //});
 
-                swagger.AddSecurityRequirement(new OpenApiSecurityRequirement()
-                {
+            //services.AddDataManagement(null, swagger =>
+            //{
+            //    swagger.SwaggerDoc("v1", new OpenApiInfo { Title = "teste" + " " + " API", Version = "v1" });
 
-                });
+            //    var scheme1 = new OpenApiSecurityScheme()
+            //    {
+            //        In = ParameterLocation.Header,
+            //        Description = "Please insert Bearer authorization into field",
+            //        Name = "Authorization",
+            //        Type = SecuritySchemeType.ApiKey
+            //    };
 
-                //var requiriment = new OpenApiSecurityRequirement();
-                //requiriment.Add(scheme1, );
-                //swagger.AddSecurityRequirement(requiriment);
+            //    swagger.AddSecurityDefinition("Bearer", scheme1);
 
-            });
+
+            //    //swagger.AddSecurityDefinition("ApiKey", new OpenApiSecurityScheme
+            //    //{
+            //    //    In = "header",
+            //    //    Description = "Please insert APIKEY into field",
+            //    //    Name = "x-api-key",
+            //    //    Type = "apiKey"
+            //    //});
+
+            //    swagger.AddSecurityRequirement(new OpenApiSecurityRequirement()
+            //    {
+
+            //    });
+
+            //    //var requiriment = new OpenApiSecurityRequirement();
+            //    //requiriment.Add(scheme1, );
+            //    //swagger.AddSecurityRequirement(requiriment);
+
+            //});
 
 
             services.
@@ -132,23 +135,32 @@ namespace Naylah.ConsoleAspNetCore
             //    app.UseDeveloperExceptionPage();
             //}
 
-            app.UseSwagger();
+            //app.UseSwagger();
 
-            app.UseSwaggerUI(c =>
-            {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
-            });
+            //app.UseSwaggerUI(c =>
+            //{
+            //    c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+            //});
 
 
             app.UseRouting();
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapControllers();
-                endpoints.EnableDependencyInjection();
+                endpoints.MapODataRoute("odata", "odata", GetEdmModel());
+                //endpoints.MapControllers();
+                //endpoints.EnableDependencyInjection();
                 endpoints.MapHealthChecks("/health");
             });
 
             
+        }
+
+        IEdmModel GetEdmModel()
+        {
+            var odataBuilder = new ODataConventionModelBuilder();
+            //odataBuilder.EntitySet<Person>("Person");
+
+            return odataBuilder.GetEdmModel();
         }
     }
 

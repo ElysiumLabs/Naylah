@@ -11,12 +11,16 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
-namespace Naylah.ConsolePlayground
+namespace Naylah.ConsolePlayground3
 {
-
     internal class Program
     {
         private static void Main(string[] args)
+        {
+            Top().Wait();
+        }
+
+        public static async Task Top()
         {
             //var services = new ServiceCollection();
             //services.AddScoped<IHandler<Person>, PersonHandler>();
@@ -59,13 +63,27 @@ namespace Naylah.ConsolePlayground
 
             var naylahClient = new NaylahRestClient(new Uri("https://localhost:5001/"));
 
+            var personTableService = new StringTableService<PersonDTO>(naylahClient) { Route = "Person" };
+            //var workshiftTableService = new StringTableService<PersonDTO>(naylahClient) { Route = "Workshift" };
+            //var uma = await personTableService.Get("44BEF857-F48D-47D4-A803-BD186A83684C");
 
-            var r = new TableService<Person>();
-            Console.WriteLine(r.Test());
+            //var q1 = personTableService.AsQueryable().Where(x => x.Name.FirstName == "1");
+            //var r = q1.ToList();
+
+            //var loadCollection = await personTableService.ToLoadCollection(new QueryOptions() {Filter = "Name/Full eq 'string'"});
+
+            //while (loadCollection.HasMoreItems)
+            //{
+            //    await loadCollection.LoadMoreItems();
+            //}
+
+
+            Console.WriteLine();
         }
 
-      
     }
+
+    
 
     public class NothingOfWork : IUnitOfWork
     {
@@ -77,7 +95,7 @@ namespace Naylah.ConsolePlayground
 
         public void Dispose()
         {
-            
+
         }
     }
 
@@ -250,5 +268,34 @@ namespace Naylah.ConsolePlayground
         public int Age { get; set; }
     }
 
-    
+
+    public class PersonName
+    {
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+
+    }
+
+    public class PersonNameFull : PersonName
+    {
+        public string Full { get; set; }
+
+
+    }
+
+    public class PersonDTO : IEntity<string>
+    {
+        public string Id { get; set; }
+
+        public PersonNameFull Name { get; set; } = new PersonNameFull();
+
+        public PersonName Test { get; set; } = new PersonName();
+    }
+
+    public class PersonDTO2 : IEntity<string>
+    {
+        public string Id { get; set; }
+
+        public PersonNameFull Name { get; set; } = new PersonNameFull();
+    }
 }

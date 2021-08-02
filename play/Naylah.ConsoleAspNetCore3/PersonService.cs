@@ -42,5 +42,10 @@ namespace Naylah.ConsoleAspNetCore
 
             return q;
         }
+
+        public IQueryable<PersonDTO> GetProjection()
+        {
+            return Project(GetEntities());
+        }
     }
 }

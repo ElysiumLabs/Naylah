@@ -27,6 +27,12 @@ namespace Naylah.ConsoleAspNetCore.Controllers
             this.mapper = mapper;
         }
 
+        [HttpGet("list")]
+        public IQueryable<PersonDTO> GetCustom([FromServices] PersonService service)
+        {
+            return service.GetProjection();
+        }
+
         [HttpGet("custom")]
         public PageResult<PersonDTO> GetCustom([FromServices] PersonService service, string filter1, string filter2)
         {

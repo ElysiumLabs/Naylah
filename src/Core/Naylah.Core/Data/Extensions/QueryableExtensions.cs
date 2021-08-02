@@ -36,6 +36,13 @@ namespace Naylah.Data.Extensions
             return _source.Select(queryExpression);
         }
 
+        public IQueryable<TDest> To<TDest>(IQueryable<TSource> _dest)
+        {
+            var queryExpression = GetCachedExpression<TDest>() ?? BuildExpression<TDest>();
+
+            return _dest.Select(queryExpression);
+        }
+
         private static Expression<Func<TSource, TDest>> GetCachedExpression<TDest>()
         {
             var key = GetCacheKey<TDest>();
