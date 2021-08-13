@@ -11,7 +11,7 @@ namespace Naylah.Data.Providers.CosmosDB
     public class CosmosSQLContainerRepository<TEntity> : IRepository<TEntity>, ICommandRangeRepository<TEntity>
        where TEntity : class, IEntity<string>
     {
-        private readonly Container container;
+        protected readonly Container container;
 
         public CosmosSQLContainerRepository(Container container, Func<TEntity, PartitionKey> partitionKeyResolver)
         {
@@ -23,13 +23,13 @@ namespace Naylah.Data.Providers.CosmosDB
 
         public IQueryable<TEntity> Entities => container.GetItemLinqQueryable<TEntity>(true);
 
-        public async ValueTask<TEntity> AddAsync(TEntity entity)
+        public virtual async ValueTask<TEntity> AddAsync(TEntity entity)
         {
             var r = await container.CreateItemAsync(entity, PartitionKeyResolver.Invoke(entity));
             return r.Resource;
         }
 
-        public async ValueTask<TEntity> EditAsync(TEntity entity)
+        public virtual async ValueTask<TEntity> EditAsync(TEntity entity)
         {
             var r = await container.UpsertItemAsync(entity, PartitionKeyResolver.Invoke(entity));
             return r.Resource;
