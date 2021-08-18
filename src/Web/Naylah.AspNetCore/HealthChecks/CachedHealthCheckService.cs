@@ -26,37 +26,38 @@ namespace Naylah.HealthChecks
 
         public async Task<DateHealthReport> GetOrCheckHealthAsync(HealthCheckService healthCheckService, CancellationToken cancellationToken = default)
         {
-            try
-            {
-                if ((Evaluating) || (Result?.Date.Add(options.CacheDuration) > DateTimeOffset.UtcNow))
-                {
-                    return Result;
-                }
+            return null;
+//            try
+//            {
+//                if ((Evaluating) || (Result?.Date.Add(options.CacheDuration) > DateTimeOffset.UtcNow))
+//                {
+//                    return Result;
+//                }
 
-                Evaluating = true;
+//                Evaluating = true;
 
-#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
-                healthCheckService.CheckHealthAsync(cancellationToken).ContinueWith(report => 
-                {
-                    Result = new DateHealthReport()
-                    {
-                        Date = DateTimeOffset.UtcNow,
-                        Report = report.Result
-                    };
+//#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
+//                healthCheckService.CheckHealthAsync(cancellationToken).ContinueWith(report => 
+//                {
+//                    Result = new DateHealthReport()
+//                    {
+//                        Date = DateTimeOffset.UtcNow,
+//                        Report = report.Result
+//                    };
 
-                    Evaluating = false;
-                });
-#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
+//                    Evaluating = false;
+//                });
+//#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
 
 
-                //var report = await healthCheckService.CheckHealthAsync(cancellationToken);
-                return Result;
-            }
-            catch (Exception)
-            {
-                Evaluating = false;
-                return Result;
-            }
+//                //var report = await healthCheckService.CheckHealthAsync(cancellationToken);
+//                return Result;
+//            }
+//            catch (Exception)
+//            {
+//                Evaluating = false;
+//                return Result;
+//            }
         }
     }
 
