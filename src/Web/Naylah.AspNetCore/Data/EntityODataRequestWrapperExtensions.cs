@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNet.OData;
 using Microsoft.AspNet.OData.Query;
 using Microsoft.AspNetCore.Http;
+using System.Threading.Tasks;
 
 namespace Naylah.Data
 {
@@ -26,14 +27,15 @@ namespace Naylah.Data
             return new EntityODataRequestModelWrapper<TEntity, TModel, TIdentifier>(tableDataService, httpRequest, oDataQuerySettings);
         }
 
-        public static PageResult<TModel> GetPaged<TEntity, TModel, TIdentifier>(
+        public static async Task<PageResult<TModel>> GetPaged<TEntity, TModel, TIdentifier>(
            this EntityODataRequestModelWrapper<TEntity, TModel, TIdentifier> oDataRequestWrapper
            )
            where TEntity : class, IEntity<TIdentifier>, IModifiable, IEntityUpdate<TModel>, new()
            where TModel : class, IEntity<TIdentifier>, new()
         {
             var p = oDataRequestWrapper.ApplyTo();
-            return oDataRequestWrapper.Paged(p);
+            return await oDataRequestWrapper.Paged(p);
         }
+
     }
 }

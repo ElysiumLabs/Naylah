@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Ben.Diagnostics;
 using Hellang.Middleware.ProblemDetails;
 using Microsoft.AspNet.OData.Builder;
 using Microsoft.AspNet.OData.Extensions;
@@ -10,6 +11,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Formatters;
+using Microsoft.Azure.Cosmos;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -24,6 +26,7 @@ using Naylah.ConsoleAspNetCore.Customizations;
 using Naylah.ConsoleAspNetCore.Entities;
 using Naylah.Data;
 using Naylah.Data.Access;
+using Naylah.Data.Providers.CosmosDB;
 using Newtonsoft.Json.Serialization;
 
 namespace Naylah.ConsoleAspNetCore
@@ -49,53 +52,52 @@ namespace Naylah.ConsoleAspNetCore
             base.ConfigureServices(services);
 
             services.AddAutoMapper(typeof(Startup));
-            services.AddOData();
 
-            //services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
-            //        .AddNewtonsoftJson(options =>
-            //        {
-            //            options.SerializerSettings.Converters.Add(new Newtonsoft.Json.Converters.StringEnumConverter());
-            //            options.SerializerSettings.ContractResolver = new DefaultContractResolver
-            //            {
-            //                NamingStrategy = new CamelCaseNamingStrategy()
-            //            };
-            //        });
-
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
+                    .AddNewtonsoftJson(options =>
+                    {
+                        options.SerializerSettings.Converters.Add(new Newtonsoft.Json.Converters.StringEnumConverter());
+                        options.SerializerSettings.ContractResolver = new DefaultContractResolver
+                        {
+                            NamingStrategy = new CamelCaseNamingStrategy()
+                        };
+                    });
 
 
-            //services.AddDataManagement(null, swagger =>
-            //{
-            //    swagger.SwaggerDoc("v1", new OpenApiInfo { Title = "teste" + " " + " API", Version = "v1" });
 
-            //    var scheme1 = new OpenApiSecurityScheme()
-            //    {
-            //        In = ParameterLocation.Header,
-            //        Description = "Please insert Bearer authorization into field",
-            //        Name = "Authorization",
-            //        Type = SecuritySchemeType.ApiKey
-            //    };
+            services.AddDataManagement(null, swagger =>
+            {
+                swagger.SwaggerDoc("v1", new OpenApiInfo { Title = "teste" + " " + " API", Version = "v1" });
 
-            //    swagger.AddSecurityDefinition("Bearer", scheme1);
+                var scheme1 = new OpenApiSecurityScheme()
+                {
+                    In = ParameterLocation.Header,
+                    Description = "Please insert Bearer authorization into field",
+                    Name = "Authorization",
+                    Type = SecuritySchemeType.ApiKey
+                };
+
+                swagger.AddSecurityDefinition("Bearer", scheme1);
 
 
-            //    //swagger.AddSecurityDefinition("ApiKey", new OpenApiSecurityScheme
-            //    //{
-            //    //    In = "header",
-            //    //    Description = "Please insert APIKEY into field",
-            //    //    Name = "x-api-key",
-            //    //    Type = "apiKey"
-            //    //});
+                //swagger.AddSecurityDefinition("ApiKey", new OpenApiSecurityScheme
+                //{
+                //    In = "header",
+                //    Description = "Please insert APIKEY into field",
+                //    Name = "x-api-key",
+                //    Type = "apiKey"
+                //});
 
-            //    swagger.AddSecurityRequirement(new OpenApiSecurityRequirement()
-            //    {
+                swagger.AddSecurityRequirement(new OpenApiSecurityRequirement()
+                {
 
-            //    });
+                });
 
-            //    //var requiriment = new OpenApiSecurityRequirement();
-            //    //requiriment.Add(scheme1, );
-            //    //swagger.AddSecurityRequirement(requiriment);
+                //var requiriment = new OpenApiSecurityRequirement();
+                //requiriment.Add(scheme1, );
+                //swagger.AddSecurityRequirement(requiriment);
 
-            //});
+            });
 
 
             services.
@@ -105,7 +107,38 @@ namespace Naylah.ConsoleAspNetCore
             //services.AddSingleton(new List<Person>());
             //services.AddScoped<IRepository<Person, string>, SomeRepository>();
 
-            services.AddEntityFrameworkRepository<ORM.TestDbContext, Person, string>();
+            //services.AddEntityFrameworkRepository<ORM.TestDbContext, Person, string>();
+
+            services.AddSingleton<CosmosClient>(x =>
+            {
+                var c = new CosmosClient(
+                    "",
+                    "",
+                    new CosmosClientOptions()
+                    {
+                        ApplicationName = Options.Name,
+                        AllowBulkExecution = false,
+
+                        SerializerOptions = new CosmosSerializationOptions()
+                        {
+                            PropertyNamingPolicy = CosmosPropertyNamingPolicy.CamelCase,
+                        },
+                    });
+
+                //var handler = new CustomHttpClientHandler();
+                //c.ClientOptions.CustomHandlers.Add(handler);
+
+                return c;
+            });
+
+            services.AddScoped<IRepository<Entities.Person>, CosmosSQLContainerRepository<Entities.Person>>(x =>
+            {
+                return new CosmosSQLContainerRepository<Entities.Person>
+                (
+                    x.GetService<CosmosClient>().GetContainer("", "test"),
+                    y => new PartitionKey(y.Partition)
+                );
+            });
 
             services.AddScoped(typeof(StringAppTableDataService<,>));
             services.AddScoped<IUnitOfWork, SomeWorker>();
@@ -128,6 +161,8 @@ namespace Naylah.ConsoleAspNetCore
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public override void Configure(IApplicationBuilder app)
         {
+            app.UseBlockingDetection();
+
             base.Configure(app);
 
             //if (Environment.IsDevelopment())
@@ -135,12 +170,12 @@ namespace Naylah.ConsoleAspNetCore
             //    app.UseDeveloperExceptionPage();
             //}
 
-            //app.UseSwagger();
+            app.UseSwagger();
 
-            //app.UseSwaggerUI(c =>
-            //{
-            //    c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
-            //});
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+            });
 
 
             app.UseRouting();
@@ -148,7 +183,7 @@ namespace Naylah.ConsoleAspNetCore
             {
                 endpoints.MapODataRoute("odata", "odata", GetEdmModel());
                 //endpoints.MapControllers();
-                //endpoints.EnableDependencyInjection();
+                endpoints.EnableDependencyInjection();
                 endpoints.MapHealthChecks("/health");
             });
 

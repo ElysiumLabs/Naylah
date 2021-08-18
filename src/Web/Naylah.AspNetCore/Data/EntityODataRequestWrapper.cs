@@ -6,6 +6,7 @@ using Naylah.Data.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Naylah.Data
 {
@@ -96,14 +97,14 @@ namespace Naylah.Data
             return ProjectionApplyTo(entities, projection).Cast<TModel>();
         }
 
-        public PageResult<object> Paged(IQueryable query)
+        public async Task<PageResult<object>> Paged(IQueryable query)
         {
-            return Paged(query.Cast<object>());
+            return await Paged((IQueryable<object>)query);
         }
 
-        public PageResult<TResult> Paged<TResult>(IQueryable<TResult> query)
+        public async Task<PageResult<TResult>> Paged<TResult>(IQueryable<TResult> query)
         {
-            long totalCount = UseLongCount ? query.LongCount() : query.Count();
+            var totalCount = await RepositoryCount(query);
 
             var skip = entityOpts.Skip?.Value;
             var top = entityOpts.Top?.Value ?? querySettings.PageSize;
@@ -118,9 +119,21 @@ namespace Naylah.Data
                 query = query.Take(top.Value);
             }
 
-            var result = query.AsEnumerable();
+            var result = await RepositoryEnumerable(query);
 
             return GetPageResult(result, totalCount);
+        }
+
+        protected virtual async Task<long> RepositoryCount<TResult>(IQueryable<TResult> query)
+        {
+            long totalCount = UseLongCount ? query.LongCount() : query.Count();
+            return totalCount;
+        }
+
+        protected virtual async Task<IEnumerable<TResult>> RepositoryEnumerable<TResult>(IQueryable<TResult> query)
+        {
+            var result = query.AsEnumerable();
+            return result;
         }
     }
 }

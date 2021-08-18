@@ -1,15 +1,18 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Naylah.Data.Access;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Naylah.Data.Providers.EntityFrameworkCore
 {
-    public class EntityFrameworkRepository<TDbContext, TEntity> : IRepository<TEntity>, ICommandRangeRepository<TEntity>
-       where TDbContext : DbContext
-       where TEntity : class
+    public class EntityFrameworkRepository<TDbContext, TEntity> : IRepository<TEntity>, ICommandRangeRepository<TEntity>,
+        IAsyncCountRepository, IAsyncEnumerableRepository
+        where TDbContext : DbContext
+        where TEntity : class
     {
         protected readonly TDbContext dbContext;
 
@@ -20,16 +23,16 @@ namespace Naylah.Data.Providers.EntityFrameworkCore
 
         public IQueryable<TEntity> Entities => dbContext.Set<TEntity>();
 
-        public ValueTask<TEntity> AddAsync(TEntity entity)
+        public async ValueTask<TEntity> AddAsync(TEntity entity)
         {
-            dbContext.Set<TEntity>().Add(entity);
-            return new ValueTask<TEntity>(entity);
+            await dbContext.Set<TEntity>().AddAsync(entity);
+            return entity;
         }
 
-        public ValueTask<IEnumerable<TEntity>> AddAsync(IEnumerable<TEntity> entities)
+        public async ValueTask<IEnumerable<TEntity>> AddAsync(IEnumerable<TEntity> entities)
         {
-            dbContext.Set<TEntity>().AddRange(entities);
-            return new ValueTask<IEnumerable<TEntity>>(entities);
+            await dbContext.Set<TEntity>().AddRangeAsync(entities);
+            return entities;
         }
 
         public ValueTask<TEntity> EditAsync(TEntity entity)
@@ -54,6 +57,19 @@ namespace Naylah.Data.Providers.EntityFrameworkCore
         {
             dbContext.Set<TEntity>().RemoveRange(entities);
             return Task.FromResult(1);
+        }
+
+        public async Task<IEnumerable<TEntity1>> AsEnumerableAsync<TEntity1>(
+           IQueryable<TEntity1> queryable,
+           CancellationToken cancellationToken = default
+           )
+        {
+            return await queryable.ToListAsync(cancellationToken);
+        }
+
+        public async Task<long> GetCountAsync<TEntity1>(IQueryable<TEntity1> queryable)
+        {
+            return await queryable.LongCountAsync();
         }
     }
 }

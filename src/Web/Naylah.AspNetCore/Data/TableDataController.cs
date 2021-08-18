@@ -40,7 +40,7 @@ namespace Naylah.Data
 
             //or
 
-            return Request.CreateODataWrapper(tableDataService, oDataQuerySettings).GetPaged();
+            return await Request.CreateODataWrapper(tableDataService, oDataQuerySettings).GetPaged();
         }
 
         [HttpGet("{id}")]

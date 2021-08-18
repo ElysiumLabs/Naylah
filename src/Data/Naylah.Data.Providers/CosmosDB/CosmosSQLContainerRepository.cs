@@ -1,27 +1,36 @@
 ﻿using Microsoft.Azure.Cosmos;
+using Microsoft.Azure.Cosmos.Linq;
+using Naylah.Data.Access;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Naylah.Data.Providers.CosmosDB
 {
-    public class CosmosSQLContainerRepository<TEntity> : IRepository<TEntity>, ICommandRangeRepository<TEntity>
-       where TEntity : class, IEntity<string>
+    public class CosmosSQLContainerRepository<TEntity> : IRepository<TEntity>, ICommandRangeRepository<TEntity>, 
+        IAsyncCountRepository, IAsyncEnumerableRepository
+        where TEntity : class, IEntity<string>
     {
         protected readonly Container container;
+        private readonly bool allowSynchronousQueryExecution;
 
-        public CosmosSQLContainerRepository(Container container, Func<TEntity, PartitionKey> partitionKeyResolver)
+        public CosmosSQLContainerRepository(Container container, Func<TEntity, PartitionKey> partitionKeyResolver, bool allowSynchronousQueryExecution = false)
         {
             this.container = container;
+            this.allowSynchronousQueryExecution = allowSynchronousQueryExecution;
             PartitionKeyResolver = partitionKeyResolver;
         }
 
         public Func<TEntity, PartitionKey> PartitionKeyResolver { get; set; }
 
-        public IQueryable<TEntity> Entities => container.GetItemLinqQueryable<TEntity>(true);
+        public IQueryable<TEntity> Entities => container.
+            GetItemLinqQueryable<TEntity>(allowSynchronousQueryExecution);
+            //ToCosmosAsyncQuery<TEntity>(); TODO
+
 
         public virtual async ValueTask<TEntity> AddAsync(TEntity entity)
         {
@@ -60,19 +69,33 @@ namespace Naylah.Data.Providers.CosmosDB
             var rs = await Task.WhenAll(tasks);
         }
 
-        public int GetCount(Expression<Func<TEntity, bool>> filter = null)
+        public async Task<IEnumerable<TEntity1>> AsEnumerableAsync<TEntity1>(
+            IQueryable<TEntity1> queryable,
+            CancellationToken cancellationToken = default
+            )
         {
-            if (filter != null)
+            return await queryable.ToFeedIterator().ToCosmosListAsync(cancellationToken);
+        }
+       
+        public async Task<long> GetCountAsync<TEntity1>(IQueryable<TEntity1> queryable)
+        {
+            //var filterQueryDefinition = Entities.Where(filter).ToQueryDefinition();
+            var filterQueryDefinition = queryable.ToQueryDefinition();
+            var wposStart = filterQueryDefinition.QueryText.IndexOf("WHERE");
+
+            string where = "";
+
+            if (wposStart >= 0)
             {
-                throw new NotImplementedException();
+                where = filterQueryDefinition.QueryText.Substring(wposStart);
             }
 
-            var countSql = "SELECT VALUE COUNT(1) FROM c";
+            var countSql = "SELECT VALUE COUNT(1) FROM root " + where;
 
             var countIterator = container.GetItemQueryIterator<int>(countSql);
             while (countIterator.HasMoreResults)
             {
-                var response = countIterator.ReadNextAsync().Result;
+                var response = await countIterator.ReadNextAsync();
                 return response.FirstOrDefault();
             }
 

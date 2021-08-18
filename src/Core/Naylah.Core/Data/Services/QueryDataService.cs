@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Threading;
 using System.Threading.Tasks;
 using Naylah.Data;
 using Naylah.Data.Access;
@@ -64,9 +65,20 @@ namespace Naylah
             return q;
         }
 
-        protected virtual Task<TEntity> FindByAsync(Expression<Func<TEntity, bool>> predicate)
+        protected virtual async Task<TEntity> FindByAsync(Expression<Func<TEntity, bool>> predicate)
         {
-            return Task.FromResult(GetEntities().Where(predicate).FirstOrDefault());
+            var query = GetEntities().Where(predicate);
+
+#if NETSTANDARD2_0_OR_GREATER
+            //var asyncQuery = (IAsyncEnumerable<TEntity>)query;
+            //if (asyncQuery != null)
+            //{
+            //    return await asyncQuery.FirstOrDefaultAsync(CancellationToken.None);
+            //}
+#endif
+            return query.FirstOrDefault();
+
+
         }
 
         protected virtual async Task<TEntity> FindByIdAsync(TIdentifier identifier)

@@ -15,6 +15,7 @@ namespace Naylah.Data
     {
         public TableDataService(IRepository<TEntity> repository, IUnitOfWork unitOfWork) : base(repository, unitOfWork)
         {
+
         }
 
         public TableDataService(IRepository<TEntity> repository, IUnitOfWork unitOfWork, IHandler<Notification> notificationsHandler) : base(repository, unitOfWork, notificationsHandler)

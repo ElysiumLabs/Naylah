@@ -38,6 +38,9 @@ namespace Naylah.ConsoleAspNetCore.Entities
 
         public PersonNameFull Name { get; set; } = new PersonNameFull();
 
+        public string Partition { get; set; }
+
+
         public void UpdateFrom(Person source, EntityUpdateOptions options = null)
         {
             Name = source.Name;

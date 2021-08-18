@@ -9,7 +9,7 @@ using System.Text;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
-    public static class CosmosDBExtensions
+    public static class CosmosServiceCollectionExtensions
     {
         public static IServiceCollection AddCosmosDBSQLRepository<TEntity>(this IServiceCollection serviceCollection, 
             Func<IServiceProvider, Container> containerResolver,

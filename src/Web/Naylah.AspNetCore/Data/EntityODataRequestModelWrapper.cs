@@ -1,7 +1,10 @@
 ﻿using Microsoft.AspNet.OData.Query;
 using Microsoft.AspNetCore.Http;
+using Naylah.Data.Access;
 using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Naylah.Data
 {
@@ -37,5 +40,31 @@ namespace Naylah.Data
             return (IQueryable<TModel>)ProjectionApplyTo(wrapper.GetEntities(), projectionFunc);
         }
 
+        protected override Task<long> RepositoryCount<TResult>(IQueryable<TResult> query)
+        {
+            var wrapper = tableDataService.CreateWrapper();
+
+            var asyncCountRepo = (IAsyncCountRepository)wrapper.Repository;
+            if (asyncCountRepo != null)
+            {
+                return asyncCountRepo.GetCountAsync(query);
+            }
+
+            return base.RepositoryCount(query);
+
+        }
+
+        protected override Task<IEnumerable<TResult>> RepositoryEnumerable<TResult>(IQueryable<TResult> query)
+        {
+            var wrapper = tableDataService.CreateWrapper();
+
+            var asyncCountRepo = (IAsyncEnumerableRepository)wrapper.Repository;
+            if (asyncCountRepo != null)
+            {
+                return asyncCountRepo.AsEnumerableAsync(query);
+            }
+
+            return base.RepositoryEnumerable(query);
+        }
     }
 }
