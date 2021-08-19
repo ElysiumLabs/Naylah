@@ -107,7 +107,7 @@ namespace Naylah.ConsoleAspNetCore
             //services.AddSingleton(new List<Person>());
             //services.AddScoped<IRepository<Person, string>, SomeRepository>();
 
-            //services.AddEntityFrameworkRepository<ORM.TestDbContext, Person, string>();
+            services.AddEntityFrameworkRepository<ORM.TestDbContext, Person>();
 
             services.AddSingleton<CosmosClient>(x =>
             {
@@ -131,14 +131,14 @@ namespace Naylah.ConsoleAspNetCore
                 return c;
             });
 
-            services.AddScoped<IRepository<Entities.Person>, CosmosSQLContainerRepository<Entities.Person>>(x =>
-            {
-                return new CosmosSQLContainerRepository<Entities.Person>
-                (
-                    x.GetService<CosmosClient>().GetContainer("", "test"),
-                    y => new PartitionKey(y.Partition)
-                );
-            });
+            //services.AddScoped<IRepository<Entities.Person>, CosmosSQLContainerRepository<Entities.Person>>(x =>
+            //{
+            //    return new CosmosSQLContainerRepository<Entities.Person>
+            //    (
+            //        x.GetService<CosmosClient>().GetContainer("", "test"),
+            //        y => new PartitionKey(y.Partition)
+            //    );
+            //});
 
             services.AddScoped(typeof(StringAppTableDataService<,>));
             services.AddScoped<IUnitOfWork, SomeWorker>();

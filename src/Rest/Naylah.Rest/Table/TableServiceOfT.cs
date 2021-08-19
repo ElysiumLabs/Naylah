@@ -34,10 +34,8 @@ namespace Naylah.Rest.Table
         //    return new TableQueryable<TModel>(new CustomODataTableQueryContext<TModel>(ctxQ));
         //}
 
-        public async Task<PageResult<TModel>> Get(QueryOptions queryOptions)
+        protected virtual async Task<PageResult<TModel>> GetPagedQueryOptions(RestRequest request, QueryOptions queryOptions)
         {
-            var request = new RestRequest(Route.AppendPathSegment(MethodsRoutes.GetPaged), Method.GET);
-
             queryOptions = queryOptions ?? DefaultQueryOptions;
 
             if (queryOptions.Filter != null)
@@ -66,6 +64,13 @@ namespace Naylah.Rest.Table
             p.Query = queryOptions;
 
             return p;
+        }
+
+
+        public virtual async Task<PageResult<TModel>> Get(QueryOptions queryOptions)
+        {
+            var request = new RestRequest(Route.AppendPathSegment(MethodsRoutes.GetPaged), Method.GET);
+            return await GetPagedQueryOptions(request, queryOptions);
         }
 
         public virtual async Task<TModel> Get(TIdentifier identifier)
