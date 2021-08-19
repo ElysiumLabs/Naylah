@@ -9,7 +9,8 @@ using System.Threading.Tasks;
 
 namespace Naylah.Data.Providers.EntityFrameworkCore
 {
-    public class EntityFrameworkRepository<TDbContext, TEntity> : IRepository<TEntity>, ICommandRangeRepository<TEntity>,
+    public class EntityFrameworkRepository<TDbContext, TEntity> : IRepository<TEntity>, 
+        ICommandRangeRepository<TEntity>,
         IAsyncCountRepository, IAsyncEnumerableRepository
         where TDbContext : DbContext
         where TEntity : class
@@ -23,16 +24,16 @@ namespace Naylah.Data.Providers.EntityFrameworkCore
 
         public IQueryable<TEntity> Entities => dbContext.Set<TEntity>();
 
-        public async ValueTask<TEntity> AddAsync(TEntity entity)
+        public ValueTask<TEntity> AddAsync(TEntity entity)
         {
-            await dbContext.Set<TEntity>().AddAsync(entity);
-            return entity;
+            dbContext.Set<TEntity>().Add(entity);
+            return new ValueTask<TEntity>(entity);
         }
 
-        public async ValueTask<IEnumerable<TEntity>> AddAsync(IEnumerable<TEntity> entities)
+        public ValueTask<IEnumerable<TEntity>> AddAsync(IEnumerable<TEntity> entities)
         {
-            await dbContext.Set<TEntity>().AddRangeAsync(entities);
-            return entities;
+            dbContext.Set<TEntity>().AddRange(entities);
+            return new ValueTask<IEnumerable<TEntity>>(entities);
         }
 
         public ValueTask<TEntity> EditAsync(TEntity entity)
