@@ -94,7 +94,7 @@ namespace Naylah.Data
 
         public virtual IQueryable<TModel> ApplyTo<TModel>(IQueryable<TEntity> entities, Func<IQueryable<TEntity>, IQueryable<TModel>> projection)
         {
-            return ProjectionApplyTo(entities, projection).Cast<TModel>();
+            return (IQueryable<TModel>)ProjectionApplyTo(entities, projection);
         }
 
         public async Task<PageResult<object>> Paged(IQueryable query)
