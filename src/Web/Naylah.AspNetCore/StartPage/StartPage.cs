@@ -36,7 +36,7 @@ namespace Naylah.StartPage
             {
                 var servicesString = "";
 
-                var r = await cachedHealthCheckService.GetOrCheckHealthAsync(healthyCheck);
+                var r = await cachedHealthCheckService.GetOrCheckHealthAsync(healthyCheck, context.RequestAborted);
 
                 if (r != null)
                 {

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 
 namespace Naylah.StartPage
 {
@@ -9,6 +10,9 @@ namespace Naylah.StartPage
         public string Message { get; set; } = "This service is up and running ;)";
 
         public string Organization { get; set; } = "";
+
+        public PathString Path { get; set; }
+
 
         public TimeSpan HealtyCheckCacheDuration { get; set; } = TimeSpan.FromSeconds(10);
     }

@@ -30,31 +30,32 @@ namespace Naylah.StartPage
             _options = options.Value;
         }
 
-        public Task InvokeAsync(HttpContext context)
-        {
+        public static object test = null;
 
+        public Task InvokeAsync(HttpContext context, IServiceProvider requestServiceProvider)
+        {
             HttpRequest request = context.Request;
 
-            //not asking for a homepage
-            if (!(request.Path == "" || request.Path == "/"))
+            if (!_options.Path.HasValue || _options.Path == request.Path)
             {
-                return _next(context);
+                var startPageProvider = requestServiceProvider.GetService<IStartPageProvider>();
+                var healthyCheck = requestServiceProvider.GetService<HealthCheckService>();
+
+                test = healthyCheck;
+
+                cachedHealthCheckService =
+                    cachedHealthCheckService ??
+                    requestServiceProvider.GetService<CachedHealthCheckService>()
+                    ?? new CachedHealthCheckService(new CachedHealthCheckServiceOptions()
+                    {
+                        CacheDuration = _options.HealtyCheckCacheDuration
+                    });
+
+                var welcomePage = startPageProvider?.GetStartPage() ?? new StartPage();
+                return welcomePage.ExecuteAsync(context, _options, healthyCheck, cachedHealthCheckService);
             }
 
-            var startPageProvider = context.RequestServices.GetService<IStartPageProvider>();
-            var healthyCheck = context.RequestServices.GetService<HealthCheckService>();
-
-            cachedHealthCheckService =
-                cachedHealthCheckService ??
-                context.RequestServices.GetService<CachedHealthCheckService>()
-                ?? new CachedHealthCheckService(new CachedHealthCheckServiceOptions()
-                {
-                    CacheDuration = _options.HealtyCheckCacheDuration
-                });
-
-            var welcomePage = startPageProvider?.GetStartPage() ?? new StartPage();
-            return welcomePage.ExecuteAsync(context, _options, healthyCheck, cachedHealthCheckService);
-
+            return _next(context);
         }
 
     }

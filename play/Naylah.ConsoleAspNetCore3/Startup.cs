@@ -52,16 +52,17 @@ namespace Naylah.ConsoleAspNetCore
             base.ConfigureServices(services);
 
             services.AddAutoMapper(typeof(Startup));
+            services.AddControllers();
 
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
-                    .AddNewtonsoftJson(options =>
-                    {
-                        options.SerializerSettings.Converters.Add(new Newtonsoft.Json.Converters.StringEnumConverter());
-                        options.SerializerSettings.ContractResolver = new DefaultContractResolver
-                        {
-                            NamingStrategy = new CamelCaseNamingStrategy()
-                        };
-                    });
+            //services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
+            //        .AddNewtonsoftJson(options =>
+            //        {
+            //            options.SerializerSettings.Converters.Add(new Newtonsoft.Json.Converters.StringEnumConverter());
+            //            options.SerializerSettings.ContractResolver = new DefaultContractResolver
+            //            {
+            //                NamingStrategy = new CamelCaseNamingStrategy()
+            //            };
+            //        });
 
 
 
@@ -155,6 +156,8 @@ namespace Naylah.ConsoleAspNetCore
                 AddCheck<TestCheck>("Teste5").
                 AddCheck<TestCheck>("Teste6");
 
+            services.AddScoped<string>((c) => Guid.NewGuid().ToString());
+
 
         }
 
@@ -182,7 +185,7 @@ namespace Naylah.ConsoleAspNetCore
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapODataRoute("odata", "odata", GetEdmModel());
-                //endpoints.MapControllers();
+                endpoints.MapControllers();
                 endpoints.EnableDependencyInjection();
                 endpoints.MapHealthChecks("/health");
             });

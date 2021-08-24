@@ -9,13 +9,13 @@
   <ItemGroup Condition="'$(TargetFramework)' == 'netcoreapp3.0'">
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.OData" Version="7.5.1" />
-    <PackageReference Include="Hellang.Middleware.ProblemDetails" Version="4.0.0" />
+    <PackageReference Include="Hellang.Middleware.ProblemDetails" Version="4.5.0" />
   </ItemGroup>
 
   <ItemGroup Condition="'$(TargetFramework)' == 'netcoreapp3.1'">
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.OData" Version="7.5.1" />
-    <PackageReference Include="Hellang.Middleware.ProblemDetails" Version="4.0.0" />
+    <PackageReference Include="Hellang.Middleware.ProblemDetails" Version="4.5.0" />
   </ItemGroup>
   
   <ItemGroup Condition="'$(TargetFramework)' != 'netcoreapp3.0'">
@@ -23,7 +23,7 @@
     <PackageReference Include="Microsoft.AspNetCore.OData" Version="7.5.1" />
     <PackageReference Include="Microsoft.AspNetCore.Hosting" Version="2.2.7" />
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.HealthChecks" Version="2.2.0" />
-    <PackageReference Include="Hellang.Middleware.ProblemDetails" Version="4.0.0" />
+    <PackageReference Include="Hellang.Middleware.ProblemDetails" Version="4.5.0" />
   </ItemGroup>
   
   <ItemGroup>

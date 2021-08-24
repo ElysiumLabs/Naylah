@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
@@ -28,6 +29,7 @@ namespace Naylah.StartPage
             {
                 x.Title = options.Name;
                 x.Organization = options.Organization;
+                x.Path = "/";
             });
         }
     }
