@@ -1,5 +1,8 @@
 ﻿using Flurl;
 using RestSharp;
+using System;
+using System.Net.Http;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Naylah.Rest.Table
@@ -13,7 +16,7 @@ namespace Naylah.Rest.Table
 
         public QueryOptions DefaultQueryOptions { get; set; } = new QueryOptions();
 
-        public TableService(NaylahRestClient client) : base(client)
+        public TableService(NaylahRestClient2 client) : base(client)
         {
             var basePath = "".AppendPathSegment(typeof(TModel).Name);
             Route = basePath;
@@ -34,32 +37,43 @@ namespace Naylah.Rest.Table
         //    return new TableQueryable<TModel>(new CustomODataTableQueryContext<TModel>(ctxQ));
         //}
 
-        protected virtual async Task<PageResult<TModel>> GetPagedQueryOptions(RestRequest request, QueryOptions queryOptions)
+        protected virtual async Task<PageResult<TModel>> GetPagedQueryOptions(HttpRequestMessage request, QueryOptions queryOptions)
         {
             queryOptions = queryOptions ?? DefaultQueryOptions;
 
+            var url = new Url(request.RequestUri);
+
+            if (queryOptions.CustomRoute != null)
+            {
+                url = url + queryOptions.CustomRoute;
+            }
+
             if (queryOptions.Filter != null)
             {
-                request.AddParameter("$filter", queryOptions.Filter, ParameterType.QueryString);
+                url = url.SetQueryParam("$filter", queryOptions.Filter);
             }
 
             if (queryOptions.Order != null)
             {
-                request.AddParameter("$orderby", queryOptions.Order, ParameterType.QueryString);
+                url = url.SetQueryParam("$orderby", queryOptions.Order);
             }
 
             if (queryOptions.Top != null)
             {
-                request.AddParameter("$top", queryOptions.Top, ParameterType.QueryString);
+                url = url.SetQueryParam("$top", queryOptions.Top);
             }
 
             if (queryOptions.Skip != null)
             {
-                request.AddParameter("$skip", queryOptions.Skip, ParameterType.QueryString);
+                url = url.SetQueryParam("$skip", queryOptions.Skip);
             }
 
-            var r = await client.ExecuteAsync<PageResult<TModel>>(request);
-            var p = r.Data;
+            request.RequestUri = url.ToUri();
+
+            var ctoken = CancellationToken.None;
+
+            var r = await client.SendAsync(request, ctoken);
+            var p = await client.GetResponse<PageResult<TModel>>(r.Content, ctoken);
 
             p.Query = queryOptions;
 
@@ -69,29 +83,36 @@ namespace Naylah.Rest.Table
 
         public virtual async Task<PageResult<TModel>> Get(QueryOptions queryOptions)
         {
-            var request = new RestRequest(Route.AppendPathSegment(MethodsRoutes.GetPaged), Method.GET);
+            var request = await client.CreateRequest<PageResult<TModel>>(Route.AppendPathSegment(MethodsRoutes.GetPaged), HttpMethod.Get);
             return await GetPagedQueryOptions(request, queryOptions);
         }
 
         public virtual async Task<TModel> Get(TIdentifier identifier)
         {
-            var request = new RestRequest(Route.AppendPathSegment(MethodsRoutes.GetById.AppendPathSegment(identifier.ToString())), Method.GET);
-            var response = await client.ExecuteAsync<TModel>(request);
-            return response.Data;
+            var response = await client.ExecuteAsync<TModel>(
+                Route.AppendPathSegment(MethodsRoutes.GetById.AppendPathSegment(identifier.ToString())),
+                HttpMethod.Get
+                );
+            return response;
         }
 
         public virtual async Task<TModel> Upsert(TModel entity)
         {
-            var request = new RestRequest(Route.AppendPathSegment(MethodsRoutes.Upsert), Method.POST);
-            var response = await client.ExecuteAsync<TModel>(request);
-            return response.Data;
+            var response = await client.ExecuteAsync<TModel, TModel>(
+                Route.AppendPathSegment(MethodsRoutes.Upsert),
+                HttpMethod.Post,
+                entity
+                );
+            return response;
         }
 
         public virtual async Task<TModel> Delete(TIdentifier identifier)
         {
-            var request = new RestRequest(Route.AppendPathSegment(MethodsRoutes.Delete.AppendPathSegment(identifier.ToString())), Method.DELETE);
-            var response = await client.ExecuteAsync<TModel>(request);
-            return response.Data;
+            var response = await client.ExecuteAsync<TModel>(
+                Route.AppendPathSegment(MethodsRoutes.Delete.AppendPathSegment(identifier.ToString())),
+                HttpMethod.Delete
+                );
+            return response;
         }
 
     }

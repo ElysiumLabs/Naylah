@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace Naylah.ConsolePlayground3
@@ -61,11 +62,26 @@ namespace Naylah.ConsolePlayground3
 
             //Console.ReadKey();
 
-            var naylahClient = new NaylahRestClient(new Uri("https://localhost:5001/"));
+            var naylahClient = new NaylahRestClient2(new Uri("http://localhost:5000"));
 
-            var personTableService = new StringTableService<PersonDTO>(naylahClient) { Route = "Person" };
-            //var workshiftTableService = new StringTableService<PersonDTO>(naylahClient) { Route = "Workshift" };
-            //var uma = await personTableService.Get("44BEF857-F48D-47D4-A803-BD186A83684C");
+            try
+            {
+                //var response = await naylahClient.ExecuteAsync<PersonDTO, string>("", HttpMethod.Put, new PersonDTO() { Name = new PersonNameFull() { FirstName = "teste" } });
+                var workshiftTableService = new StringTableService<Workshift>(naylahClient) { Route = "Workshift" };
+                var uma = await workshiftTableService.Get(new QueryOptions() { CustomRoute = "?companyId=2C25B65430F649E0BAD4A55C67B3FD7C", Top = 100000 });
+            }
+            catch (RestException e)
+            {
+                var errorP = e.AsErrorPresentation();
+                throw;
+            }
+            catch (Exception e)
+            {
+
+                throw;
+            }
+
+            
 
             //var q1 = personTableService.AsQueryable().Where(x => x.Name.FirstName == "1");
             //var r = q1.ToList();
@@ -80,6 +96,13 @@ namespace Naylah.ConsolePlayground3
 
             Console.WriteLine();
         }
+
+    }
+
+    public class Workshift : IEntity<string>
+    {
+        public string Id { get; set; }
+        public string Name { get; set; }
 
     }
 

@@ -4,9 +4,11 @@ using RestSharp;
 using System;
 using System.Collections.Generic;
 using System.Net;
+using System.Net.Http;
 using System.Text;
+using System.Threading.Tasks;
 
-namespace Naylah.Rest.Exceptions
+namespace System
 {
     public class RestException : Exception
     {
@@ -45,6 +47,37 @@ namespace Naylah.Rest.Exceptions
             }
 
             return new RestException(response.StatusCode, requestUri, response.Content, messageBuilder.ToString(), innerException);
+        }
+
+        public static async Task<Exception> CreateException(Exception innerException, HttpRequestMessage requestMessage, HttpResponseMessage responseMessage)
+        {
+            if (responseMessage == null)
+            {
+                //http error throw without try read response
+                throw innerException;
+            }
+
+            var requestUri = requestMessage.RequestUri;
+
+            var messageBuilder = new StringBuilder();
+
+            var stringContent = string.Empty;
+
+            messageBuilder.AppendLine(string.Format("Processing request [{0}] resulted with following errors:", innerException.Message));
+
+            if (responseMessage != null)
+            {
+                messageBuilder.AppendLine("- Server responded with unsuccessfult status code: " + responseMessage.StatusCode + " " + responseMessage.ReasonPhrase);
+            }
+            
+            if (responseMessage?.Content != null)
+            {
+                stringContent = await responseMessage.Content.ReadAsStringAsync();
+                messageBuilder.AppendLine("- An exception occurred while processing request: " + stringContent);
+
+                //innerException = response.ErrorException;
+            }
+            return new RestException(responseMessage.StatusCode, requestUri, stringContent, messageBuilder.ToString(), innerException);
         }
     }
 

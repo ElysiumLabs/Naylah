@@ -6,9 +6,19 @@ namespace Naylah.Rest
 {
     public abstract class ServiceBase
     {
+        protected readonly NaylahRestClient2 client;
+
+        public ServiceBase(NaylahRestClient2 naylahRestClient)
+        {
+            client = naylahRestClient;
+        }
+    }
+
+    public abstract class ServiceBaseOld
+    {
         protected readonly NaylahRestClient client;
 
-        public ServiceBase(NaylahRestClient naylahRestClient)
+        public ServiceBaseOld(NaylahRestClient naylahRestClient)
         {
             client = naylahRestClient;
         }

@@ -1,7 +1,7 @@
-﻿using Naylah.Rest.Exceptions;
-using RestSharp;
+﻿using RestSharp;
 using System;
 using System.Collections.Generic;
+using System.Net.Http;
 using System.Text;
 
 namespace Naylah.Rest
@@ -17,5 +17,6 @@ namespace Naylah.Rest
 
             throw RestException.CreateException(client.BuildUri(request), response);
         }
+
     }
 }
