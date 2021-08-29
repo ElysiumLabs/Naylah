@@ -69,6 +69,9 @@ namespace Naylah.ConsolePlayground3
                 //var response = await naylahClient.ExecuteAsync<PersonDTO, string>("", HttpMethod.Put, new PersonDTO() { Name = new PersonNameFull() { FirstName = "teste" } });
                 var workshiftTableService = new StringTableService<Workshift>(naylahClient) { Route = "Workshift" };
                 var uma = await workshiftTableService.Get(new QueryOptions() { CustomRoute = "?companyId=2C25B65430F649E0BAD4A55C67B3FD7C", Top = 100000 });
+
+                var  ii = uma.Items.FirstOrDefault();
+                var r = await naylahClient.ExecuteAsync<Workshift, Workshift>("Workshift", HttpMethod.Post, ii);
             }
             catch (RestException e)
             {

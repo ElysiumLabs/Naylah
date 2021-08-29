@@ -63,14 +63,16 @@ namespace System
 
             var stringContent = string.Empty;
 
-            messageBuilder.AppendLine(string.Format("Processing request [{0}] resulted with following errors:", innerException.Message));
+            messageBuilder.AppendLine(string.Format("Processing request [{0}] resulted with following errors:", requestUri));
+
+            messageBuilder.AppendLine(string.Format(innerException.Message));
 
             if (responseMessage != null)
             {
-                messageBuilder.AppendLine("- Server responded with unsuccessfult status code: " + responseMessage.StatusCode + " " + responseMessage.ReasonPhrase);
+                messageBuilder.AppendLine("- Server responded with unsuccessfult status code: " + ((int)responseMessage.StatusCode).ToString() + " " + responseMessage.ReasonPhrase);
             }
             
-            if (responseMessage?.Content != null)
+            if ((responseMessage?.Content != null))
             {
                 stringContent = await responseMessage.Content.ReadAsStringAsync();
                 messageBuilder.AppendLine("- An exception occurred while processing request: " + stringContent);

@@ -1,6 +1,7 @@
 ﻿using Flurl.Http;
 using Naylah.Rest.Serializers;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using Newtonsoft.Json.Serialization;
 using System;
 using System.Collections.Generic;
@@ -113,38 +114,40 @@ namespace Naylah.Rest
             return request;
         }
 
-        public virtual async Task<TOut> GetResponse<TOut>(
-            HttpContent content, CancellationToken? cancelationToken)
-        {
-            if (content == null)
-            {
-                return default;
-            }
+        //public virtual async Task<TOut> GetResponse<TOut>(
+        //    HttpContent content, CancellationToken? cancelationToken)
+        //{
+        //    if (content == null)
+        //    {
+        //        return default;
+        //    }
 
-            //TODO: verify if application/json etc
-            content.Headers.TryGetValues("Content-Type", out var responseHeaders);
-            var contentTypeHeader = responseHeaders.FirstOrDefault() ?? MediaTypeNames2.Application.Json;
+        //    //TODO: verify if application/json etc
+        //    content.Headers.TryGetValues("Content-Type", out var responseHeaders);
+        //    var contentTypeHeader = responseHeaders.FirstOrDefault() ?? MediaTypeNames2.Application.Json;
 
-            var mediaTypeInfo = MediaTypeHeaderValue.Parse(contentTypeHeader);
-            var encoding = Encoding.GetEncoding(mediaTypeInfo.CharSet);
+        //    var mediaTypeInfo = MediaTypeHeaderValue.Parse(contentTypeHeader);
+        //    var encoding = Encoding.GetEncoding(mediaTypeInfo.CharSet);
 
-            if (!Serializers.TryGetValue(mediaTypeInfo.MediaType, out var serializer))
-            {
-                throw new Exception($"No registered serializer for this {contentTypeHeader} content-type");
-            }
+        //    if (!Serializers.TryGetValue(mediaTypeInfo.MediaType, out var serializer))
+        //    {
+        //        throw new Exception($"No registered serializer for this {contentTypeHeader} content-type");
+        //    }
 
-            using (var stream = await content.ReadAsStreamAsync())
-            {
-                using (var streamReader = new StreamReader(stream, encoding))
-                {
-                    return await serializer.DeserializeFromStream<TOut>(streamReader);
-                }
+        //    var contentResponse = await content.ReadAsStringAsync();
+        //    //var stream = new MemoryStream();
+        //    //await content.CopyToAsync(stream);
 
-            }
+        //    //using (stream)
+        //    //{
+        //    //    using (var streamReader = new StreamReader(stream, encoding))
+        //    //    {
+        //    //        return await serializer.DeserializeFromStream<TOut>(streamReader);
+        //    //    }
+        //    //}
+        //}
 
-        }
-
-        public virtual async Task<HttpResponseMessage> SendAsync(
+        public virtual async Task<TOut> SendAsync<TOut>(
             HttpRequestMessage requestMessage, CancellationToken cancelationToken)
         {
             HttpResponseMessage response = null;
@@ -153,14 +156,67 @@ namespace Naylah.Rest
             {
                 response = await InternalHttpClient.SendAsync(requestMessage, cancelationToken);
                 response.EnsureSuccessStatusCode();
-                return response;
+
+                using (var q= await response.Content.ReadAsStreamAsync())
+                {
+
+                }
             }
             catch (Exception exception)
             {
-                throw await RestException.CreateException(exception, requestMessage, response);
+                var restEx = await RestException.CreateException(exception, requestMessage, response);
+                throw restEx;
             }
+
+            return (TOut)await ParseResponse<TOut>(response.Content);
         }
 
+        protected virtual async Task<object> ParseResponse<TOut>(HttpContent content)
+        {
+            try
+            {
+                content.Headers.TryGetValues("Content-Type", out var responseHeaders);
+                var contentTypeHeader = responseHeaders.FirstOrDefault() ?? MediaTypeNames2.Application.Json;
+
+                var mediaTypeInfo = MediaTypeHeaderValue.Parse(contentTypeHeader);
+                var encoding = Encoding.GetEncoding(mediaTypeInfo.CharSet);
+
+                if (!Serializers.TryGetValue(mediaTypeInfo.MediaType, out var serializer))
+                {
+                    throw new Exception($"No registered serializer for this {contentTypeHeader} content-type");
+                }
+
+                var stringContent = await content.ReadAsStringAsync();
+
+                if (typeof(TOut) == typeof(string))
+                {
+                    return stringContent;
+                }
+                else
+                {
+                    return await serializer.Deserialize<TOut>(stringContent);
+                }
+
+                //if (typeof(TOut) == typeof(string))
+                //{
+                //    return await content.ReadAsStringAsync();
+                //}
+                //else
+                //{
+                //    using (var memoryStream = new MemoryStream(await content.ReadAsByteArrayAsync()))
+                //    {
+                //        using (var streamReader = new StreamReader(memoryStream, encoding))
+                //        {
+                //            return await serializer.DeserializeFromStream<TOut>(streamReader);
+                //        }
+                //    }
+                //}
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Parsing response error", ex);
+            }
+        }
 
         public async Task<TOut> ExecuteAsync<TIn, TOut>(
             string resource, HttpMethod method, TIn data, Dictionary<string, string> headers = null, CancellationToken? cancelationToken = null)
@@ -169,9 +225,7 @@ namespace Naylah.Rest
 
             HttpRequestMessage request = await CreateRequest<TIn>(resource, method, headers, data);
 
-            var response = await SendAsync(request, icancelationToken);
-
-            return await GetResponse<TOut>(response.Content, cancelationToken);
+            return await SendAsync<TOut>(request, icancelationToken);
         }
 
         public virtual async Task ExecuteAsync<TIn>(
@@ -181,7 +235,7 @@ namespace Naylah.Rest
 
             HttpRequestMessage request = await CreateRequest<TIn>(resource, method, headers, data);
 
-            var response = await SendAsync(request, icancelationToken);
+            var response = await SendAsync<string>(request, icancelationToken);
         }
 
         public virtual async Task<TOut> ExecuteAsync<TOut>(
@@ -191,9 +245,9 @@ namespace Naylah.Rest
 
             HttpRequestMessage request = await CreateRequest<string>(resource, method, headers);
 
-            var response = await SendAsync(request, icancelationToken);
+            return await SendAsync<TOut>(request, icancelationToken);
 
-            return await GetResponse<TOut>(response.Content, cancelationToken);
+            //return await GetResponse<TOut>(request, cancelationToken);
         }
 
         public virtual async Task ExecuteAsync(
@@ -203,7 +257,7 @@ namespace Naylah.Rest
 
             HttpRequestMessage request = await CreateRequest<string>(resource, method, headers);
 
-            var response = await SendAsync(request, icancelationToken);
+            var response = await SendAsync<string>(request, icancelationToken);
         }
     }
 }

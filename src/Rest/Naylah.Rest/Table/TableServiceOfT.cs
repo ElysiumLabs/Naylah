@@ -72,8 +72,7 @@ namespace Naylah.Rest.Table
 
             var ctoken = CancellationToken.None;
 
-            var r = await client.SendAsync(request, ctoken);
-            var p = await client.GetResponse<PageResult<TModel>>(r.Content, ctoken);
+            var p = await client.SendAsync<PageResult<TModel>>(request, ctoken);
 
             p.Query = queryOptions;
 
