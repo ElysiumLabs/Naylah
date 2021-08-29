@@ -156,11 +156,6 @@ namespace Naylah.Rest
             {
                 response = await InternalHttpClient.SendAsync(requestMessage, cancelationToken);
                 response.EnsureSuccessStatusCode();
-
-                using (var q= await response.Content.ReadAsStreamAsync())
-                {
-
-                }
             }
             catch (Exception exception)
             {
