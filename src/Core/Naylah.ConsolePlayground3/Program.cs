@@ -5,6 +5,7 @@ using Naylah.Domain;
 using Naylah.Domain.Abstractions;
 using Naylah.Rest;
 using Naylah.Rest.Table;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -62,16 +63,25 @@ namespace Naylah.ConsolePlayground3
 
             //Console.ReadKey();
 
-            var naylahClient = new NaylahRestClient2(new Uri("http://localhost:5000"));
+            var naylahClient = new NaylahRestClient2(new NaylahRestClientSettings() 
+            { 
+                BaseUri = new Uri("https://marq-point-api-dev.azurewebsites.net"),
+                DefaultTimeOut = TimeSpan.FromSeconds(10)
+            });
 
             try
             {
                 //var response = await naylahClient.ExecuteAsync<PersonDTO, string>("", HttpMethod.Put, new PersonDTO() { Name = new PersonNameFull() { FirstName = "teste" } });
-                var workshiftTableService = new StringTableService<Workshift>(naylahClient) { Route = "Workshift" };
-                var uma = await workshiftTableService.Get(new QueryOptions() { CustomRoute = "?companyId=2C25B65430F649E0BAD4A55C67B3FD7C", Top = 100000 });
+                //var workshiftTableService = new StringTableService<Workshift>(naylahClient) { Route = "Workshift" };
+                //var uma = await workshiftTableService.Get(new QueryOptions() { CustomRoute = "?companyId=2C25B65430F649E0BAD4A55C67B3FD7C", Top = 100000 });
 
-                var  ii = uma.Items.FirstOrDefault();
-                var r = await naylahClient.ExecuteAsync<Workshift, Workshift>("Workshift", HttpMethod.Post, ii);
+                //var  ii = uma.Items.FirstOrDefault();
+                //var r = await naylahClient.ExecuteAsync<Workshift, Workshift>("Workshift", HttpMethod.Post, ii);
+
+                var s = "{\"Adjustment\":{\"Id\":null,\"Partition\":null,\"CreatedAt\":null,\"UpdatedAt\":null,\"CompanyId\":\"691684062F204A17A2C20D40B88E101B\",\"UserId\":\"8DEB713827BE42B69DF6281176968A20\",\"UserPointWorkshiftId\":\"10DCD749-020D-4161-82D8-34C906BF520C\",\"ResponsibleId\":null,\"AdjustmentCategoryId\":null,\"Date\":\"2021-08-25T00:00:00+00:00\",\"AdjustmentStatus\":1,\"AdjustmentType\":0,\"AdjustmentRequestBy\":0,\"HoursRequested\":{\"Duration\":\"03:59:00\",\"DurationInTicks\":143400000000},\"Motive\":{\"Attachments\":[],\"Description\":\"Internetoooooo\",\"DenyReason\":null},\"Notification\":{\"Email\":null}},\"UserPoints\":[{\"UserId\":null,\"CompanyCode\":null,\"GeoC\":{\"IsFar\":false,\"Distance\":null,\"Latitude\":null,\"Longitude\":null,\"Elevation\":null},\"VirtualC\":{\"Ip\":null},\"Device\":{\"Id\":null,\"Model\":null,\"AppVersion\":null,\"Type\":\"None\"},\"Date\":\"2021-08-25T01:00:00+00:00\",\"Reference\":\"0001-01-01T00:00:00+00:00\",\"ImageUri\":null,\"Hash\":null,\"Type\":1,\"CodeType\":0,\"PointScheduleType\":0,\"FromWhere\":null,\"Reckon\":true,\"Partition\":null,\"Id\":null,\"CreatedAt\":null,\"UpdatedAt\":null,\"Version\":null,\"Deleted\":false},{\"UserId\":null,\"CompanyCode\":null,\"GeoC\":{\"IsFar\":false,\"Distance\":null,\"Latitude\":null,\"Longitude\":null,\"Elevation\":null},\"VirtualC\":{\"Ip\":null},\"Device\":{\"Id\":null,\"Model\":null,\"AppVersion\":null,\"Type\":\"None\"},\"Date\":\"2021-08-25T01:25:00+00:00\",\"Reference\":\"0001-01-01T00:00:00+00:00\",\"ImageUri\":null,\"Hash\":null,\"Type\":1,\"CodeType\":0,\"PointScheduleType\":0,\"FromWhere\":null,\"Reckon\":true,\"Partition\":null,\"Id\":null,\"CreatedAt\":null,\"UpdatedAt\":null,\"Version\":null,\"Deleted\":false},{\"UserId\":null,\"CompanyCode\":null,\"GeoC\":{\"IsFar\":false,\"Distance\":null,\"Latitude\":null,\"Longitude\":null,\"Elevation\":null},\"VirtualC\":{\"Ip\":null},\"Device\":{\"Id\":null,\"Model\":null,\"AppVersion\":null,\"Type\":\"None\"},\"Date\":\"2021-08-25T01:26:00+00:00\",\"Reference\":\"0001-01-01T00:00:00+00:00\",\"ImageUri\":null,\"Hash\":null,\"Type\":1,\"CodeType\":0,\"PointScheduleType\":0,\"FromWhere\":null,\"Reckon\":true,\"Partition\":null,\"Id\":null,\"CreatedAt\":null,\"UpdatedAt\":null,\"Version\":null,\"Deleted\":false},{\"UserId\":null,\"CompanyCode\":null,\"GeoC\":{\"IsFar\":false,\"Distance\":null,\"Latitude\":null,\"Longitude\":null,\"Elevation\":null},\"VirtualC\":{\"Ip\":null},\"Device\":{\"Id\":null,\"Model\":null,\"AppVersion\":null,\"Type\":\"None\"},\"Date\":\"2021-08-25T05:00:00+00:00\",\"Reference\":\"0001-01-01T00:00:00+00:00\",\"ImageUri\":null,\"Hash\":null,\"Type\":1,\"CodeType\":0,\"PointScheduleType\":0,\"FromWhere\":null,\"Reckon\":true,\"Partition\":null,\"Id\":null,\"CreatedAt\":null,\"UpdatedAt\":null,\"Version\":null,\"Deleted\":false}],\"Enqueue\":false}";
+
+                var j = JObject.Parse(s);
+                var r = await naylahClient.ExecuteAsync<JObject, JObject>("UserPointWorkshiftAdjustment", HttpMethod.Post, j);
             }
             catch (RestException e)
             {

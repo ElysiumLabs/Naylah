@@ -49,7 +49,7 @@ namespace System
             return new RestException(response.StatusCode, requestUri, response.Content, messageBuilder.ToString(), innerException);
         }
 
-        public static async Task<Exception> CreateException(Exception innerException, HttpRequestMessage requestMessage, HttpResponseMessage responseMessage)
+        public static RestException CreateException(Exception innerException, HttpRequestMessage requestMessage, HttpResponseMessage responseMessage, string responseContent)
         {
             if (responseMessage == null)
             {
@@ -60,8 +60,6 @@ namespace System
             var requestUri = requestMessage.RequestUri;
 
             var messageBuilder = new StringBuilder();
-
-            var stringContent = string.Empty;
 
             messageBuilder.AppendLine(string.Format("Processing request [{0}] resulted with following errors:", requestUri));
 
@@ -74,12 +72,10 @@ namespace System
             
             if ((responseMessage?.Content != null))
             {
-                stringContent = await responseMessage.Content.ReadAsStringAsync();
-                messageBuilder.AppendLine("- An exception occurred while processing request: " + stringContent);
-
-                //innerException = response.ErrorException;
+                messageBuilder.AppendLine("- An exception occurred while processing request: " + responseContent);
             }
-            return new RestException(responseMessage.StatusCode, requestUri, stringContent, messageBuilder.ToString(), innerException);
+
+            return new RestException(responseMessage.StatusCode, requestUri, responseContent, messageBuilder.ToString(), innerException);
         }
     }
 
