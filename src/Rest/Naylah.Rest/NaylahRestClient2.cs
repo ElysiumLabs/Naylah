@@ -1,4 +1,5 @@
 ﻿using Flurl.Http;
+using Microsoft.Extensions.Logging;
 using Naylah.Rest.Serializers;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -21,7 +22,7 @@ namespace Naylah.Rest
         /// <summary>
         /// Settings for this client
         /// </summary>
-        public NaylahRestClientSettings Settings { get; protected set; }
+        public NaylahRestClientSettings Settings { get; protected set; } = new NaylahRestClientSettings();
 
         /// <summary>
         /// Internal HttpClient instance, be carefull my friend.
@@ -32,6 +33,11 @@ namespace Naylah.Rest
         /// ContentType key driven serializer
         /// </summary>
         protected internal Dictionary<string, ISerializer> Serializers = new Dictionary<string, ISerializer>();
+
+        /// <summary>
+        /// Humm... Logger? 
+        /// </summary>
+        protected internal ILogger Logger  => Settings.Logger;
 
         public NaylahRestClient2(Uri baseUrl) : this(new NaylahRestClientSettings() { BaseUri = baseUrl })
         {
@@ -79,8 +85,7 @@ namespace Naylah.Rest
             string resource,
             HttpMethod method,
             Dictionary<string, string> customHeaders = null,
-            object body = null,
-            string contentType = null
+            NaylahRestRequestContent<TIn> requestContent = null
             )
         {
             var request = new HttpRequestMessage(method, resource);
@@ -93,9 +98,9 @@ namespace Naylah.Rest
                 }
             }
 
-            if (body != null)
+            if (requestContent != null)
             {
-                contentType = contentType ?? MediaTypeNames2.Application.Json;
+                var contentType = requestContent.ContentType ?? Settings.DefaultContentType;
 
                 if (!Serializers.TryGetValue(contentType, out var serializer))
                 {
@@ -106,7 +111,7 @@ namespace Naylah.Rest
                 var encoding = !string.IsNullOrEmpty(mediaTypeInfo.CharSet) ?
                     Encoding.GetEncoding(mediaTypeInfo.CharSet) : Encoding.UTF8;
 
-                var svalue = await serializer.Serialize((TIn)body);
+                var svalue = await serializer.Serialize(requestContent.Content);
 
                 request.Content = new StringContent(svalue, encoding, contentType);
             }
@@ -142,9 +147,17 @@ namespace Naylah.Rest
         {
             var ct = GetCancellationTokenWithTimeout(cancellationToken, out var cts);
 
-            using (var response = await InternalHttpClient.SendAsync(request, completionOption, ct).ConfigureAwait(false))
+            try
             {
-                return await GetResponse<TOut>(response);
+                using (var response = await InternalHttpClient.SendAsync(request, completionOption, ct).ConfigureAwait(false))
+                {
+                    return await GetResponse<TOut>(response);
+                }
+            }
+            catch (Exception exception)
+            {
+                Logger?.LogError(exception, "Error sending the request");
+                throw exception;
             }
         }
 
@@ -196,7 +209,7 @@ namespace Naylah.Rest
         {
             var icancelationToken = cancelationToken ?? CancellationToken.None;
 
-            using(var request = await CreateRequest<TIn>(resource, method, headers, data))
+            using(var request = await CreateRequest<TIn>(resource, method, headers, new NaylahRestRequestContent<TIn>(data)))
             {
                 return await SendAsync<TOut>(request, icancelationToken);
             }
@@ -207,7 +220,7 @@ namespace Naylah.Rest
         {
             var icancelationToken = cancelationToken ?? CancellationToken.None;
 
-            using (var request = await CreateRequest<TIn>(resource, method, headers, data))
+            using (var request = await CreateRequest<TIn>(resource, method, headers, new NaylahRestRequestContent<TIn>(data)))
             {
                 var response = await SendAsync<string>(request, icancelationToken);
             }
