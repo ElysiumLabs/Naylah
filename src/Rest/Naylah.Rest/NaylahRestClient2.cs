@@ -101,24 +101,50 @@ namespace Naylah.Rest
             if (requestContent != null)
             {
                 var contentType = requestContent.ContentType ?? Settings.DefaultContentType;
-
-                if (!Serializers.TryGetValue(contentType, out var serializer))
-                {
-                    throw new Exception($"No registered serializer for this {contentType} content-type");
-                }
-
-                var mediaTypeInfo = MediaTypeHeaderValue.Parse(contentType);
-                var encoding = !string.IsNullOrEmpty(mediaTypeInfo.CharSet) ?
-                    Encoding.GetEncoding(mediaTypeInfo.CharSet) : Encoding.UTF8;
-
-                var svalue = await serializer.Serialize(requestContent.Content);
-
-                request.Content = new StringContent(svalue, encoding, contentType);
+                request.Content = await GetRequestContent(contentType, requestContent.Content);
             }
 
             return request;
         }
 
+        private async Task<HttpContent> GetRequestContent<TIn>(string contentType, TIn content)
+        {
+            switch (contentType)
+            {
+                case MediaTypeNames.Text.Plain:
+                case MediaTypeNames.Text.RichText:
+                case MediaTypeNames.Text.Xml:
+                case MediaTypeNames2.Application.ProblemJson:
+                case MediaTypeNames2.Application.Json: 
+                    {
+                        if (!Serializers.TryGetValue(contentType, out var serializer))
+                        {
+                            throw new Exception($"No registered serializer for this {contentType} content-type");
+                        }
+
+                        var mediaTypeInfo = MediaTypeHeaderValue.Parse(contentType);
+                        var encoding = !string.IsNullOrEmpty(mediaTypeInfo.CharSet) ?
+                            Encoding.GetEncoding(mediaTypeInfo.CharSet) : Encoding.UTF8;
+
+                        var svalue = await serializer.Serialize(content);
+                        return new StringContent(svalue, encoding, contentType);
+                    }
+                case MediaTypeNames2.Multipart.FormData:
+                    {
+                        if (content is MultipartFormDataContent multipartFormDataContent) // Nullable types are not allowed in patterns
+                        {
+                            return multipartFormDataContent;
+                        }
+                        else
+                        {
+                            throw new Exception($"The {contentType} contentType must be MultipartFormDataContent as Content value");
+                        }
+                        
+                    }
+                default:
+                    throw new Exception($"The {contentType} contentType cannot be translated to request body");
+            }
+        }
 
         private CancellationToken GetCancellationTokenWithTimeout(CancellationToken original, out CancellationTokenSource timeoutTokenSource)
         {
@@ -203,7 +229,17 @@ namespace Naylah.Rest
             }
         }
 
-        
+        public async Task<TOut> ExecuteContentAsync<TIn, TOut>(
+            string resource, HttpMethod method, NaylahRestRequestContent<TIn> data, Dictionary<string, string> headers = null, CancellationToken? cancelationToken = null)
+        {
+            var icancelationToken = cancelationToken ?? CancellationToken.None;
+
+            using (var request = await CreateRequest<TIn>(resource, method, headers, data))
+            {
+                return await SendAsync<TOut>(request, icancelationToken);
+            }
+        }
+
         public async Task<TOut> ExecuteAsync<TIn, TOut>(
             string resource, HttpMethod method, TIn data, Dictionary<string, string> headers = null, CancellationToken? cancelationToken = null)
         {

@@ -12,5 +12,11 @@ namespace Naylah.Rest
             public const string ProblemJson = "application/problem+json";
             
         }
+
+        public static class Multipart
+        {
+            public const string FormData = "multipart/form-data";
+
+        }
     }
 }

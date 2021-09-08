@@ -8,6 +8,7 @@ using Naylah.Rest.Table;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Net.Http;
@@ -63,9 +64,11 @@ namespace Naylah.ConsolePlayground3
 
             //Console.ReadKey();
 
-            var naylahClient = new NaylahRestClient2(new NaylahRestClientSettings() 
-            { 
-                BaseUri = new Uri("https://marq-point-api-dev.azurewebsites.net"),
+            var naylahClient = new NaylahRestClient2(new NaylahRestClientSettings()
+            {
+                BaseUri = new Uri("https://marq-storage-api-dev.azurewebsites.net/"),
+                //BaseUri = new Uri("http://localhost:5000"),
+                //BaseUri = new Uri("https://ptsv2.com/"),
                 DefaultTimeOut = TimeSpan.FromSeconds(10)
             });
 
@@ -78,10 +81,48 @@ namespace Naylah.ConsolePlayground3
                 //var  ii = uma.Items.FirstOrDefault();
                 //var r = await naylahClient.ExecuteAsync<Workshift, Workshift>("Workshift", HttpMethod.Post, ii);
 
-                var s = "{\"Adjustment\":{\"Id\":null,\"Partition\":null,\"CreatedAt\":null,\"UpdatedAt\":null,\"CompanyId\":\"691684062F204A17A2C20D40B88E101B\",\"UserId\":\"8DEB713827BE42B69DF6281176968A20\",\"UserPointWorkshiftId\":\"10DCD749-020D-4161-82D8-34C906BF520C\",\"ResponsibleId\":null,\"AdjustmentCategoryId\":null,\"Date\":\"2021-08-25T00:00:00+00:00\",\"AdjustmentStatus\":1,\"AdjustmentType\":0,\"AdjustmentRequestBy\":0,\"HoursRequested\":{\"Duration\":\"03:59:00\",\"DurationInTicks\":143400000000},\"Motive\":{\"Attachments\":[],\"Description\":\"Internetoooooo\",\"DenyReason\":null},\"Notification\":{\"Email\":null}},\"UserPoints\":[{\"UserId\":null,\"CompanyCode\":null,\"GeoC\":{\"IsFar\":false,\"Distance\":null,\"Latitude\":null,\"Longitude\":null,\"Elevation\":null},\"VirtualC\":{\"Ip\":null},\"Device\":{\"Id\":null,\"Model\":null,\"AppVersion\":null,\"Type\":\"None\"},\"Date\":\"2021-08-25T01:00:00+00:00\",\"Reference\":\"0001-01-01T00:00:00+00:00\",\"ImageUri\":null,\"Hash\":null,\"Type\":1,\"CodeType\":0,\"PointScheduleType\":0,\"FromWhere\":null,\"Reckon\":true,\"Partition\":null,\"Id\":null,\"CreatedAt\":null,\"UpdatedAt\":null,\"Version\":null,\"Deleted\":false},{\"UserId\":null,\"CompanyCode\":null,\"GeoC\":{\"IsFar\":false,\"Distance\":null,\"Latitude\":null,\"Longitude\":null,\"Elevation\":null},\"VirtualC\":{\"Ip\":null},\"Device\":{\"Id\":null,\"Model\":null,\"AppVersion\":null,\"Type\":\"None\"},\"Date\":\"2021-08-25T01:25:00+00:00\",\"Reference\":\"0001-01-01T00:00:00+00:00\",\"ImageUri\":null,\"Hash\":null,\"Type\":1,\"CodeType\":0,\"PointScheduleType\":0,\"FromWhere\":null,\"Reckon\":true,\"Partition\":null,\"Id\":null,\"CreatedAt\":null,\"UpdatedAt\":null,\"Version\":null,\"Deleted\":false},{\"UserId\":null,\"CompanyCode\":null,\"GeoC\":{\"IsFar\":false,\"Distance\":null,\"Latitude\":null,\"Longitude\":null,\"Elevation\":null},\"VirtualC\":{\"Ip\":null},\"Device\":{\"Id\":null,\"Model\":null,\"AppVersion\":null,\"Type\":\"None\"},\"Date\":\"2021-08-25T01:26:00+00:00\",\"Reference\":\"0001-01-01T00:00:00+00:00\",\"ImageUri\":null,\"Hash\":null,\"Type\":1,\"CodeType\":0,\"PointScheduleType\":0,\"FromWhere\":null,\"Reckon\":true,\"Partition\":null,\"Id\":null,\"CreatedAt\":null,\"UpdatedAt\":null,\"Version\":null,\"Deleted\":false},{\"UserId\":null,\"CompanyCode\":null,\"GeoC\":{\"IsFar\":false,\"Distance\":null,\"Latitude\":null,\"Longitude\":null,\"Elevation\":null},\"VirtualC\":{\"Ip\":null},\"Device\":{\"Id\":null,\"Model\":null,\"AppVersion\":null,\"Type\":\"None\"},\"Date\":\"2021-08-25T05:00:00+00:00\",\"Reference\":\"0001-01-01T00:00:00+00:00\",\"ImageUri\":null,\"Hash\":null,\"Type\":1,\"CodeType\":0,\"PointScheduleType\":0,\"FromWhere\":null,\"Reckon\":true,\"Partition\":null,\"Id\":null,\"CreatedAt\":null,\"UpdatedAt\":null,\"Version\":null,\"Deleted\":false}],\"Enqueue\":false}";
+                //var s = "{\"Adjustment\":{\"Id\":null,\"Partition\":null,\"CreatedAt\":null,\"UpdatedAt\":null,\"CompanyId\":\"691684062F204A17A2C20D40B88E101B\",\"UserId\":\"8DEB713827BE42B69DF6281176968A20\",\"UserPointWorkshiftId\":\"10DCD749-020D-4161-82D8-34C906BF520C\",\"ResponsibleId\":null,\"AdjustmentCategoryId\":null,\"Date\":\"2021-08-25T00:00:00+00:00\",\"AdjustmentStatus\":1,\"AdjustmentType\":0,\"AdjustmentRequestBy\":0,\"HoursRequested\":{\"Duration\":\"03:59:00\",\"DurationInTicks\":143400000000},\"Motive\":{\"Attachments\":[],\"Description\":\"Internetoooooo\",\"DenyReason\":null},\"Notification\":{\"Email\":null}},\"UserPoints\":[{\"UserId\":null,\"CompanyCode\":null,\"GeoC\":{\"IsFar\":false,\"Distance\":null,\"Latitude\":null,\"Longitude\":null,\"Elevation\":null},\"VirtualC\":{\"Ip\":null},\"Device\":{\"Id\":null,\"Model\":null,\"AppVersion\":null,\"Type\":\"None\"},\"Date\":\"2021-08-25T01:00:00+00:00\",\"Reference\":\"0001-01-01T00:00:00+00:00\",\"ImageUri\":null,\"Hash\":null,\"Type\":1,\"CodeType\":0,\"PointScheduleType\":0,\"FromWhere\":null,\"Reckon\":true,\"Partition\":null,\"Id\":null,\"CreatedAt\":null,\"UpdatedAt\":null,\"Version\":null,\"Deleted\":false},{\"UserId\":null,\"CompanyCode\":null,\"GeoC\":{\"IsFar\":false,\"Distance\":null,\"Latitude\":null,\"Longitude\":null,\"Elevation\":null},\"VirtualC\":{\"Ip\":null},\"Device\":{\"Id\":null,\"Model\":null,\"AppVersion\":null,\"Type\":\"None\"},\"Date\":\"2021-08-25T01:25:00+00:00\",\"Reference\":\"0001-01-01T00:00:00+00:00\",\"ImageUri\":null,\"Hash\":null,\"Type\":1,\"CodeType\":0,\"PointScheduleType\":0,\"FromWhere\":null,\"Reckon\":true,\"Partition\":null,\"Id\":null,\"CreatedAt\":null,\"UpdatedAt\":null,\"Version\":null,\"Deleted\":false},{\"UserId\":null,\"CompanyCode\":null,\"GeoC\":{\"IsFar\":false,\"Distance\":null,\"Latitude\":null,\"Longitude\":null,\"Elevation\":null},\"VirtualC\":{\"Ip\":null},\"Device\":{\"Id\":null,\"Model\":null,\"AppVersion\":null,\"Type\":\"None\"},\"Date\":\"2021-08-25T01:26:00+00:00\",\"Reference\":\"0001-01-01T00:00:00+00:00\",\"ImageUri\":null,\"Hash\":null,\"Type\":1,\"CodeType\":0,\"PointScheduleType\":0,\"FromWhere\":null,\"Reckon\":true,\"Partition\":null,\"Id\":null,\"CreatedAt\":null,\"UpdatedAt\":null,\"Version\":null,\"Deleted\":false},{\"UserId\":null,\"CompanyCode\":null,\"GeoC\":{\"IsFar\":false,\"Distance\":null,\"Latitude\":null,\"Longitude\":null,\"Elevation\":null},\"VirtualC\":{\"Ip\":null},\"Device\":{\"Id\":null,\"Model\":null,\"AppVersion\":null,\"Type\":\"None\"},\"Date\":\"2021-08-25T05:00:00+00:00\",\"Reference\":\"0001-01-01T00:00:00+00:00\",\"ImageUri\":null,\"Hash\":null,\"Type\":1,\"CodeType\":0,\"PointScheduleType\":0,\"FromWhere\":null,\"Reckon\":true,\"Partition\":null,\"Id\":null,\"CreatedAt\":null,\"UpdatedAt\":null,\"Version\":null,\"Deleted\":false}],\"Enqueue\":false}";
 
-                var j = JObject.Parse(s);
-                var r = await naylahClient.ExecuteAsync<JObject, JObject>("UserPointWorkshiftAdjustment", HttpMethod.Post, j);
+                using (var imageFile = File.OpenRead(@"C:\Users\Angus\Pictures\iamge2.png"))
+                //using (var memoryStream = new MemoryStream())
+                //{
+                //    await imageFile.CopyToAsync(memoryStream);
+
+                //    var multiPartContent = new MultipartFormDataContent();
+                //    multiPartContent.Add(new StringContent("test"), "container");
+                //    multiPartContent.Add(new StringContent("test"), "folder");
+                //    multiPartContent.Add(new StringContent("test.png"), "fileName");
+                //    multiPartContent.Add(new StringContent("image/png"), "contentType");
+                //    multiPartContent.Add(new StringContent("Hot"), "accessTierType");
+                //    multiPartContent.Add(new StringContent("true"), "useGuidFileName");
+                //    multiPartContent.Add(new ByteArrayContent(memoryStream.ToArray()), "file", "file");
+
+                //    var content = new NaylahRestRequestContent<MultipartFormDataContent>()
+                //    {
+                //        ContentType = MediaTypeNames2.Multipart.FormData,
+                //        Content = multiPartContent
+                //    };
+
+                //    var r = await naylahClient.ExecuteContentAsync<MultipartFormDataContent, JObject>("file/upload", HttpMethod.Post, content);
+                //}
+
+                using (var memoryStream = new MemoryStream())
+                {
+                    await imageFile.CopyToAsync(memoryStream);
+
+                    var multiPartContent = new MultipartFormDataContent();
+                    multiPartContent.Add(new ByteArrayContent(memoryStream.ToArray()), "image", "image.png");
+
+                    var content = new NaylahRestRequestContent<MultipartFormDataContent>()
+                    {
+                        ContentType = MediaTypeNames2.Multipart.FormData,
+                        Content = multiPartContent
+                    };
+
+                    var r = await naylahClient.ExecuteContentAsync<MultipartFormDataContent, JObject>("image/upload/pointregister/teste/teste?resize=true", HttpMethod.Post, content);
+                }
+
+
             }
             catch (RestException e)
             {
@@ -94,7 +135,7 @@ namespace Naylah.ConsolePlayground3
                 throw;
             }
 
-            
+
 
             //var q1 = personTableService.AsQueryable().Where(x => x.Name.FirstName == "1");
             //var r = q1.ToList();
@@ -119,7 +160,7 @@ namespace Naylah.ConsolePlayground3
 
     }
 
-    
+
 
     public class NothingOfWork : IUnitOfWork
     {
