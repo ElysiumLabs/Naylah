@@ -2,7 +2,7 @@
 
 namespace Naylah
 {
-    public interface INotificable
+    public interface INotifiable
     {
         ICollection<Notification> Notifications { get; }
     }

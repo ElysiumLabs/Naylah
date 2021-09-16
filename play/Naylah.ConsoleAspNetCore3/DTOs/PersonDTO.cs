@@ -12,6 +12,9 @@ namespace Naylah.ConsoleAspNetCore.DTOs
         public PersonNameFull Name { get; set; } = new PersonNameFull();
 
         public PersonName Test { get; set; } = new PersonName();
+
+        public string Version { get; set; }
+
     }
 
     public class PersonDTO2 : IEntity<string>

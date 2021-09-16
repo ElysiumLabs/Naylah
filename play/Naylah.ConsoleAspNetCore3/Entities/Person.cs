@@ -24,7 +24,7 @@ namespace Naylah.ConsoleAspNetCore.Entities
         public string Version { get; set; }
     }
 
-    public class Person : IEntity<string>, IModifiable,
+    public class Person : IEntity<string>, IModifiable, ISoftDeletable,
         IEntityUpdate<Person>,
         IEntityUpdate<PersonDTO>,
         IEntityUpdate<PersonGetRequest>,

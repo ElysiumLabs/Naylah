@@ -6,6 +6,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Migrations\20210902185518_versionbyte.cs" />
+    <Compile Remove="Migrations\20210902185518_versionbyte.Designer.cs" />
+    <Compile Remove="Migrations\20210902185759_versionbyte2.cs" />
+    <Compile Remove="Migrations\20210902185759_versionbyte2.Designer.cs" />
+    <Compile Remove="Migrations\20210902190404_versionbyte2.cs" />
+    <Compile Remove="Migrations\20210902190404_versionbyte2.Designer.cs" />
+    <Compile Remove="Migrations\20210902190434_versionbyte2.cs" />
+    <Compile Remove="Migrations\20210902190434_versionbyte2.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="EntityFramework\" />
   </ItemGroup>
 

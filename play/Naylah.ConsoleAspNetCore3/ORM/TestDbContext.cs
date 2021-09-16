@@ -35,6 +35,8 @@ namespace Naylah.ConsoleAspNetCore.ORM
             modelBuilder.HasDefaultSchema(schema);
 
             modelBuilder.Entity<Person>().HasKey(x => x.Id);
+            modelBuilder.Entity<Person>().Property(x => x.Version).IsRowVersion();
+
             modelBuilder.Entity<Person>().OwnsOne(x => x.Name);
         }
 

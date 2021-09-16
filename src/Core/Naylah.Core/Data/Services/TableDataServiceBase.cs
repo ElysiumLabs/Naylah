@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace Naylah.Data
 {
     public abstract class TableDataServiceBase<TEntity, TIdentifier> : QueryDataService<TEntity, TIdentifier>
-        where TEntity : class, IEntity<TIdentifier>, IModifiable, new()
+        where TEntity : class, IEntity<TIdentifier>, IModifiable, ISoftDeletable, new()
     {
         public TableDataServiceBase(IRepository<TEntity> repository, IUnitOfWork unitOfWork) : base(repository, unitOfWork)
         {

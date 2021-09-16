@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace Naylah.Data
 {
     public class TableDataServiceWrapper<TEntity, TModel, TIdentifier>
-        where TEntity : class, IEntity<TIdentifier>, IModifiable, IEntityUpdate<TModel>, new()
+        where TEntity : class, IEntity<TIdentifier>, IModifiable, IEntityUpdate<TModel>, ISoftDeletable, new()
         where TModel : class, IEntity<TIdentifier>, new()
     {
         protected readonly TableDataService<TEntity, TModel, TIdentifier> tableDataService;
@@ -63,7 +63,7 @@ namespace Naylah.Data
     public static class TableDataServiceWrapperExtensions
     {
         public static TableDataServiceWrapper<TEntity, TModel, TIdentifier> CreateWrapper<TEntity, TModel, TIdentifier>(this TableDataService<TEntity, TModel, TIdentifier> tableDataService)
-             where TEntity : class, IEntity<TIdentifier>, IModifiable, IEntityUpdate<TModel>, new()
+             where TEntity : class, IEntity<TIdentifier>, IModifiable, ISoftDeletable, IEntityUpdate<TModel>, new()
             where TModel : class, IEntity<TIdentifier>, new()
         {
             return new TableDataServiceWrapper<TEntity, TModel, TIdentifier>(tableDataService);

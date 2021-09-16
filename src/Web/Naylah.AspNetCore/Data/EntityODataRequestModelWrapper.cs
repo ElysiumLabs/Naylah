@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace Naylah.Data
 {
     public class EntityODataRequestModelWrapper<TEntity, TModel, TIdentifier> : EntityODataRequestWrapper<TEntity>
-        where TEntity : class, IEntity<TIdentifier>, IModifiable, IEntityUpdate<TModel>, new()
+        where TEntity : class, IEntity<TIdentifier>, IModifiable, ISoftDeletable, IEntityUpdate<TModel>, new()
         where TModel : class, IEntity<TIdentifier>, new()
     {
         private readonly TableDataService<TEntity, TModel, TIdentifier> tableDataService;

@@ -319,7 +319,7 @@ namespace Naylah.ConsolePlayground3
         }
     }
 
-    public class Person : Entity, IEvent, Naylah.IEntityUpdate<PersonM>
+    public class Person : Entity, IEvent, IEntityUpdate<PersonM>
     {
         public string Name { get; set; }
 

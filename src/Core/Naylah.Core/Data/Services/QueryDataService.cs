@@ -12,7 +12,7 @@ using Naylah.Domain.Abstractions;
 namespace Naylah
 {
     public abstract class QueryDataService<TEntity, TIdentifier> : DataServiceBase
-        where TEntity : class, IEntity<TIdentifier>, IModifiable, new()
+        where TEntity : class, IEntity<TIdentifier>, IModifiable, ISoftDeletable, new()
     {
         protected internal readonly IRepository<TEntity> Repository;
 

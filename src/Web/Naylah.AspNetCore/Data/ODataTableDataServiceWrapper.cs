@@ -14,7 +14,7 @@ namespace Naylah.Data
 {
     [Obsolete("Use the new Request wrapper for odata", true)]
     public class ODataTableDataServiceWrapper<TEntity, TModel, TIdentifier>
-        where TEntity : class, IEntity<TIdentifier>, IModifiable, IEntityUpdate<TModel>, new()
+        where TEntity : class, IEntity<TIdentifier>, IModifiable, ISoftDeletable, IEntityUpdate<TModel>, new()
         where TModel : class, IEntity<TIdentifier>, new()
     {
         protected TableDataServiceWrapper<TEntity, TModel, TIdentifier> tableServiceWrapper;
@@ -112,7 +112,7 @@ namespace Naylah.Data
         public static ODataTableDataServiceWrapper<TEntity, TModel, TIdentifier> CreateODataWrapper<TEntity, TModel, TIdentifier>(
             this TableDataService<TEntity, TModel, TIdentifier> tableDataService, ODataQuerySettings oDataQuerySettings = null
             )
-            where TEntity : class, IEntity<TIdentifier>, IModifiable, IEntityUpdate<TModel>, new()
+            where TEntity : class, IEntity<TIdentifier>, IModifiable, ISoftDeletable, IEntityUpdate<TModel>, new()
             where TModel : class, IEntity<TIdentifier>, new()
         {
             return new ODataTableDataServiceWrapper<TEntity, TModel, TIdentifier>(tableDataService, oDataQuerySettings);

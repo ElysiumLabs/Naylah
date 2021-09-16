@@ -7,9 +7,5 @@ namespace Naylah
         DateTimeOffset? CreatedAt { get; set; }
 
         DateTimeOffset? UpdatedAt { get; set; }
-
-        string Version { get; set; }
-
-        bool Deleted { get; set; }
     }
 }

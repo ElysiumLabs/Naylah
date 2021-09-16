@@ -21,7 +21,7 @@ namespace Naylah.Data
             TableDataService<TEntity, TModel, TIdentifier> tableDataService,
             ODataQuerySettings oDataQuerySettings = null
             )
-            where TEntity : class, IEntity<TIdentifier>, IModifiable, IEntityUpdate<TModel>, new()
+            where TEntity : class, IEntity<TIdentifier>, IModifiable, ISoftDeletable, IEntityUpdate<TModel>, new()
             where TModel : class, IEntity<TIdentifier>, new()
         {
             return new EntityODataRequestModelWrapper<TEntity, TModel, TIdentifier>(tableDataService, httpRequest, oDataQuerySettings);
@@ -30,7 +30,7 @@ namespace Naylah.Data
         public static async Task<PageResult<TModel>> GetPaged<TEntity, TModel, TIdentifier>(
            this EntityODataRequestModelWrapper<TEntity, TModel, TIdentifier> oDataRequestWrapper
            )
-           where TEntity : class, IEntity<TIdentifier>, IModifiable, IEntityUpdate<TModel>, new()
+           where TEntity : class, IEntity<TIdentifier>, IModifiable, ISoftDeletable, IEntityUpdate<TModel>, new()
            where TModel : class, IEntity<TIdentifier>, new()
         {
             var p = oDataRequestWrapper.ApplyTo();

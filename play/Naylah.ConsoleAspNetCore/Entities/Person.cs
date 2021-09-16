@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Naylah.ConsoleAspNetCore.Entities
 {
-    public class Person : IEntity<string>, IModifiable, 
+    public class Person : IEntity<string>, IModifiable, ISoftDeletable,
         IEntityUpdate<Person>,
         IEntityUpdate<PersonDTO>
     {

@@ -12,7 +12,7 @@ namespace Naylah.Data
     [Route("[controller]")]
     [Produces("application/json")]
     public abstract class TableDataController<TEntity, TModel, TIdentifier> : ControllerBase
-          where TEntity : class, IEntity<TIdentifier>, IModifiable, IEntityUpdate<TModel>, new()
+          where TEntity : class, IEntity<TIdentifier>, IModifiable, ISoftDeletable, IEntityUpdate<TModel>, new()
           where TModel : class, IEntity<TIdentifier>, new()
     {
         private readonly TableDataService<TEntity, TModel, TIdentifier> tableDataService;

@@ -43,7 +43,7 @@ namespace Naylah.ConsoleAspNetCore.Customizations
     //}
 
     public class CosmosStringAppTableDataService<TEntity, TModel> : StringAppTableDataService<TEntity, TModel>
-       where TEntity : class, IEntity<string>, IModifiable, IEntityUpdate<TModel>, new()
+       where TEntity : class, IEntity<string>, IModifiable, ISoftDeletable, IEntityUpdate<TModel>, new()
        where TModel : class, IEntity<string>, new()
     {
         public CosmosStringAppTableDataService(IMapper mapper, IUnitOfWork _unitOfWork, IRepository<TEntity> repository) : base(mapper, _unitOfWork, repository)
@@ -58,7 +58,7 @@ namespace Naylah.ConsoleAspNetCore.Customizations
     }
 
     public class StringAppTableDataService<TEntity, TModel> : StringTableDataService<TEntity, TModel>
-        where TEntity : class, IEntity<string>, IModifiable, IEntityUpdate<TModel>, new()
+        where TEntity : class, IEntity<string>, IModifiable, ISoftDeletable, IEntityUpdate<TModel>, new()
         where TModel : class, IEntity<string>, new()
     {
         public StringAppTableDataService(IMapper mapper, IUnitOfWork _unitOfWork, IRepository<TEntity> repository) : base(repository, _unitOfWork)

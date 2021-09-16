@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 namespace Naylah.Data
 {
     public class RangedTableDataServiceOperations<TEntity, TModel, TIdentifier>
-        where TEntity : class, IEntity<TIdentifier>, IModifiable, IEntityUpdate<TModel>, new()
+        where TEntity : class, IEntity<TIdentifier>, IModifiable, ISoftDeletable, IEntityUpdate<TModel>, new()
         where TModel : class, IEntity<TIdentifier>, new()
     {
         private readonly TableDataService<TEntity, TModel, TIdentifier> service;
@@ -94,7 +94,7 @@ namespace Naylah.Data
     public static class RangedTableDataServiceOperationsExtensions
     {
         public static async Task<IEnumerable<TModel>> AddRangeAsync<TEntity, TModel, TIdentifier>(this TableDataService<TEntity, TModel, TIdentifier> service, IEnumerable<TModel> models)
-            where TEntity : class, IEntity<TIdentifier>, IModifiable, IEntityUpdate<TModel>, new()
+            where TEntity : class, IEntity<TIdentifier>, IModifiable, ISoftDeletable, IEntityUpdate<TModel>, new()
             where TModel : class, IEntity<TIdentifier>, new()
         {
             var r = new RangedTableDataServiceOperations<TEntity, TModel, TIdentifier>(service);
@@ -102,7 +102,7 @@ namespace Naylah.Data
         }
 
         public static async Task<IEnumerable<TModel>> EditRangeAsync<TEntity, TModel, TIdentifier>(this TableDataService<TEntity, TModel, TIdentifier> service, IEnumerable<TModel> models)
-            where TEntity : class, IEntity<TIdentifier>, IModifiable, IEntityUpdate<TModel>, new()
+            where TEntity : class, IEntity<TIdentifier>, IModifiable, ISoftDeletable, IEntityUpdate<TModel>, new()
             where TModel : class, IEntity<TIdentifier>, new()
         {
             var r = new RangedTableDataServiceOperations<TEntity, TModel, TIdentifier>(service);
@@ -110,7 +110,7 @@ namespace Naylah.Data
         }
 
         public static async Task RemoveRangeAsync<TEntity, TModel, TIdentifier>(this TableDataService<TEntity, TModel, TIdentifier> service, IEnumerable<TIdentifier> identifiers)
-            where TEntity : class, IEntity<TIdentifier>, IModifiable, IEntityUpdate<TModel>, new()
+            where TEntity : class, IEntity<TIdentifier>, IModifiable, ISoftDeletable, IEntityUpdate<TModel>, new()
             where TModel : class, IEntity<TIdentifier>, new()
         {
             var r = new RangedTableDataServiceOperations<TEntity, TModel, TIdentifier>(service);
