@@ -6,6 +6,6 @@ namespace Naylah
 {
     public interface IVersable
     {
-        byte Version { get; set; }
+        byte[] Version { get; set; }
     }
 }
