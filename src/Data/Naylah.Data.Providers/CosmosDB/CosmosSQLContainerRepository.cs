@@ -102,5 +102,26 @@ namespace Naylah.Data.Providers.CosmosDB
             return 0;
         }
 
+
+        public virtual async Task<ItemResponse<TEntity>> CosmosUpsertItemAsync(TEntity entity, PartitionKey partitionKey)
+        {
+            var r = await container.UpsertItemAsync(entity, partitionKey);
+            return r;
+        }
+
+        public virtual async Task<ItemResponse<TEntity>> CosmosReadItemAsync(TEntity entity, PartitionKey partitionKey)
+        {
+            var r = await container.CreateItemAsync<TEntity>(entity, partitionKey);
+            return r;
+        }
+
+        public virtual async Task<ItemResponse<TEntity>> CosmosReadItemAsync(string id, PartitionKey partitionKey)
+        {
+            var r = await container.ReadItemAsync<TEntity>(id, partitionKey);
+            return r;
+        }
+
+        
+
     }
 }
