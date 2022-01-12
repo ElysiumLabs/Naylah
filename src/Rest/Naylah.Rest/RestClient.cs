@@ -17,12 +17,12 @@ using System.Threading.Tasks;
 
 namespace Naylah.Rest
 {
-    public class NaylahRestClient2
+    public class RestClient
     {
         /// <summary>
         /// Settings for this client
         /// </summary>
-        public NaylahRestClientSettings Settings { get; protected set; } = new NaylahRestClientSettings();
+        public RestClientSettings Settings { get; protected set; } = new RestClientSettings();
 
         /// <summary>
         /// Internal HttpClient instance, be carefull my friend.
@@ -35,15 +35,20 @@ namespace Naylah.Rest
         protected internal Dictionary<string, ISerializer> Serializers = new Dictionary<string, ISerializer>();
 
         /// <summary>
+        /// ContentType key driven serializer provider
+        /// </summary>
+        protected internal SerializerProvider SerializerProvider = new SerializerProvider();
+
+        /// <summary>
         /// Humm... Logger? 
         /// </summary>
-        protected internal ILogger Logger  => Settings.Logger;
+        protected internal ILogger Logger => Settings.Logger;
 
-        public NaylahRestClient2(Uri baseUrl) : this(new NaylahRestClientSettings() { BaseUri = baseUrl })
+        public RestClient(Uri baseUrl) : this(new RestClientSettings() { BaseUri = baseUrl })
         {
         }
 
-        public NaylahRestClient2(NaylahRestClientSettings settings)
+        public RestClient(RestClientSettings settings)
         {
             Settings = settings;
             ConfigureFromSettings(true);
@@ -85,7 +90,7 @@ namespace Naylah.Rest
             string resource,
             HttpMethod method,
             Dictionary<string, string> customHeaders = null,
-            NaylahRestRequestContent<TIn> requestContent = null
+            RestRequestContent<TIn> restRequestContent = null
             )
         {
             var request = new HttpRequestMessage(method, resource);
@@ -98,52 +103,13 @@ namespace Naylah.Rest
                 }
             }
 
-            if (requestContent != null)
+            if (restRequestContent != null)
             {
-                var contentType = requestContent.ContentType ?? Settings.DefaultContentType;
-                request.Content = await GetRequestContent(contentType, requestContent.Content);
+                restRequestContent.ContentType = restRequestContent.ContentType ?? Settings.DefaultContentType;
+                request.Content = await SerializerProvider.GetRequestContent(restRequestContent);
             }
 
             return request;
-        }
-
-        private async Task<HttpContent> GetRequestContent<TIn>(string contentType, TIn content)
-        {
-            switch (contentType)
-            {
-                case MediaTypeNames.Text.Plain:
-                case MediaTypeNames.Text.RichText:
-                case MediaTypeNames.Text.Xml:
-                case MediaTypeNames2.Application.ProblemJson:
-                case MediaTypeNames2.Application.Json: 
-                    {
-                        if (!Serializers.TryGetValue(contentType, out var serializer))
-                        {
-                            throw new Exception($"No registered serializer for this {contentType} content-type");
-                        }
-
-                        var mediaTypeInfo = MediaTypeHeaderValue.Parse(contentType);
-                        var encoding = !string.IsNullOrEmpty(mediaTypeInfo.CharSet) ?
-                            Encoding.GetEncoding(mediaTypeInfo.CharSet) : Encoding.UTF8;
-
-                        var svalue = await serializer.Serialize(content);
-                        return new StringContent(svalue, encoding, contentType);
-                    }
-                case MediaTypeNames2.Multipart.FormData:
-                    {
-                        if (content is MultipartFormDataContent multipartFormDataContent) // Nullable types are not allowed in patterns
-                        {
-                            return multipartFormDataContent;
-                        }
-                        else
-                        {
-                            throw new Exception($"The {contentType} contentType must be MultipartFormDataContent as Content value");
-                        }
-                        
-                    }
-                default:
-                    throw new Exception($"The {contentType} contentType cannot be translated to request body");
-            }
         }
 
         private CancellationToken GetCancellationTokenWithTimeout(CancellationToken original, out CancellationTokenSource timeoutTokenSource)
@@ -166,7 +132,7 @@ namespace Naylah.Rest
             //}
         }
 
-        public async Task<TOut> SendAsync<TOut>(
+        public async Task<TOut> SendInternalAsync<TOut>(
             HttpRequestMessage request,
             CancellationToken cancellationToken = default,
             HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead)
@@ -177,7 +143,7 @@ namespace Naylah.Rest
             {
                 using (var response = await InternalHttpClient.SendAsync(request, completionOption, ct).ConfigureAwait(false))
                 {
-                    return await GetResponse<TOut>(response);
+                    return await GetResponseContent<TOut>(response);
                 }
             }
             catch (Exception exception)
@@ -187,7 +153,7 @@ namespace Naylah.Rest
             }
         }
 
-        public async Task<TOut> GetResponse<TOut>(HttpResponseMessage response)
+        public async Task<TOut> GetResponseContent<TOut>(HttpResponseMessage response)
         {
             using (var responseStream = await response.Content.ReadAsStreamAsync())
             {
@@ -214,29 +180,20 @@ namespace Naylah.Rest
                     using (var streamReader = new StreamReader(responseStream))
                     {
                         var responseContent = await streamReader.ReadToEndAsync();
-                        try
-                        {
-                            response.EnsureSuccessStatusCode();
-                        }
-                        catch (Exception ex)
-                        {
-                            throw RestException.CreateException(ex, response.RequestMessage, response, responseContent);
-                        }
+                        throw RestException.CreateException(response.RequestMessage, response, responseContent);
                     }
-
-                    return default;
                 }
             }
         }
 
         public async Task<TOut> ExecuteContentAsync<TIn, TOut>(
-            string resource, HttpMethod method, NaylahRestRequestContent<TIn> data, Dictionary<string, string> headers = null, CancellationToken? cancelationToken = null)
+            string resource, HttpMethod method, RestRequestContent<TIn> data, Dictionary<string, string> headers = null, CancellationToken? cancelationToken = null)
         {
             var icancelationToken = cancelationToken ?? CancellationToken.None;
 
             using (var request = await CreateRequest<TIn>(resource, method, headers, data))
             {
-                return await SendAsync<TOut>(request, icancelationToken);
+                return await SendInternalAsync<TOut>(request, icancelationToken);
             }
         }
 
@@ -245,9 +202,9 @@ namespace Naylah.Rest
         {
             var icancelationToken = cancelationToken ?? CancellationToken.None;
 
-            using(var request = await CreateRequest<TIn>(resource, method, headers, new NaylahRestRequestContent<TIn>(data)))
+            using (var request = await CreateRequest<TIn>(resource, method, headers, new RestRequestContent<TIn>(data)))
             {
-                return await SendAsync<TOut>(request, icancelationToken);
+                return await SendInternalAsync<TOut>(request, icancelationToken);
             }
         }
 
@@ -256,9 +213,9 @@ namespace Naylah.Rest
         {
             var icancelationToken = cancelationToken ?? CancellationToken.None;
 
-            using (var request = await CreateRequest<TIn>(resource, method, headers, new NaylahRestRequestContent<TIn>(data)))
+            using (var request = await CreateRequest<TIn>(resource, method, headers, new RestRequestContent<TIn>(data)))
             {
-                var response = await SendAsync<string>(request, icancelationToken);
+                var response = await SendInternalAsync<string>(request, icancelationToken);
             }
         }
 
@@ -269,7 +226,7 @@ namespace Naylah.Rest
 
             using (var request = await CreateRequest<string>(resource, method, headers))
             {
-                return await SendAsync<TOut>(request, icancelationToken);
+                return await SendInternalAsync<TOut>(request, icancelationToken);
             }
         }
 
@@ -280,7 +237,7 @@ namespace Naylah.Rest
 
             using (var request = await CreateRequest<string>(resource, method, headers))
             {
-                var response = await SendAsync<string>(request, icancelationToken);
+                var response = await SendInternalAsync<string>(request, icancelationToken);
             }
         }
     }

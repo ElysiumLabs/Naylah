@@ -41,12 +41,12 @@ namespace Naylah.Rest.Serializers
 
     public static class TextPlainSerializerExtensions
     {
-        public static void UseTextPlainSerializer(this NaylahRestClient2 restClient, string contentType)
+        public static void UseTextPlainSerializer(this RestClient restClient, string contentType)
         {
             restClient.UseSerializer(contentType, new TextPlainSerializer());
         }
 
-        public static void UseDefaultTextPlainSerializer(this NaylahRestClient2 restClient)
+        public static void UseDefaultTextPlainSerializer(this RestClient restClient)
         {
             restClient.UseTextPlainSerializer(MediaTypeNames.Text.Plain);
         }

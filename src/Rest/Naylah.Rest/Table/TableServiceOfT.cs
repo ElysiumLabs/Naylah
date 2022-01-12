@@ -1,5 +1,4 @@
 ﻿using Flurl;
-using RestSharp;
 using System;
 using System.Net.Http;
 using System.Threading;
@@ -16,7 +15,7 @@ namespace Naylah.Rest.Table
 
         public QueryOptions DefaultQueryOptions { get; set; } = new QueryOptions();
 
-        public TableService(NaylahRestClient2 client) : base(client)
+        public TableService(RestClient client) : base(client)
         {
             var basePath = "".AppendPathSegment(typeof(TModel).Name);
             Route = basePath;
@@ -72,7 +71,7 @@ namespace Naylah.Rest.Table
 
             var ctoken = CancellationToken.None;
 
-            var p = await client.SendAsync<PageResult<TModel>>(request, ctoken);
+            var p = await client.SendInternalAsync<PageResult<TModel>>(request, ctoken);
 
             p.Query = queryOptions;
 

@@ -64,7 +64,7 @@ namespace Naylah.ConsolePlayground3
 
             //Console.ReadKey();
 
-            var naylahClient = new NaylahRestClient2(new NaylahRestClientSettings()
+            var naylahClient = new RestClient(new RestClientSettings()
             {
                 BaseUri = new Uri("https://marq-storage-api-dev.azurewebsites.net/"),
                 //BaseUri = new Uri("http://localhost:5000"),
@@ -113,7 +113,7 @@ namespace Naylah.ConsolePlayground3
                     var multiPartContent = new MultipartFormDataContent();
                     multiPartContent.Add(new ByteArrayContent(memoryStream.ToArray()), "image", "image.png");
 
-                    var content = new NaylahRestRequestContent<MultipartFormDataContent>()
+                    var content = new RestRequestContent<MultipartFormDataContent>()
                     {
                         ContentType = MediaTypeNames2.Multipart.FormData,
                         Content = multiPartContent

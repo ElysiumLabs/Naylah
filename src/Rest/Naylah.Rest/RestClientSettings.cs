@@ -7,7 +7,7 @@ using System.Text;
 
 namespace Naylah.Rest
 {
-    public class NaylahRestClientSettings
+    public class RestClientSettings
     {
         public string AppName { get; set; }
 
@@ -25,7 +25,7 @@ namespace Naylah.Rest
 
         public ILogger Logger { get; set; }
 
-        public NaylahRestClientSettings()
+        public RestClientSettings()
         {
             var ass = Assembly.GetExecutingAssembly();
             AppName = ass.GetName().Name;

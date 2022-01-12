@@ -1,8 +1,8 @@
 ﻿using Naylah.Error;
 using Newtonsoft.Json;
-using RestSharp;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Net;
 using System.Net.Http;
 using System.Text;
@@ -12,8 +12,8 @@ namespace System
 {
     public class RestException : Exception
     {
-        public RestException(HttpStatusCode httpStatusCode, Uri requestUri, string content, string message, Exception innerException)
-          : base(message, innerException)
+        public RestException(HttpStatusCode httpStatusCode, Uri requestUri, string content, string message)
+          : base(message)
         {
             HttpStatusCode = httpStatusCode;
             RequestUri = requestUri;
@@ -26,44 +26,13 @@ namespace System
 
         public string Content { get; private set; }
 
-        public static RestException CreateException(Uri requestUri, IRestResponse response)
+        public static RestException CreateException(HttpRequestMessage requestMessage, HttpResponseMessage responseMessage, string responseContent)
         {
-            Exception innerException = null;
-
-            var messageBuilder = new StringBuilder();
-
-            messageBuilder.AppendLine(string.Format("Processing request [{0}] resulted with following errors:", requestUri));
-
-            if (!response.IsSuccessful)
-            {
-                messageBuilder.AppendLine("- Server responded with unsuccessfult status code: " + response.StatusDescription);
-            }
-
-            if (response.ErrorException != null)
-            {
-                messageBuilder.AppendLine("- An exception occurred while processing request: " + response.ErrorMessage);
-
-                innerException = response.ErrorException;
-            }
-
-            return new RestException(response.StatusCode, requestUri, response.Content, messageBuilder.ToString(), innerException);
-        }
-
-        public static RestException CreateException(Exception innerException, HttpRequestMessage requestMessage, HttpResponseMessage responseMessage, string responseContent)
-        {
-            if (responseMessage == null)
-            {
-                //http error throw without try read response
-                throw innerException;
-            }
-
             var requestUri = requestMessage.RequestUri;
 
             var messageBuilder = new StringBuilder();
 
             messageBuilder.AppendLine(string.Format("Processing request [{0}] resulted with following errors:", requestUri));
-
-            messageBuilder.AppendLine(string.Format(innerException.Message));
 
             if (responseMessage != null)
             {
@@ -74,10 +43,11 @@ namespace System
             {
                 messageBuilder.AppendLine("- An exception occurred while processing request: " + responseContent);
             }
-
-            return new RestException(responseMessage.StatusCode, requestUri, responseContent, messageBuilder.ToString(), innerException);
+             
+            return new RestException(responseMessage.StatusCode, requestUri, responseContent, messageBuilder.ToString());
         }
-    }
+
+     }
 
     public static class RestExceptionExtensions
     {

@@ -69,12 +69,12 @@ namespace Naylah.Rest.Serializers
 
     public static class NewtonsoftSerializerExtensions
     {
-        public static void UseNewtonsoftSerializer(this NaylahRestClient2 restClient, string contentType, JsonSerializerSettings jsonSerializerSettings)
+        public static void UseNewtonsoftSerializer(this RestClient restClient, string contentType, JsonSerializerSettings jsonSerializerSettings)
         {
             restClient.UseSerializer(contentType, new NewtonsoftSerializer(jsonSerializerSettings));
         }
 
-        public static void UseDefaultNewtonsoftSerializer(this NaylahRestClient2 restClient)
+        public static void UseDefaultNewtonsoftSerializer(this RestClient restClient)
         {
             var jsonSerializerSettings = new JsonSerializerSettings
             {

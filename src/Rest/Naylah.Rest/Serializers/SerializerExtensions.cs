@@ -7,7 +7,7 @@ namespace Naylah.Rest
 {
     public static class SerializerExtensions
     {
-        public static void UseSerializer(this NaylahRestClient2 restClient, string contentType, ISerializer serializer)
+        public static void UseSerializer(this RestClient restClient, string contentType, ISerializer serializer)
         {
             restClient.Serializers[contentType] = serializer;
         }

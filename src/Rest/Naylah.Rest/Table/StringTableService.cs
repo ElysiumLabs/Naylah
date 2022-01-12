@@ -3,7 +3,7 @@
     public class StringTableService<TModel> : TableService<TModel, string>
         where TModel : class, IEntity<string>
     {
-        public StringTableService(NaylahRestClient2 client) : base(client)
+        public StringTableService(RestClient client) : base(client)
         {
         }
 
