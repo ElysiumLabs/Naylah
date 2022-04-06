@@ -28,7 +28,6 @@ namespace Naylah.HealthChecks
 
         public async Task<DateHealthReport> GetOrCheckHealthAsync(HealthCheckService healthCheckService, CancellationToken cancellationToken = default)
         {
-            //return null;
             try
             {
                 if ((Evaluating) || (Result?.Date.Add(options.CacheDuration) > DateTimeOffset.UtcNow))

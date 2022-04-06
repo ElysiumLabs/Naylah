@@ -23,13 +23,15 @@ namespace Naylah.StartPage
             return app.UseMiddleware<StartPageMiddleware>(Options.Create(option));
         }
 
-        public static IApplicationBuilder UseStartPage(this IApplicationBuilder app, ServiceOptions options)
+        public static IApplicationBuilder UseStartPage<TOptions>(this IApplicationBuilder app, TOptions options)
+            where TOptions : ServiceOptions
         {
+            var optionsAssembly = typeof(TOptions).Assembly;
             return app.UseStartPage(x =>
             {
-                x.Title = options.Name;
+                x.Title = options.Name ?? optionsAssembly.GetName().Name;
                 x.Organization = options.Organization;
-                x.Path = "/";
+                x.Version = optionsAssembly.GetName().Version.ToString();
             });
         }
     }

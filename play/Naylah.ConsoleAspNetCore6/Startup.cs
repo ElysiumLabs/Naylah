@@ -4,12 +4,11 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Hellang.Middleware.ProblemDetails;
-using Microsoft.AspNet.OData.Builder;
-using Microsoft.AspNet.OData.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Formatters;
+using Microsoft.AspNetCore.OData;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
@@ -18,6 +17,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.Net.Http.Headers;
 using Microsoft.OData.Edm;
+using Microsoft.OData.ModelBuilder;
 using Microsoft.OpenApi.Models;
 using Naylah.Data;
 using Naylah.Data.Access;
@@ -35,18 +35,23 @@ namespace Naylah.ConsoleAspNetCore
 
     public class Startup : Service<StartupOptions>
     {
+
         public Startup(IHostEnvironment environment, IConfiguration configuration) : base(environment, configuration)
         {
             Options.Name = "My awesome API";
         }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
-        public override void ConfigureServices(IServiceCollection services)
+       
+        protected override void ConfigureServicesApp(IServiceCollection services)
         {
-            base.ConfigureServices(services);
-
             //services.AddAutoMapper(typeof(Startup));
-            services.AddControllers();
+            services.
+                AddControllers().
+                AddOData(options => 
+                {
+                    options.EnableQueryFeatures(1000); 
+                });
+
 
             //services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
             //        .AddNewtonsoftJson(options =>
@@ -156,11 +161,9 @@ namespace Naylah.ConsoleAspNetCore
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public override void Configure(IApplicationBuilder app)
+        protected override void ConfigureApp(IApplicationBuilder app)
         {
             //app.UseBlockingDetection();
-
-            base.Configure(app);
 
             //if (Environment.IsDevelopment())
             //{
@@ -180,7 +183,7 @@ namespace Naylah.ConsoleAspNetCore
             {
                 //endpoints.MapODataRoute("odata", "odata", GetEdmModel());
                 endpoints.MapControllers();
-                //endpoints.EnableDependencyInjection();
+
                 endpoints.MapHealthChecks("/health");
             });
 
@@ -194,6 +197,7 @@ namespace Naylah.ConsoleAspNetCore
 
             return odataBuilder.GetEdmModel();
         }
+
     }
 
     public class TestCheck : IHealthCheck

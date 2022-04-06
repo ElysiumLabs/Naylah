@@ -1,7 +1,8 @@
-﻿using Microsoft.AspNet.OData;
-using Microsoft.AspNet.OData.Builder;
-using Microsoft.AspNet.OData.Query;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.OData.Query;
+using Microsoft.AspNetCore.OData.Query.Validator;
+using Microsoft.AspNetCore.OData.Results;
+using Microsoft.OData.ModelBuilder;
 using Naylah.Data.Utils;
 using System;
 using System.Collections.Generic;
@@ -23,7 +24,7 @@ namespace Naylah.Data
         protected virtual ODataQueryOptions<TType> GetEntityModelOptions<TType>() where TType : class, new()
         {
             var builder = new ODataConventionModelBuilder();
-            builder.EntitySet<TType>(nameof(TType)).EntityType.Count().Filter().Select().Expand().OrderBy().Page();
+            builder.EntitySet<TType>(nameof(TType));
             var m = builder.GetEdmModel();
 
             return new ODataQueryOptions<TType>(new ODataQueryContext(m, typeof(TType), null), request);

@@ -1,5 +1,5 @@
-﻿using Microsoft.AspNet.OData.Query;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.OData.Query;
 using Naylah.Data.Access;
 using System;
 using System.Collections.Generic;

@@ -30,8 +30,6 @@ namespace Naylah.StartPage
             _options = options.Value;
         }
 
-        public static object test = null;
-
         public Task InvokeAsync(HttpContext context, IServiceProvider requestServiceProvider)
         {
             HttpRequest request = context.Request;
@@ -40,8 +38,6 @@ namespace Naylah.StartPage
             {
                 var startPageProvider = requestServiceProvider.GetService<IStartPageProvider>();
                 var healthyCheck = requestServiceProvider.GetService<HealthCheckService>();
-
-                test = healthyCheck;
 
                 cachedHealthCheckService =
                     cachedHealthCheckService ??

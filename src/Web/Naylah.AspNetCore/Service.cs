@@ -29,6 +29,12 @@ namespace Naylah
 #endif
         public TOptions Options { get; set; }
 
+        private Service()
+        {
+            Options = ServiceOptions.CreateDefault<TOptions>(GetType().Name);
+            Try.Run(() => Configuration?.Bind(Options));
+        }
+
 #if NETCOREAPP3_0_OR_GREATER
         public Service(IHostEnvironment environment, IConfiguration configuration) : this()
 #endif
@@ -39,13 +45,6 @@ namespace Naylah
             Environment = environment;
             Configuration = configuration;
         }
-
-        private Service()
-        {
-            Options = ServiceOptions.CreateDefault<TOptions>(GetType().Name);
-            Try.Run(() => Configuration?.Bind(GetType().Name, Options));
-        }
-
     }
 
     public abstract class Service : Service<ServiceOptions>

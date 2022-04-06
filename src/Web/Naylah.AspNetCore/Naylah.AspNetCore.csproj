@@ -1,45 +1,47 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFrameworks>net6.0;net5.0;netcoreapp3.1;netcoreapp3.0;netcoreapp2.1;</TargetFrameworks>
-    <LangVersion>8.0</LangVersion>
-    <RootNamespace>Naylah</RootNamespace>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFrameworks>netcoreapp3.1;net5.0;net6.0;</TargetFrameworks>
+		<LangVersion>8.0</LangVersion>
+		<RootNamespace>Naylah</RootNamespace>
+	</PropertyGroup>
 
-  <ItemGroup Condition="'$(TargetFramework)' == 'netcoreapp3.0'">
-    <FrameworkReference Include="Microsoft.AspNetCore.App" />
-    <PackageReference Include="Microsoft.AspNetCore.OData" Version="7.5.1" />
-    <PackageReference Include="Hellang.Middleware.ProblemDetails" Version="4.5.0" />
-  </ItemGroup>
+	<ItemGroup Condition="'$(TargetFramework)' == 'netcoreapp3.0'">
+		<FrameworkReference Include="Microsoft.AspNetCore.App" />
+		<PackageReference Include="Microsoft.AspNetCore.OData" Version="7.5.1" />
+		<PackageReference Include="Hellang.Middleware.ProblemDetails" Version="4.5.0" />
+		<PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="6.3.0" />
+		<PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="6.3.0" />
+	</ItemGroup>
 
-  <ItemGroup Condition="'$(TargetFramework)' == 'netcoreapp3.1'">
-    <FrameworkReference Include="Microsoft.AspNetCore.App" />
-    <PackageReference Include="Microsoft.AspNetCore.OData" Version="7.5.1" />
-    <PackageReference Include="Hellang.Middleware.ProblemDetails" Version="4.5.0" />
-  </ItemGroup>
-  
-  <ItemGroup Condition="'$(TargetFramework)' != 'netcoreapp3.0'">
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.2.5" />
-    <PackageReference Include="Microsoft.AspNetCore.OData" Version="7.5.1" />
-    <PackageReference Include="Microsoft.AspNetCore.Hosting" Version="2.2.7" />
-    <PackageReference Include="Microsoft.AspNetCore.Diagnostics.HealthChecks" Version="2.2.0" />
-    <PackageReference Include="Hellang.Middleware.ProblemDetails" Version="4.5.0" />
-  </ItemGroup>
-  
-  <ItemGroup>
-    <None Remove="Assets\index.html" />
-  </ItemGroup>
-  
-  <ItemGroup>
-    <EmbeddedResource Include="Assets\index.html" />
-  </ItemGroup>
+	<ItemGroup Condition="'$(TargetFramework)' == 'netcoreapp3.1'">
+		<FrameworkReference Include="Microsoft.AspNetCore.App" />
+		<PackageReference Include="Microsoft.AspNetCore.OData" Version="7.5.1" />
+		<PackageReference Include="Hellang.Middleware.ProblemDetails" Version="4.5.0" />
+		<PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="6.3.0" />
+		<PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="6.3.0" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="5.6.3" />
-  </ItemGroup>
-  
-  <ItemGroup>
-    <ProjectReference Include="..\..\Core\Naylah.Core\Naylah.Core.csproj" />
-  </ItemGroup>
+	<ItemGroup Condition="'$(TargetFramework)' != 'netcoreapp3.0'">
+		<PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.2.5" />
+		<PackageReference Include="Microsoft.AspNetCore.OData" Version="8.0.8" />
+		<PackageReference Include="Microsoft.AspNetCore.Hosting" Version="2.2.7" />
+		<PackageReference Include="Microsoft.AspNetCore.Diagnostics.HealthChecks" Version="2.2.0" />
+		<PackageReference Include="Hellang.Middleware.ProblemDetails" Version="6.4.0" />
+		<PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="6.3.0" />
+		<PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="6.3.0" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<None Remove="Assets\index.html" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<EmbeddedResource Include="Assets\index.html" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\..\Core\Naylah.Core\Naylah.Core.csproj" />
+	</ItemGroup>
 
 </Project>

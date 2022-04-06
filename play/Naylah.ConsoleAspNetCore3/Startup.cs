@@ -47,9 +47,8 @@ namespace Naylah.ConsoleAspNetCore
         }
 
         // This method gets called by the runtime. Use this method to add services to the container.
-        public override void ConfigureServices(IServiceCollection services)
+        protected override void ConfigureServicesApp(IServiceCollection services)
         {
-            base.ConfigureServices(services);
 
             services.AddAutoMapper(typeof(Startup));
             services.AddControllers();
@@ -162,11 +161,9 @@ namespace Naylah.ConsoleAspNetCore
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public override void Configure(IApplicationBuilder app)
+        protected override void ConfigureApp(IApplicationBuilder app)
         {
             app.UseBlockingDetection();
-
-            base.Configure(app);
 
             //if (Environment.IsDevelopment())
             //{
