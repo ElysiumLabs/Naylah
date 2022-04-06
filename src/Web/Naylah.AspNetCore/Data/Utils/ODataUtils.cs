@@ -1,7 +1,4 @@
-﻿using Microsoft.AspNet.OData;
-using Microsoft.AspNet.OData.Builder;
-using Microsoft.AspNet.OData.Query;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Extensions;
 using System;
 using System.Collections.Generic;

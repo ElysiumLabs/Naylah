@@ -16,7 +16,7 @@ namespace Naylah.StartPage
 
         }
 
-        public virtual async Task<string> GetPageStringAsync()
+        protected virtual async Task<string> GetPageStringAsync()
         {
             var assembly = typeof(StartPage).Assembly;
             var resourceStream = assembly.GetManifestResourceStream("Naylah.Assets.index.html");
@@ -32,7 +32,7 @@ namespace Naylah.StartPage
 
             s = s.Replace("{{ServiceName}}", _options.Title);
 
-            if (healthyCheck != null)
+            if (_options.HealthCheckEnable && (healthyCheck != null))
             {
                 var servicesString = "";
 
@@ -66,6 +66,7 @@ namespace Naylah.StartPage
                 s = s.Replace("{{Services}}", "");
             }
 
+            s = s.Replace("{{Version}}", _options.Version);
             s = s.Replace("{{OrganizationName}}", _options.Organization ?? _options.Title);
             s = s.Replace("{{Year}}", DateTimeOffset.UtcNow.Year.ToString());
 

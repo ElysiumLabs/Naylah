@@ -3,16 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Ben.Diagnostics;
 using Hellang.Middleware.ProblemDetails;
-using Microsoft.AspNet.OData.Builder;
-using Microsoft.AspNet.OData.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Formatters;
-using Microsoft.Azure.Cosmos;
-using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.OData;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
@@ -21,12 +17,10 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.Net.Http.Headers;
 using Microsoft.OData.Edm;
+using Microsoft.OData.ModelBuilder;
 using Microsoft.OpenApi.Models;
-using Naylah.ConsoleAspNetCore.Customizations;
-using Naylah.ConsoleAspNetCore.Entities;
 using Naylah.Data;
 using Naylah.Data.Access;
-using Naylah.Data.Providers.CosmosDB;
 using Newtonsoft.Json.Serialization;
 
 namespace Naylah.ConsoleAspNetCore
@@ -41,17 +35,23 @@ namespace Naylah.ConsoleAspNetCore
 
     public class Startup : Service<StartupOptions>
     {
+
         public Startup(IHostEnvironment environment, IConfiguration configuration) : base(environment, configuration)
         {
             Options.Name = "My awesome API";
         }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
+       
         protected override void ConfigureServicesApp(IServiceCollection services)
         {
+            //services.AddAutoMapper(typeof(Startup));
+            services.
+                AddControllers().
+                AddOData(options => 
+                {
+                    options.EnableQueryFeatures(1000); 
+                });
 
-            services.AddAutoMapper(typeof(Startup));
-            services.AddControllers();
 
             //services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
             //        .AddNewtonsoftJson(options =>
@@ -100,36 +100,36 @@ namespace Naylah.ConsoleAspNetCore
             });
 
 
-            services.
-                AddDbContext<ORM.TestDbContext>(options => options.UseSqlServer("Server=(localdb)\\MSSQLLocalDB;Database=NaylahTestDevDB;Trusted_Connection=True;MultipleActiveResultSets=false", ORM.TestDbContext.ConfigureDBContext))
-            ;
+            //services.
+            //    AddDbContext<ORM.TestDbContext>(options => options.UseSqlServer("Server=(localdb)\\MSSQLLocalDB;Database=NaylahTestDevDB;Trusted_Connection=True;MultipleActiveResultSets=false", ORM.TestDbContext.ConfigureDBContext))
+            //;
 
             //services.AddSingleton(new List<Person>());
             //services.AddScoped<IRepository<Person, string>, SomeRepository>();
 
-            services.AddEntityFrameworkRepository<ORM.TestDbContext, Person>();
+            //services.AddEntityFrameworkRepository<ORM.TestDbContext, Person>();
 
-            services.AddSingleton<CosmosClient>(x =>
-            {
-                var c = new CosmosClient(
-                    "",
-                    "",
-                    new CosmosClientOptions()
-                    {
-                        ApplicationName = Options.Name,
-                        AllowBulkExecution = false,
+            //services.AddSingleton<CosmosClient>(x =>
+            //{
+            //    var c = new CosmosClient(
+            //        "",
+            //        "",
+            //        new CosmosClientOptions()
+            //        {
+            //            ApplicationName = Options.Name,
+            //            AllowBulkExecution = false,
 
-                        SerializerOptions = new CosmosSerializationOptions()
-                        {
-                            PropertyNamingPolicy = CosmosPropertyNamingPolicy.CamelCase,
-                        },
-                    });
+            //            SerializerOptions = new CosmosSerializationOptions()
+            //            {
+            //                PropertyNamingPolicy = CosmosPropertyNamingPolicy.CamelCase,
+            //            },
+            //        });
 
-                //var handler = new CustomHttpClientHandler();
-                //c.ClientOptions.CustomHandlers.Add(handler);
+            //    //var handler = new CustomHttpClientHandler();
+            //    //c.ClientOptions.CustomHandlers.Add(handler);
 
-                return c;
-            });
+            //    return c;
+            //});
 
             //services.AddScoped<IRepository<Entities.Person>, CosmosSQLContainerRepository<Entities.Person>>(x =>
             //{
@@ -140,11 +140,11 @@ namespace Naylah.ConsoleAspNetCore
             //    );
             //});
 
-            services.AddScoped(typeof(StringAppTableDataService<,>));
-            services.AddScoped<IUnitOfWork, SomeWorker>();
+            //services.AddScoped(typeof(StringAppTableDataService<,>));
+            //services.AddScoped<IUnitOfWork, SomeWorker>();
 
-            services.AddScoped<PersonService>();
-            //services.AddScoped<PersonServiceV2>();
+            //services.AddScoped<PersonService>();
+            ////services.AddScoped<PersonServiceV2>();
 
             services.AddHealthChecks().
                 AddCheck<TestCheck>("SqlDb").
@@ -163,7 +163,7 @@ namespace Naylah.ConsoleAspNetCore
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         protected override void ConfigureApp(IApplicationBuilder app)
         {
-            app.UseBlockingDetection();
+            //app.UseBlockingDetection();
 
             //if (Environment.IsDevelopment())
             //{
@@ -181,9 +181,9 @@ namespace Naylah.ConsoleAspNetCore
             app.UseRouting();
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapODataRoute("odata", "odata", GetEdmModel());
+                //endpoints.MapODataRoute("odata", "odata", GetEdmModel());
                 endpoints.MapControllers();
-                endpoints.EnableDependencyInjection();
+
                 endpoints.MapHealthChecks("/health");
             });
 
@@ -197,6 +197,7 @@ namespace Naylah.ConsoleAspNetCore
 
             return odataBuilder.GetEdmModel();
         }
+
     }
 
     public class TestCheck : IHealthCheck

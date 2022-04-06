@@ -12,8 +12,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Rest\Naylah.Rest\Naylah.Rest.csproj" />
-    <ProjectReference Include="..\Naylah.Core\Naylah.Core.csproj" />
+    <ProjectReference Include="..\..\src\Core\Naylah.Core\Naylah.Core.csproj" />
+    <ProjectReference Include="..\..\src\Rest\Naylah.Rest\Naylah.Rest.csproj" />
   </ItemGroup>
 
 </Project>

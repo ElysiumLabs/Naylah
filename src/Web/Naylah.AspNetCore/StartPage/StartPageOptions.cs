@@ -11,8 +11,11 @@ namespace Naylah.StartPage
 
         public string Organization { get; set; } = "";
 
-        public PathString Path { get; set; }
+        public string Version { get; set; } = "1";
 
+        public PathString Path { get; set; } = "/";
+
+        public bool HealthCheckEnable { get; set; } = true;
 
         public TimeSpan HealtyCheckCacheDuration { get; set; } = TimeSpan.FromSeconds(10);
     }
