@@ -29,21 +29,18 @@ namespace Naylah
 #endif
         public TOptions Options { get; set; }
 
-        private ServiceBase()
-        {
-            Options = ServiceOptionsBase.CreateDefault<TOptions>(GetType().Name);
-            Try.Run(() => Configuration?.Bind(Options));
-        }
-
 #if NETCOREAPP3_0_OR_GREATER
-        public ServiceBase(IHostEnvironment environment, IConfiguration configuration) : this()
+        public ServiceBase(IHostEnvironment environment, IConfiguration configuration)
 #endif
 #if NETCOREAPP2_1
-        public Service(IHostingEnvironment environment, IConfiguration configuration) : this()
+        public Service(IHostingEnvironment environment, IConfiguration configuration)
 #endif
         {
             Environment = environment;
             Configuration = configuration;
+
+            Options = ServiceOptionsBase.CreateDefault<TOptions>(GetType().Name);
+            Try.Run(() => Configuration?.Bind(Options));
         }
     }
 
