@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Naylah
 {
-    public class ServiceOptions
+    public class ServiceOptionsBase
     {
         public string Name { get; set; }
 
@@ -14,7 +14,7 @@ namespace Naylah
 
 
         public static TOptions CreateDefault<TOptions>(string name)
-            where TOptions : ServiceOptions, new()
+            where TOptions : ServiceOptionsBase, new()
         {
             return new TOptions()
             {

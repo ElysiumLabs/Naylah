@@ -15,8 +15,8 @@ using System.Text;
 
 namespace Naylah
 {
-    public abstract partial class Service<TOptions>
-        where TOptions : ServiceOptions, new()
+    public abstract partial class ServiceBase<TOptions>
+        where TOptions : ServiceOptionsBase, new()
     {
         protected IConfiguration Configuration;
 
@@ -29,14 +29,14 @@ namespace Naylah
 #endif
         public TOptions Options { get; set; }
 
-        private Service()
+        private ServiceBase()
         {
-            Options = ServiceOptions.CreateDefault<TOptions>(GetType().Name);
+            Options = ServiceOptionsBase.CreateDefault<TOptions>(GetType().Name);
             Try.Run(() => Configuration?.Bind(Options));
         }
 
 #if NETCOREAPP3_0_OR_GREATER
-        public Service(IHostEnvironment environment, IConfiguration configuration) : this()
+        public ServiceBase(IHostEnvironment environment, IConfiguration configuration) : this()
 #endif
 #if NETCOREAPP2_1
         public Service(IHostingEnvironment environment, IConfiguration configuration) : this()
@@ -47,10 +47,10 @@ namespace Naylah
         }
     }
 
-    public abstract class Service : Service<ServiceOptions>
+    public abstract class ServiceBase : ServiceBase<ServiceOptionsBase>
     {
 #if NETCOREAPP3_0_OR_GREATER
-        public Service(IHostEnvironment environment, IConfiguration configuration) : base(environment, configuration)
+        public ServiceBase(IHostEnvironment environment, IConfiguration configuration) : base(environment, configuration)
 #endif
 #if NETCOREAPP2_1
         public Service(IHostingEnvironment environment, IConfiguration configuration): base(environment, configuration)

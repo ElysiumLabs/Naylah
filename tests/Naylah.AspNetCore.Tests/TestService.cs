@@ -5,7 +5,7 @@ using Microsoft.Extensions.Hosting;
 
 namespace Naylah.AspNetCore.Tests
 {
-    public class TestService : Service<TestServiceOptions>
+    public class TestService : ServiceBase<TestServiceOptions>
     {
         public TestService(IHostEnvironment environment, IConfiguration configuration) : base(environment, configuration)
         {

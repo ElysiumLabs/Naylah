@@ -16,7 +16,7 @@ using System.Threading.Tasks;
 
 namespace Naylah
 {
-    public abstract partial class Service<TOptions>
+    public abstract partial class ServiceBase<TOptions>
     {
         protected virtual void ConfigureProblemDetails(ProblemDetailsOptions options,
 #if NETCOREAPP3_0_OR_GREATER
