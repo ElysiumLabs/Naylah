@@ -25,7 +25,7 @@ using Newtonsoft.Json.Serialization;
 
 namespace Naylah.ConsoleAspNetCore
 {
-    public class StartupOptions : ServiceOptions
+    public class StartupOptions : ServiceOptionsBase
     {
         public StartupOptions()
         {
@@ -33,7 +33,7 @@ namespace Naylah.ConsoleAspNetCore
         }
     }
 
-    public class Startup : Service<StartupOptions>
+    public class Startup : ServiceBase<StartupOptions>
     {
 
         public Startup(IHostEnvironment environment, IConfiguration configuration) : base(environment, configuration)

@@ -24,7 +24,7 @@ namespace Naylah.StartPage
         }
 
         public static IApplicationBuilder UseStartPage<TOptions>(this IApplicationBuilder app, TOptions options)
-            where TOptions : ServiceOptions
+            where TOptions : ServiceOptionsBase
         {
             var optionsAssembly = typeof(TOptions).Assembly;
             return app.UseStartPage(x =>

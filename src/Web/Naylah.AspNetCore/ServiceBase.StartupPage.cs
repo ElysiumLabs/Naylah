@@ -6,9 +6,9 @@ using System.Text;
 
 namespace Naylah
 {
-    public abstract partial class Service<TOptions>
+    public abstract partial class ServiceBase<TOptions>
     {
-        public virtual void ConfigureStartupPage(IApplicationBuilder app)
+        protected virtual void ConfigureStartupPage(IApplicationBuilder app)
         {
             app.UseStartPage(Options);
         }

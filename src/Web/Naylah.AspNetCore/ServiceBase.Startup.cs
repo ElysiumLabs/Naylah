@@ -8,7 +8,7 @@ using System.Text;
 
 namespace Naylah
 {
-    public partial class Service<TOptions>
+    public partial class ServiceBase<TOptions>
     {
         public virtual void ConfigureServices(IServiceCollection services)
         {
