@@ -32,7 +32,7 @@ namespace Naylah.StartPage
 
             s = s.Replace("{{ServiceName}}", _options.Title);
 
-            if (_options.HealthCheckEnable && (healthyCheck != null))
+            if (_options.HealthCheckEnabled && (healthyCheck != null))
             {
                 var servicesString = "";
 

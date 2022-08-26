@@ -15,7 +15,9 @@ namespace Naylah.StartPage
 
         public PathString Path { get; set; } = "/";
 
-        public bool HealthCheckEnable { get; set; } = true;
+        public bool HealthCheckEnabled { get; set; } = true;
+
+        public string[] HealthCheckTags { get; set; }
 
         public TimeSpan HealtyCheckCacheDuration { get; set; } = TimeSpan.FromSeconds(10);
     }

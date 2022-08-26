@@ -21,6 +21,7 @@ using Microsoft.OData.ModelBuilder;
 using Microsoft.OpenApi.Models;
 using Naylah.Data;
 using Naylah.Data.Access;
+using Naylah.StartPage;
 using Newtonsoft.Json.Serialization;
 
 namespace Naylah.ConsoleAspNetCore
@@ -147,7 +148,7 @@ namespace Naylah.ConsoleAspNetCore
             ////services.AddScoped<PersonServiceV2>();
 
             services.AddHealthChecks().
-                AddCheck<TestCheck>("SqlDb").
+                AddCheck<TestCheck>("SqlDb", tags: new[] { "test" }).
                 AddCheck<TestCheck>("CosmosDb").
                 AddCheck<TestCheck>("SAPIntegration").
                 AddCheck<TestCheck>("Teste3").
@@ -198,6 +199,18 @@ namespace Naylah.ConsoleAspNetCore
             return odataBuilder.GetEdmModel();
         }
 
+        protected override void ConfigureStartupPage(IApplicationBuilder app)
+        {
+            app.UseStartPage(options =>
+            {
+                options.Title = Options.Name;
+
+                options.HealthCheckEnabled = true;
+                options.HealthCheckTags = new string[] { "test" };
+                
+            });
+
+        }
     }
 
     public class TestCheck : IHealthCheck

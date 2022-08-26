@@ -11,6 +11,8 @@ namespace Naylah.HealthChecks
     public class CachedHealthCheckServiceOptions
     {
         public TimeSpan CacheDuration { get; set; }
+
+        public Func<HealthCheckRegistration, bool> Predicate { get; set; } = x => true;
     }
 
     public class CachedHealthCheckService
@@ -39,7 +41,7 @@ namespace Naylah.HealthChecks
 
                 Evaluating = true;
 
-                var report = await healthCheckService.CheckHealthAsync(cancellationToken);
+                var report = await healthCheckService.CheckHealthAsync(options.Predicate, cancellationToken);
 
                 Result = new DateHealthReport()
                 {

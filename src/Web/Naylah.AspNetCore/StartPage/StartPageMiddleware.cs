@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Naylah.HealthChecks;
+using System.Linq;
 
 namespace Naylah.StartPage
 {
@@ -44,7 +45,8 @@ namespace Naylah.StartPage
                     requestServiceProvider.GetService<CachedHealthCheckService>()
                     ?? new CachedHealthCheckService(new CachedHealthCheckServiceOptions()
                     {
-                        CacheDuration = _options.HealtyCheckCacheDuration
+                        CacheDuration = _options.HealtyCheckCacheDuration,
+                        Predicate = x => _options.HealthCheckTags.Any(y => x.Tags.Contains(y))
                     });
 
                 var welcomePage = startPageProvider?.GetStartPage() ?? new StartPage();
