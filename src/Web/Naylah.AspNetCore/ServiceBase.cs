@@ -40,7 +40,12 @@ namespace Naylah
             Configuration = configuration;
 
             Options = ServiceOptionsBase.CreateDefault<TOptions>(GetType().Name);
-            Try.Run(() => Configuration?.Bind(Options));
+            Try.Run(() => ConfigureConfiguration(Configuration)?.Bind(Options));
+        }
+
+        protected virtual IConfiguration ConfigureConfiguration(IConfiguration configuration)
+        {
+            return configuration;
         }
     }
 
